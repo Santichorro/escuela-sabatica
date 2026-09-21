@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo lidiar con falsos maestros — Lección 12</title>
+<style>
+  :root{
+    --bg: #181517;
+    --text: #FBFBFF;
+    --accent: #FF331F;
+
+    --on-accent: var(--bg);
+    --bg-elevated: color-mix(in srgb, var(--text) 4%, var(--bg));
+    --bg-elevated-2: color-mix(in srgb, var(--text) 2.5%, var(--bg));
+    --line: color-mix(in srgb, var(--text) 12%, transparent);
+    --text-muted: color-mix(in srgb, var(--text) 66%, transparent);
+    --text-faint: color-mix(in srgb, var(--text) 35%, transparent);
+    --accent-dim: color-mix(in srgb, var(--accent) 16%, transparent);
+    --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
+
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --maxw: 640px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  h1,h2,h3{ font-family:var(--serif); font-weight:700; margin:0 0 .6em; }
+  p{ margin:0 0 1.1em; }
+  ::selection{ background:var(--accent); color:var(--bg); }
+
+  button{ font-family:var(--sans); cursor:pointer; }
+
+  .app{
+    height:100vh;
+    height:100dvh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- HEADER ---------- */
+  .app-header{
+    flex:0 0 auto;
+    padding:14px 18px 12px;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    z-index:5;
+  }
+  .header-row{
+    max-width:var(--maxw);
+    margin:0 auto;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .eyebrow{
+    display:block;
+    font-size:.72rem;
+    letter-spacing:.06em;
+    color:var(--accent);
+    font-weight:600;
+    margin-bottom:2px;
+  }
+  .page-title{
+    font-size:1.08rem;
+    line-height:1.25;
+    margin:0;
+  }
+  .page-counter{
+    flex:0 0 auto;
+    font-size:.78rem;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+    padding-top:2px;
+  }
+  .progress-track{
+    max-width:var(--maxw);
+    margin:10px auto 0;
+    height:4px;
+    background:color-mix(in srgb, var(--text) 10%, transparent);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:4px;
+    transition:width .35s ease;
+  }
+
+  /* ---------- MAIN CONTENT ---------- */
+  .content-scroll{
+    flex:1 1 auto;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .content-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:26px 20px 56px;
+  }
+  .content-inner.fade-in{ animation:fadeIn .32s ease; }
+  @keyframes fadeIn{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  .lead{
+    font-family:var(--serif);
+    font-size:1.18rem;
+    line-height:1.6;
+    color:var(--text);
+  }
+  .content-inner p{
+    font-size:1.02rem;
+    line-height:1.75;
+    color:var(--text);
+  }
+  .content-inner p.muted{ color:var(--text-muted); }
+
+  .content-inner h2.section-h{
+    font-size:1.3rem;
+    line-height:1.3;
+    margin-top:.2em;
+  }
+
+  /* portada */
+  .cover{
+    min-height:calc(100dvh - 160px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .cover .kicker{
+    color:var(--accent);
+    font-size:.8rem;
+    letter-spacing:.08em;
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .cover h1{
+    font-size:2.1rem;
+    line-height:1.15;
+    margin-bottom:10px;
+  }
+  .cover .subtitle{
+    color:var(--text-muted);
+    font-size:1rem;
+    margin-bottom:28px;
+  }
+  .memory-verse{
+    border-left:3px solid var(--accent);
+    padding:4px 0 4px 18px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.12rem;
+    line-height:1.55;
+    margin-bottom:28px;
+  }
+  .memory-verse cite{
+    display:block;
+    font-style:normal;
+    font-size:.85rem;
+    color:var(--accent);
+    margin-top:8px;
+  }
+  .start-btn{
+    align-self:flex-start;
+    background:var(--accent);
+    color:var(--on-accent);
+    border:none;
+    padding:14px 26px;
+    border-radius:30px;
+    font-size:1rem;
+    font-weight:700;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .start-btn:active{ transform:scale(.98); }
+
+  /* verse + egw blocks */
+  .verse-block, .egw-block{
+    background:var(--bg-elevated);
+    border-radius:14px;
+    padding:18px 18px 16px;
+    margin:20px 0;
+  }
+  .verse-block{ border-left:4px solid var(--accent); }
+  .egw-block{ border-left:4px solid var(--text-faint); background:var(--bg-elevated-2); }
+  .block-label{
+    display:block;
+    font-size:.7rem;
+    letter-spacing:.08em;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .egw-block .block-label{ color:var(--text-muted); }
+  .verse-block blockquote, .egw-block blockquote{
+    margin:0;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.04rem;
+    line-height:1.6;
+  }
+  .verse-block cite, .egw-block cite{
+    display:block;
+    font-style:normal;
+    font-family:var(--sans);
+    font-size:.84rem;
+    color:var(--text-muted);
+    margin-top:10px;
+  }
+
+  ul.marks{
+    list-style:none;
+    margin:18px 0;
+    padding:0;
+  }
+  ul.marks li{
+    position:relative;
+    padding:0 0 14px 24px;
+    font-size:1.02rem;
+    line-height:1.6;
+  }
+  ul.marks li::before{
+    content:"—";
+    position:absolute;
+    left:0;
+    color:var(--accent);
+    font-weight:700;
+  }
+  ul.marks li strong{ color:var(--text); }
+
+  /* question cards */
+  .question-card{
+    margin:26px 0 10px;
+    background:var(--accent-dim);
+    border:1px solid var(--accent-line);
+    border-radius:16px;
+    padding:18px;
+  }
+  .question-label{
+    display:block;
+    font-size:.7rem;
+    letter-spacing:.08em;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:8px;
+  }
+  .question-text{
+    font-family:var(--serif);
+    font-size:1.08rem;
+    line-height:1.5;
+    margin:0 0 14px;
+  }
+  .answer-toggle{
+    background:transparent;
+    border:1.5px solid var(--accent);
+    color:var(--accent);
+    padding:9px 16px;
+    border-radius:22px;
+    font-size:.86rem;
+    font-weight:700;
+  }
+  .answer-toggle:active{ transform:scale(.98); }
+  .answer-panel{
+    display:none;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed var(--accent-line);
+  }
+  .answer-panel.open{ display:block; }
+  .answer-panel .who{
+    font-size:.72rem;
+    letter-spacing:.06em;
+    font-weight:700;
+    color:var(--text-muted);
+    display:block;
+    margin-bottom:6px;
+  }
+  .answer-panel p{
+    font-size:.98rem;
+    line-height:1.65;
+    color:var(--text);
+    margin-bottom:0;
+  }
+
+  .closing-prompt{
+    margin-top:30px;
+    padding:18px;
+    border-radius:16px;
+    background:var(--bg-elevated);
+    text-align:center;
+  }
+  .closing-prompt p{ margin-bottom:0; color:var(--text-muted); font-size:.95rem; }
+
+  /* ---------- FOOTER NAV ---------- */
+  .app-footer{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .app-footer > *{ flex:0 0 auto; }
+  .nav-btn{
+    flex:1 1 auto;
+    background:var(--bg-elevated);
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:13px 10px;
+    border-radius:14px;
+    font-size:.92rem;
+    font-weight:600;
+    text-align:center;
+  }
+  .nav-btn.nav-btn--primary{
+    background:var(--accent);
+    color:var(--on-accent);
+    border-color:var(--accent);
+  }
+  .nav-btn:disabled{ opacity:.35; }
+  .nav-btn:active:not(:disabled){ transform:scale(.98); }
+  .toc-btn{
+    flex:0 0 46px;
+    height:46px;
+    background:transparent;
+    color:var(--text);
+    border:1px solid var(--line);
+    border-radius:14px;
+    font-size:1.15rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .back-btn{
+    flex:0 0 auto;
+    width:36px;
+    height:36px;
+    margin-top:2px;
+    background:transparent;
+    color:var(--text-muted);
+    border:1px solid var(--line);
+    border-radius:11px;
+    font-size:1.05rem;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .back-btn:active{ transform:scale(.96); }
+
+  /* ---------- TOC OVERLAY ---------- */
+  .toc-overlay{
+    position:fixed;
+    inset:0;
+    background:color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter:blur(2px);
+    display:none;
+    align-items:flex-end;
+    z-index:20;
+  }
+  .toc-overlay.open{ display:flex; }
+  .toc-panel{
+    width:100%;
+    max-height:80vh;
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    border-radius:20px 20px 0 0;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    overflow-y:auto;
+    animation:slideUp .28s ease;
+  }
+  @keyframes slideUp{
+    from{ transform:translateY(24px); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
+  }
+  .toc-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    max-width:var(--maxw);
+    margin:0 auto 8px;
+    padding:6px 4px 12px;
+    font-family:var(--serif);
+    font-size:1.1rem;
+    border-bottom:1px solid var(--line);
+  }
+  .toc-head button{
+    background:none; border:none; color:var(--text-muted); font-size:1.3rem; line-height:1;
+  }
+  #tocList{
+    list-style:none; margin:0; padding:0;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  #tocList li button{
+    width:100%;
+    text-align:left;
+    background:none;
+    border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--text);
+    padding:14px 4px;
+    font-size:.98rem;
+    display:flex;
+    gap:12px;
+    align-items:baseline;
+  }
+  #tocList li button .n{
+    color:var(--accent);
+    font-weight:700;
+    font-size:.85rem;
+    flex:0 0 auto;
+  }
+  #tocList li button.active{ color:var(--accent); }
+
+  @media (min-width: 760px){
+    :root{ --maxw: 700px; }
+    .cover h1{ font-size:2.6rem; }
+    .lead{ font-size:1.28rem; }
+    .content-inner{ padding:44px 24px 70px; }
+    .page-title{ font-size:1.2rem; }
+    .app-footer{ padding-bottom:16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .content-inner.fade-in, .toc-panel{ animation:none; }
+    .progress-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <a href="/" class="back-btn" aria-label="Volver a la biblioteca">←</a>
+      <div style="flex:1 1 auto; min-width:0;">
+        <span class="eyebrow" id="sectionLabel">Página 1 de 11</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice">≡</button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar">✕</button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var pages = [
+    {
+      tag: "Lección 12 · 2 Corintios 10–13",
+      title: "Portada",
+      html:
+        '<div class="cover">' +
+          '<span class="kicker">3ER TRIMESTRE 2026 · LECCIÓN 12</span>' +
+          '<h1>Cómo lidiar con falsos maestros</h1>' +
+          '<p class="subtitle">Un estudio de 2 Corintios 10 al 13, sobre discernimiento, mansedumbre y firmeza en tiempos de engaño espiritual.</p>' +
+          '<div class="memory-verse">' +
+            '«Porque las armas de nuestra milicia no son mundanas, sino poderosas en Dios para destruir fortalezas.»' +
+            '<cite>2 Corintios 10:4 — Texto para memorizar</cite>' +
+          '</div>' +
+          '<button class="start-btn" id="startBtn">Comenzar el estudio →</button>' +
+        '</div>'
+    },
+    {
+      tag: "Contexto",
+      title: "El campo de batalla: Corinto y nosotros",
+      html:
+        '<p class="lead">Corinto era una iglesia joven, dotada y admirada por sus dones... y peligrosamente inestable. En ese terreno fértil aparecieron maestros itinerantes que Pablo llama, con ironía, «los más eminentes apóstoles».</p>' +
+        '<p>Llegaban con cartas de recomendación, buena retórica, visiones que contar y una seguridad que deslumbraba. No decían «no creas en Jesús»; predicaban «otro Jesús», «otro espíritu», «otro evangelio» (2 Cor. 11:4). Poco a poco, sin que la mayoría lo notara, estaban desplazando el centro de la fe de los corintios.</p>' +
+        '<p>Esto es lo primero que debemos grabar en la mente: <strong>el error rara vez llega anunciándose como error.</strong> Llega con credenciales, con carisma, con un lenguaje que suena espiritual.</p>' +
+        '<div class="verse-block"><span class="block-label">2 CORINTIOS 11:14-15</span><blockquote>«Satanás se disfraza como ángel de luz. Así que, no es extraño si también sus ministros se disfrazan como ministros de justicia; cuyo fin será conforme a sus obras.»</blockquote></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">¿Por qué crees que a una iglesia que había recibido tanta instrucción directa de Pablo le resultó tan fácil impresionarse con estos maestros nuevos? ¿Qué los hacía vulnerables?</p>' +
+          '<button class="answer-toggle" data-answer="a1">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a1"><span class="who">GUÍA PARA EL MAESTRO</span><p>Corinto vivía en una cultura que idolatraba la elocuencia, el estatus social y el prestigio filosófico. Los falsos maestros no atacaron la doctrina de frente: explotaron un valor cultural ya presente en el corazón de la congregación —admirar el estilo y la confianza por encima del carácter y la fidelidad—. Vale la pena preguntar al grupo qué valores de nuestra cultura actual podrían hacernos vulnerables de la misma manera.</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Guerra espiritual",
+      title: "Armas que derriban fortalezas",
+      html:
+        '<p class="lead">Pablo abre el capítulo 10 con un lenguaje sorprendentemente militar.</p>' +
+        '<div class="verse-block"><span class="block-label">2 CORINTIOS 10:4-5</span><blockquote>«Las armas de nuestra milicia no son carnales, sino poderosas en Dios para la destrucción de fortalezas; derribando argumentos y toda altivez que se levanta contra el conocimiento de Dios, y llevando cautivo todo pensamiento a la obediencia a Cristo.»</blockquote></div>' +
+        '<p>No es una exageración retórica. Efesios lo confirma: «No tenemos lucha contra sangre y carne, sino contra principados, contra potestades, contra los gobernadores de las tinieblas de este siglo» (Ef. 6:12). Los falsos maestros —de Corinto o de cualquier época— muchas veces son, ellos mismos, instrumentos de un conflicto más grande del que no son plenamente conscientes.</p>' +
+        '<p>Por eso las herramientas para esta guerra no son el sarcasmo, el poder ni la superioridad intelectual, sino la Palabra, la oración y la sumisión de cada pensamiento a Cristo. La «fortaleza» que hay que derribar no siempre es externa: muchas veces es un razonamiento propio, una narrativa que nos hemos construido para justificar algo.</p>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«El primero y más alto deber de toda criatura racional es el de escudriñar la verdad en las Sagradas Escrituras y luego andar en la luz... Con la ayuda de Dios debemos formarnos nuestras propias opiniones ya que tenemos que responder a Dios por nosotros mismos.»</blockquote><cite>El conflicto de los siglos, pp. 584, 585</cite></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">Pablo dice que debemos llevar cautivo «todo pensamiento» a la obediencia a Cristo. En un mundo con acceso constante a información las 24 horas del día, ¿qué significa esto en la práctica?</p>' +
+          '<button class="answer-toggle" data-answer="a2">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a2"><span class="who">GUÍA PARA EL MAESTRO</span><p>Significa someter no solo nuestras acciones, sino las fuentes que aceptamos como autoridad, al señorío de Cristo. En la práctica: detenernos antes de aceptar una idea, un video o una prédica viral, y contrastarla con la Escritura —como los bereanos (Hech. 17:11)— en lugar de dejar que el algoritmo o la elocuencia decidan por nosotros lo que creemos.</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Discernimiento",
+      title: "Máscaras de luz",
+      html:
+        '<p class="lead">Pablo no deja el discernimiento en el aire; en 2 Corintios 11:1-15 da pistas concretas que la Escritura repite en otros lugares.</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Desplazan el centro:</strong> predican «otro Jesús» (v. 4) — no niegan a Cristo abiertamente, lo redefinen.</li>' +
+          '<li><strong>Buscan ganancia o admiración personal:</strong> «os devora... se enaltece» (v. 20).</li>' +
+          '<li><strong>Generan rivalidad</strong> en vez de unidad.</li>' +
+          '<li><strong>Se apoyan en apariencia y elocuencia</strong> más que en fidelidad a la Palabra.</li>' +
+          '<li><strong>Toleran el pecado</strong> en lugar de llamar al arrepentimiento.</li>' +
+        '</ul>' +
+        '<p>Jesús ya lo había advertido: «Guardaos de los falsos profetas, que vienen a vosotros con vestidos de ovejas, pero por dentro son lobos rapaces... por sus frutos los conoceréis» (Mat. 7:15-20). Y Juan añade la disciplina básica de todo creyente: «No creáis a todo espíritu, sino probad los espíritus si son de Dios» (1 Jn. 4:1).</p>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«Satanás es un obrero astuto, e introducirá engaños sutiles a fin de oscurecer y confundir la mente... Los malos ángeles nos siguen en todo momento... y obran maravillas y milagros ante nuestros ojos.»</blockquote><cite>Maranata: el Señor viene, 28 de mayo, p. 161</cite></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">Los falsos maestros de Corinto no negaban a Cristo; predicaban «otro Jesús» (2 Cor. 11:4). ¿Qué tan sutil puede ser hoy una desviación del verdadero Jesús dentro de una enseñanza que suena «cristiana»? Da un ejemplo.</p>' +
+          '<button class="answer-toggle" data-answer="a3">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a3"><span class="who">GUÍA PARA EL MAESTRO</span><p>Invita a ejemplos concretos: un «Jesús» reducido a coach de éxito financiero; un «Jesús» que solo valida y nunca llama al arrepentimiento; un evangelio reducido a causa social sin conversión personal. La clave: la distorsión casi nunca niega el nombre de Cristo; redefine su carácter o sus exigencias. La defensa es medir cualquier enseñanza contra el retrato bíblico completo de Cristo, no contra un solo rasgo atractivo.</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Carácter",
+      title: "Mansos como palomas, firmes como rocas",
+      html:
+        '<p class="lead">Pablo apela «por la mansedumbre y ternura de Cristo» (2 Cor. 10:1), aunque sus opositores decían que era «osado» por carta pero «débil» en persona.</p>' +
+        '<p>Es una acusación que se repite en toda la historia: confundir la mansedumbre genuina con falta de convicción, y usar esa confusión para silenciar a quien defiende la verdad.</p>' +
+        '<p>Cristo mismo desmiente esa falsa oposición. Dijo de sí mismo: «Soy manso y humilde de corazón» (Mat. 11:29). El mismo que dijo eso también volcó las mesas de los cambistas en el templo (Mat. 21:12-13) y llamó «hipócritas» y «sepulcros blanqueados» a los fariseos (Mat. 23:23-27). Mansedumbre y firmeza no son contradictorias: son dos caras del mismo amor que protege al rebaño.</p>' +
+        '<p class="muted">Hoy muchos callan ante el error por miedo a parecer «intolerantes», y otros corrigen con dureza que aleja en lugar de restaurar. El modelo bíblico exige ambas cosas a la vez, nunca una sin la otra.</p>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">¿Cómo podemos ser a la vez mansos y valientes al tratar con enseñanzas erróneas, sin caer en la pasividad ni en la dureza?</p>' +
+          '<button class="answer-toggle" data-answer="a4">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a4"><span class="who">GUÍA PARA EL MAESTRO</span><p>La mansedumbre gobierna <em>cómo</em> hablamos (tono, disposición a escuchar, amor por la persona); la firmeza gobierna <em>qué</em> defendemos (la verdad misma). En la práctica: separar a la persona del error, abordar dudas en privado cuando sea posible, empezar con preguntas antes que con conclusiones, y dejar siempre una puerta abierta al arrepentimiento — tal como Pablo aclara que todo lo hace «para vuestra edificación» (2 Cor. 12:19).</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Identidad",
+      title: "Gloriarse en el Señor",
+      html:
+        '<p class="lead">Pablo señala algo revelador sobre los falsos maestros: se comparaban entre sí.</p>' +
+        '<div class="verse-block"><span class="block-label">2 CORINTIOS 10:12, 17-18</span><blockquote>«No nos atrevemos a contarnos ni a compararnos con algunos que se alaban a sí mismos... pero el que se gloría, gloríese en el Señor; porque no es aprobado el que se alaba a sí mismo, sino aquel a quien Dios alaba.»</blockquote></div>' +
+        '<p>Cita entonces a Jeremías: «Alábese en esto el que se alabe: en entenderme y conocerme que yo soy el Señor» (Jer. 9:24). La comparación y la rivalidad religiosa no son un problema nuevo: «Donde hay celos y contención, allí hay perturbación y toda obra perversa» (Sant. 3:16).</p>' +
+        '<p>Hoy esta trampa tiene una versión digital muy concreta: medir el valor espiritual de una persona, iglesia o ministerio por su alcance en redes sociales o su número de seguidores. Es exactamente la misma lógica que Pablo rechaza: medirse a sí mismo por sí mismo, en lugar de gloriarse en lo que Dios ha hecho.</p>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«Jesús no desea que ambicionemos la recompensa, sino que tengamos la ambición de realizar la voluntad de Dios porque es su voluntad... nuestras jactancias están totalmente fuera de lugar.»</blockquote><cite>Nuestra elevada vocación, 23 de diciembre, p. 365</cite></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">En una cultura donde el «alcance» y los seguidores a menudo miden el éxito espiritual, ¿cómo distinguimos entre una influencia genuina dada por Dios y una búsqueda disfrazada de gloria personal?</p>' +
+          '<button class="answer-toggle" data-answer="a5">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a5"><span class="who">GUÍA PARA EL MAESTRO</span><p>Preguntas diagnósticas para explorar: ¿la persona señala constantemente a Cristo o a sí misma? ¿Cómo reacciona ante la crítica o ante perder protagonismo? ¿Su mensaje edifica el carácter o solo entretiene? ¿Serviría igual si nadie la viera? El crecimiento numérico, por sí solo, nunca fue prueba de aprobación divina: los falsos maestros de Corinto también tenían éxito entre la gente.</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Sufrimiento y gracia",
+      title: "Lo que el sufrimiento reveló",
+      html:
+        '<p class="lead">Cuando Pablo se ve forzado a «jactarse como necio» para exponer la falsedad de sus opositores, no presenta títulos ni logros. Presenta una lista de sufrimientos.</p>' +
+        '<div class="verse-block"><span class="block-label">2 CORINTIOS 12:9</span><blockquote>«Bástate mi gracia; porque mi poder se perfecciona en la debilidad.»</blockquote></div>' +
+        '<p>Poco después de enumerar azotes, naufragios, hambre y desvelo (2 Cor. 11:23-28), Pablo explica que Dios le dio «una espina en la carne» precisamente para que no se enalteciera. Es una inversión radical de los valores del mundo: la prueba de autenticidad no es el éxito visible ni la comodidad, sino la disposición a pagar un precio real por el evangelio. Los falsos maestros normalmente evitan ese costo.</p>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«No recibimos tanto la recompensa por nuestra actividad y el celo que hayamos manifestado al realizarla, sino por la ternura, la gracia y el amor que hayamos mezclado con nuestro trabajo.»</blockquote><cite>Exaltad a Jesús, 25 de noviembre, p. 337</cite></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">Muchos maestros de hoy usan la prosperidad y el éxito visible como «prueba» de que Dios los respalda; Pablo usa exactamente lo opuesto —su sufrimiento— como evidencia de autenticidad. ¿Cómo reconciliamos esto con el hecho de que Dios también bendice materialmente a su pueblo?</p>' +
+          '<button class="answer-toggle" data-answer="a6">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a6"><span class="who">GUÍA PARA EL MAESTRO</span><p>El problema no es la prosperidad en sí (Job, Abraham y Salomón fueron bendecidos materialmente), sino usarla como criterio para validar un mensaje o un mensajero. La pregunta correcta no es «¿tiene comodidad o no?», sino «¿estaría dispuesto a sufrir por Cristo si fuera necesario, y su mensaje central sigue siendo Cristo crucificado y resucitado, o una fórmula para obtener bendición?».</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Restauración",
+      title: "Examinaos a vosotros mismos",
+      html:
+        '<p class="lead">Antes de su tercera visita, Pablo confiesa su temor de encontrar «contiendas, envidias, iras, divisiones» y a muchos que no se han arrepentido (2 Cor. 12:20-21).</p>' +
+        '<p>Su respuesta no es el rechazo, sino la disciplina restauradora: «Pedimos a Dios que no hagan nada malo... sino... lo bueno... que los restaure plenamente» (2 Cor. 13:7-9).</p>' +
+        '<div class="verse-block"><span class="block-label">2 CORINTIOS 13:5</span><blockquote>«Examinaos a vosotros mismos si estáis en la fe; probaos a vosotros mismos. ¿O no os conocéis a vosotros mismos, que Jesucristo está en vosotros, a menos que estéis reprobados?»</blockquote></div>' +
+        '<p>Note que Pablo no termina diciéndoles simplemente «esta es la doctrina correcta»: los invita a examinarse ellos mismos. Estar «en la fe» no es solo tener información correcta; es tener a Cristo realmente viviendo en nosotros.</p>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«Dios está llamando constantemente al corazón humano, induciéndolo a reconocer su amor y su misericordia... El hombre puede pretender ser muy inteligente, pero se necesita más que inteligencia humana para captar las revelaciones del evangelio.»</blockquote><cite>Cada día con Dios, 26 de septiembre, p. 276</cite></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">¿Por qué Pablo pide a los corintios que se examinen a sí mismos, en lugar de simplemente decirles cuál es la doctrina correcta? ¿Qué diferencia hace este enfoque?</p>' +
+          '<button class="answer-toggle" data-answer="a7">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a7"><span class="who">GUÍA PARA EL MAESTRO</span><p>El autoexamen invita a una fe propia y examinada, en lugar de una dependencia pasiva de una autoridad externa —exactamente la trampa que los hizo vulnerables a los falsos maestros—. La doctrina correcta importa, pero la fe genuina debe ser interiorizada: «que Jesucristo está en vosotros» implica carácter transformado, no solo información memorizada. Pregunta de aplicación: ¿mi fe es una convicción propia, forjada en el estudio y la oración, o simplemente heredada sin examen?</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Actualidad",
+      title: "El engaño tiene wifi",
+      html:
+        '<p class="lead">El vehículo cambia; el patrón, no. Las cartas de recomendación se volvieron perfiles verificados; la retórica de plaza pública se volvió edición de video y algoritmos.</p>' +
+        '<ul class="marks">' +
+          '<li><strong>El evangelio de la prosperidad</strong>, que reduce la fe a una fórmula financiera — lo opuesto exacto al testimonio de Pablo.</li>' +
+          '<li><strong>Profetas digitales</strong> que predicen fechas o difunden «palabras proféticas» virales explotando la ansiedad colectiva (Mat. 24:23-24).</li>' +
+          '<li><strong>Contenido religioso generado por inteligencia artificial:</strong> sermones o voces clonadas de predicadores reales diciendo cosas que nunca dijeron.</li>' +
+          '<li><strong>Liderazgo espiritual abusivo:</strong> control, aislamiento del rebaño, lealtad exigida al líder en lugar de a Cristo.</li>' +
+          '<li><strong>«Nueva luz» sin fundamento bíblico:</strong> ideas que suenan profundas pero se apartan del «así dice el Señor».</li>' +
+        '</ul>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«El Anticristo va a efectuar ante nuestra vista obras maravillosas. La falsificación se asemejará tanto a la realidad, que será imposible distinguirlas sin el auxilio de las Sagradas Escrituras.»</blockquote><cite>Maranata: el Señor viene, 28 de mayo, p. 161</cite></div>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«Solo los que estén bien fundamentados en la verdad de las Escrituras, y sometan a prueba cada planteamiento con un "Así dice el Señor", estarán a salvo.»</blockquote><cite>Recibiréis poder, 26 de abril, p. 127</cite></div>'
+    },
+    {
+      tag: "Aplicación personal",
+      title: "¿Qué consumes tú?",
+      html:
+        '<p class="lead">El discernimiento no es un tema abstracto: se ejercita todos los días, en lo que elegimos leer, ver y escuchar.</p>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">¿Qué tipo de contenido «espiritual» consumes regularmente (redes sociales, YouTube, pódcasts)? Sé honesto: ¿lo evalúas activamente con la Escritura, o simplemente confías porque «suena bien» o tiene muchas vistas?</p>' +
+          '<button class="answer-toggle" data-answer="a8">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a8"><span class="who">GUÍA PARA EL MAESTRO</span><p>Es una pregunta de aplicación personal; no hay una respuesta «correcta» que imponer. El maestro puede modelar vulnerabilidad primero. El objetivo es que el grupo reconozca el hábito de consumo pasivo frente al discernimiento activo, y termine con una resolución concreta: elegir esta semana una fuente habitual y contrastarla deliberadamente con la Biblia.</p></div>' +
+        '</div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">Si la falsificación final «será imposible de distinguir sin el auxilio de las Sagradas Escrituras», ¿qué implica esto sobre la prioridad que hoy le damos al estudio personal de la Biblia?</p>' +
+          '<button class="answer-toggle" data-answer="a9">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a9"><span class="who">GUÍA PARA EL MAESTRO</span><p>Si el engaño futuro será casi indistinguible sin un conocimiento profundo de la Escritura, entonces un contacto ocasional o de segunda mano con la Biblia es una vulnerabilidad real. Esto llama a una disciplina renovada de estudio personal: no memorizar textos sueltos, sino conocer el carácter de Dios y la forma del verdadero evangelio lo suficientemente bien como para notar cuando algo no encaja.</p></div>' +
+        '</div>'
+    },
+    {
+      tag: "Cierre",
+      title: "Armados y enviados",
+      html:
+        '<p class="lead">El recorrido de estos capítulos tiene una lógica hermosa: Pablo decide pelear con armas espirituales, enseña a discernir a los falsos maestros, rehúsa gloriarse en otra cosa que no sea el Señor, descubre que el poder de Dios se perfecciona en la debilidad, y termina llamando a cada creyente a examinarse a sí mismo.</p>' +
+        '<p>La conclusión práctica es liberadora: lidiar bien con los falsos maestros depende menos de ganar discusiones y más de permanecer arraigados en Cristo. Un corazón examinado, humilde, anclado en la Escritura y dependiente de la gracia, se vuelve difícil de arrastrar — y queda capacitado para guiar con ternura a otros de regreso.</p>' +
+        '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span><blockquote>«El Señor desea que nuestras opiniones sean sometidas a prueba, para que veamos la necesidad de examinar de cerca los oráculos vivientes para ver si estamos en la fe o no.»</blockquote><cite>El otro poder, p. 30</cite></div>' +
+        '<div class="question-card">' +
+          '<span class="question-label">PREGUNTA PARA DISCUSIÓN</span>' +
+          '<p class="question-text">De todo lo que hemos estudiado hoy, ¿qué es lo único que tomarás contigo esta semana como un cambio concreto en tu manera de escuchar, leer o compartir la fe?</p>' +
+          '<button class="answer-toggle" data-answer="a10">Ver respuesta orientativa</button>' +
+          '<div class="answer-panel" id="a10"><span class="who">GUÍA PARA EL MAESTRO</span><p>Facilita una ronda breve de respuestas si el tiempo lo permite. No busques una respuesta «correcta»; busca compromiso genuino y específico (una acción concreta, no un sentimiento vago). Considera cerrar la clase orando juntos por esos compromisos.</p></div>' +
+        '</div>' +
+        '<div class="closing-prompt"><p>«Que las armas de nuestra milicia no sean mundanas, sino poderosas en Dios.» — 2 Corintios 10:4</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      btn.setAttribute('data-i', i);
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){
+        goTo(i);
+        closeToc();
+      });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){
+      nextBtn.textContent = 'Reiniciar ↺';
+    } else if(current === 0){
+      nextBtn.textContent = 'Comenzar →';
+    } else {
+      nextBtn.textContent = 'Siguiente ›';
+    }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){
+      startBtn.addEventListener('click', function(){ goTo(current+1); });
+    }
+
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); }
+    else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(e){ if(e.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(e){
+    var btn = e.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(tocOverlay.classList.contains('open')) return;
+    if(e.key === 'ArrowRight') goTo(current+1);
+    if(e.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  // swipe support
+  var touchStartX = null;
+  contentScroll.addEventListener('touchstart', function(e){ touchStartX = e.changedTouches[0].clientX; }, {passive:true});
+  contentScroll.addEventListener('touchend', function(e){
+    if(touchStartX === null) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if(Math.abs(dx) > 70){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    touchStartX = null;
+  }, {passive:true});
+
+  render();
+})();
+</script>
+</body>
+</html>

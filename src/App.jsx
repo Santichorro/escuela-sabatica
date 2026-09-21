@@ -60,6 +60,19 @@ const recomendaciones = [
   },
 ]
 
+// Cada lección vive como un archivo estático dentro de /public, así que se
+// sirve desde el mismo dominio y el mismo deploy que el resto del sitio.
+const lecciones = [
+  {
+    anio: 2026,
+    trimestre: 3,
+    numero: 12,
+    titulo: 'Cómo lidiar con falsos maestros',
+    pasaje: '2 Corintios 10–13',
+    archivo: '/lecciones/2026/t3/leccion-12-como-lidiar-con-falsos-maestros.html',
+  },
+]
+
 function Header() {
   return (
     <header className="header">
@@ -92,12 +105,30 @@ function Landing() {
         <div className="container">
           <header className="section__head">
             <h2>Biblioteca</h2>
-            <p>Aquí aparecerán los años, trimestres y lecciones disponibles.</p>
+            <p>Lecciones disponibles, ordenadas por año, trimestre y número.</p>
           </header>
-          <div className="empty">
-            <p className="empty__title">Todavía no hay lecciones en la biblioteca</p>
-            <p>Cuando agreguemos las primeras, aparecerán aquí ordenadas por año y trimestre, listas para leerse sin salir de la página.</p>
-          </div>
+
+          {lecciones.length === 0 ? (
+            <div className="empty">
+              <p className="empty__title">Todavía no hay lecciones en la biblioteca</p>
+              <p>Cuando agreguemos las primeras, aparecerán aquí ordenadas por año y trimestre, listas para leerse sin salir de la página.</p>
+            </div>
+          ) : (
+            <ul className="lessons">
+              {lecciones.map((l) => (
+                <li className="lesson" key={l.archivo}>
+                  <a className="lesson__link" href={l.archivo}>
+                    <span className="lesson__meta">
+                      {l.anio} · {l.trimestre}º trimestre · Lección {String(l.numero).padStart(2, '0')}
+                    </span>
+                    <h3 className="lesson__title">{l.titulo}</h3>
+                    <p className="lesson__pasaje">{l.pasaje}</p>
+                    <span className="lesson__cta">Leer lección →</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 

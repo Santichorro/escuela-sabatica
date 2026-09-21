@@ -228,6 +228,60 @@
   color: var(--text-muted);
 }
 
+/* ---------- Biblioteca: lecciones disponibles ---------- */
+.lessons {
+  display: grid;
+  gap: 14px;
+}
+
+.lesson__link {
+  display: block;
+  padding: 20px 20px 18px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.lesson__link:hover {
+  filter: brightness(1.06);
+}
+
+.lesson__link:active {
+  transform: scale(0.99);
+}
+
+.lesson__meta {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lesson__title {
+  margin-bottom: 6px;
+  font-size: 1.2rem;
+}
+
+.lesson__pasaje {
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.lesson__cta {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
 /* ---------- Biblioteca vacía (bloque tipo pregunta) ---------- */
 .empty {
   padding: 24px 18px;
@@ -278,6 +332,10 @@
 
   .cards {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .lessons {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
