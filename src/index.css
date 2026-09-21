@@ -1,0 +1,111 @@
+:root {
+  /* =================================================================
+     PALETA — único lugar donde se definen los colores de la web.
+     Cambia estos 3 valores y todo lo demás se ajusta solo.
+     ================================================================= */
+  --bg: #181517; /*     Onyx        — fondo */
+  --text: #FBFBFF; /*   Ghost White — texto */
+  --accent: #FF331F; /* Scarlet Fire — acento */
+
+  /* ---- Derivados de la paleta (no hace falta tocarlos) ---- */
+  --on-accent: var(--bg);
+  --bg-elevated: color-mix(in srgb, var(--text) 4%, var(--bg));
+  --bg-elevated-2: color-mix(in srgb, var(--text) 2.5%, var(--bg));
+  --line: color-mix(in srgb, var(--text) 12%, transparent);
+  --text-muted: color-mix(in srgb, var(--text) 66%, transparent);
+  --text-faint: color-mix(in srgb, var(--text) 35%, transparent);
+  --accent-dim: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
+
+  /* ---- Tipografía ---- */
+  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1.02rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
