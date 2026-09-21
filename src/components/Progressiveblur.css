@@ -1,0 +1,35 @@
+.progressive-blur {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* Justo debajo del header sticky: suaviza el borde donde el
+   contenido desaparece bajo la barra superior. */
+.progressive-blur--top {
+  top: 60px;
+  z-index: 5;
+}
+
+/* Justo encima del dock flotante: el contenido se desvanece antes
+   de llegar a él, en vez de cortarse en seco. */
+.progressive-blur--bottom {
+  bottom: 0;
+  z-index: 25;
+}
+
+@media (min-width: 720px) {
+  .progressive-blur--top {
+    top: 60px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressive-blur {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}

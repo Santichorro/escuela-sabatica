@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Dock from './components/Dock.jsx'
+import ProgressiveBlur from './components/Progressiveblur.jsx'
 import './App.css'
 
 const pasos = [
@@ -64,12 +65,6 @@ function Header() {
     <header className="header">
       <div className="container header__inner">
         <a href="/" className="brand">Escuela Sabática</a>
-        <nav className="nav" aria-label="Principal">
-          <a href="#biblioteca">Biblioteca</a>
-          <a href="#organizacion">Organización</a>
-          <a href="#temas">Por temas</a>
-          <a href="#recomendaciones">Recomendaciones</a>
-        </nav>
       </div>
     </header>
   )
@@ -186,6 +181,8 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <ProgressiveBlur position="top" height="70px" blurAmount="6px" />
+      <ProgressiveBlur position="bottom" height="150px" blurAmount="10px" />
       <Dock />
     </>
   )
