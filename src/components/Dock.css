@@ -1,0 +1,101 @@
+/* Dock flotante — usa solo las variables de la paleta (index.css),
+   ningún color escrito a mano aquí. */
+
+.dock {
+  position: fixed;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  z-index: 30;
+  width: calc(100% - 24px);
+  max-width: 380px;
+}
+
+.dock__list {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  margin: 0;
+  padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+  list-style: none;
+  background: color-mix(in srgb, var(--bg-elevated) 94%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.dock__li {
+  flex: 1;
+  min-width: 0;
+}
+
+.dock__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  padding: 8px 2px 7px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 16px;
+  transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.dock__item:active {
+  transform: scale(0.94);
+}
+
+.dock__icon {
+  transition: transform 0.15s ease;
+}
+
+.dock__label {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.dock__item--active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* La magnificación por hover solo tiene sentido con mouse, no en pantallas táctiles */
+@media (hover: hover) and (pointer: fine) {
+  .dock__item:hover {
+    color: var(--text);
+  }
+  .dock__item:hover .dock__icon {
+    transform: translateY(-2px) scale(1.12);
+  }
+  .dock__item--active:hover {
+    color: var(--accent);
+  }
+}
+
+@media (min-width: 720px) {
+  .dock {
+    max-width: 440px;
+    bottom: 22px;
+  }
+
+  .dock__label {
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dock__item,
+  .dock__icon {
+    transition: none;
+  }
+}

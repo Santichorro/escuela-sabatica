@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import Dock from './components/Dock.jsx'
 import './App.css'
 
 const pasos = [
@@ -185,6 +186,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <Dock />
     </>
   )
 }

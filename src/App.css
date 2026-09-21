@@ -264,10 +264,16 @@
 
 /* ---------- Pie ---------- */
 .footer {
-  padding: 24px 0;
+  padding: 24px 0 calc(96px + env(safe-area-inset-bottom));
   font-size: 0.88rem;
   color: var(--text-muted);
   border-top: 1px solid var(--line);
+}
+
+@media (min-width: 720px) {
+  .footer {
+    padding-bottom: calc(104px + env(safe-area-inset-bottom));
+  }
 }
 
 .footer__inner {
