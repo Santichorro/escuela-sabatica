@@ -1,4 +1,4 @@
-import './ProgressiveBlur.css'
+import './Blur.css'
 
 /**
  * Difumina el borde superior o inferior de la pantalla: el contenido que
