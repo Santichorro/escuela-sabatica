@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Dock from './components/Dock.jsx'
-import ProgressiveBlur from './components/Progressiveblur.jsx'
+import ProgressiveBlur from './components/Blur.jsx'
 import './App.css'
 
 const pasos = [
