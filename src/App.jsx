@@ -69,7 +69,7 @@ const lecciones = [
     numero: 12,
     titulo: 'Cómo lidiar con falsos maestros',
     pasaje: '2 Corintios 10–13',
-    archivo: '/lecciones/2026/t3/leccion-12-como-lidiar-con-falsos-maestros.html',
+    archivo: '/lecciones/2026/T3/leccion-12-como-lidiar-con-falsos-maestros.html',
   },
 ]
 
