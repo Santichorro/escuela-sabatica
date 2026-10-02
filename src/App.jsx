@@ -65,6 +65,14 @@ const recomendaciones = [
 const lecciones = [
   {
     anio: 2026,
+    trimestre: 4,
+    numero: 1,
+    titulo: 'El Creador habla',
+    pasaje: 'Hebreos 1:1-2',
+    archivo: '/lecciones/2026/T4/26_04_01 El Creador habla.html',
+  },
+  {
+    anio: 2026,
     trimestre: 3,
     numero: 12,
     titulo: 'Cómo lidiar con falsos maestros',
@@ -72,6 +80,10 @@ const lecciones = [
     archivo: '/lecciones/2026/T3/leccion-12-como-lidiar-con-falsos-maestros.html',
   },
 ]
+
+const leccionesOrdenadas = [...lecciones].sort(
+  (a, b) => b.anio - a.anio || b.trimestre - a.trimestre || b.numero - a.numero
+)
 
 function Header() {
   return (
@@ -101,23 +113,23 @@ function Landing() {
         </div>
       </section>
 
-      <section className="section" id="biblioteca">
+            <section className="section" id="biblioteca">
         <div className="container">
           <header className="section__head">
             <h2>Biblioteca</h2>
             <p>Lecciones disponibles, ordenadas por año, trimestre y número.</p>
           </header>
 
-          {lecciones.length === 0 ? (
+          {leccionesOrdenadas.length === 0 ? (
             <div className="empty">
               <p className="empty__title">Todavía no hay lecciones en la biblioteca</p>
               <p>Cuando agreguemos las primeras, aparecerán aquí ordenadas por año y trimestre, listas para leerse sin salir de la página.</p>
             </div>
           ) : (
             <ul className="lessons">
-              {lecciones.map((l) => (
+              {leccionesOrdenadas.map((l) => (
                 <li className="lesson" key={l.archivo}>
-                  <a className="lesson__link" href={l.archivo}>
+                  <a className="lesson__link" href={encodeURI(l.archivo)}>
                     <span className="lesson__meta">
                       {l.anio} · {l.trimestre}º trimestre · Lección {String(l.numero).padStart(2, '0')}
                     </span>
