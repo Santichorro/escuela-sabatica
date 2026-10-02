@@ -6,15 +6,19 @@
 <title>El Creador habla — Lección 1</title>
 <style>
   :root{
-    --bg: #1C0D1B;
-    --bg-elevated: #2A1524;
-    --bg-elevated-2: #241019;
-    --line: rgba(254,248,236,0.12);
-    --text: #FEF8EC;
-    --text-muted: rgba(254,248,236,0.66);
-    --accent: #F0544F;
-    --accent-dim: rgba(240,84,79,0.16);
-    --accent-line: rgba(240,84,79,0.4);
+    --bg: #181517;
+    --text: #FBFBFF;
+    --accent: #FF331F;
+
+    --on-accent: var(--bg);
+    --bg-elevated: color-mix(in srgb, var(--text) 4%, var(--bg));
+    --bg-elevated-2: color-mix(in srgb, var(--text) 2.5%, var(--bg));
+    --line: color-mix(in srgb, var(--text) 12%, transparent);
+    --text-muted: color-mix(in srgb, var(--text) 66%, transparent);
+    --text-faint: color-mix(in srgb, var(--text) 35%, transparent);
+    --accent-dim: color-mix(in srgb, var(--accent) 16%, transparent);
+    --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
+
     --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
     --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     --maxw: 640px;
