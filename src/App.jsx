@@ -71,14 +71,6 @@ const lecciones = [
     pasaje: 'Hebreos 1:1-2',
     archivo: '/lecciones/2026/T4/26_04_01 El Creador habla.html',
   },
-  {
-    anio: 2026,
-    trimestre: 3,
-    numero: 12,
-    titulo: 'Cómo lidiar con falsos maestros',
-    pasaje: '2 Corintios 10–13',
-    archivo: '/lecciones/2026/T3/leccion-12-como-lidiar-con-falsos-maestros.html',
-  },
 ]
 
 const leccionesOrdenadas = [...lecciones].sort(
