@@ -71,6 +71,15 @@ const lecciones = [
     pasaje: 'Hebreos 1:1-2',
     archivo: '/lecciones/2026/T4/26_04_01 El Creador habla.html',
   },
+
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 2,
+    titulo: 'El Llamado de un Profeta',
+    pasaje: 'Isaías 6:8',
+    archivo: '/lecciones/2026/T4/26_04_02_El_llamado_de_un_profeta',
+  },
 ]
 
 const leccionesOrdenadas = [...lecciones].sort(

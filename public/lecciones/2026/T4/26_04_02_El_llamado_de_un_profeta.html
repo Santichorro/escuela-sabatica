@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#181517">
+<title>El llamado de un profeta — Lección 2</title>
+<style>
+  :root{
+    --bg: #181517;
+    --bg-elevated: #232023;
+    --bg-elevated-2: #1F1B1E;
+    --line: rgba(251,251,255,0.13);
+    --text: #FBFBFF;
+    --text-muted: rgba(251,251,255,0.70);
+    --accent: #FF331F;
+    --accent-dim: rgba(255,51,31,0.13);
+    --accent-line: rgba(255,51,31,0.45);
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --maxw: 640px;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  h1,h2,h3{ font-family:var(--serif); font-weight:700; margin:0 0 .6em; }
+  p{ margin:0 0 1.15em; }
+  ::selection{ background:var(--accent); color:var(--bg); }
+  button{ font-family:var(--sans); cursor:pointer; }
+  button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .app{ height:100vh; height:100dvh; display:flex; flex-direction:column; }
+
+  /* HEADER */
+  .app-header{
+    flex:0 0 auto;
+    padding:calc(12px + env(safe-area-inset-top)) 18px 12px;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    z-index:5;
+  }
+  .header-row{
+    max-width:var(--maxw);
+    margin:0 auto;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .eyebrow{
+    display:block;
+    font-size:.72rem;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:3px;
+  }
+  .page-title{ font-size:1.1rem; line-height:1.25; margin:0; }
+  .page-counter{
+    flex:0 0 auto;
+    font-size:.8rem;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .progress-track{
+    max-width:var(--maxw);
+    margin:10px auto 0;
+    height:4px;
+    background:rgba(251,251,255,0.1);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:4px;
+    transition:width .35s ease;
+  }
+
+  /* CONTENT */
+  .content-scroll{ flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+  .content-inner{ max-width:var(--maxw); margin:0 auto; padding:26px 22px 64px; }
+  .content-inner.fade-in{ animation:fadeIn .3s ease; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+
+  .lead{ font-family:var(--serif); font-size:1.22rem; line-height:1.6; }
+  .content-inner p{ font-size:1.06rem; line-height:1.8; }
+  .content-inner p.muted{ color:var(--text-muted); }
+  .content-inner h2.section-h{ font-size:1.25rem; color:var(--accent); margin:1.6em 0 .5em; }
+  .content-inner strong{ color:var(--text); }
+  .rule{ border:0; border-top:1px solid var(--line); margin:26px 0; }
+
+  /* COVER */
+  .cover{ min-height:calc(100dvh - 190px); display:flex; flex-direction:column; justify-content:center; }
+  .cover .kicker{ color:var(--accent); font-size:.8rem; letter-spacing:.09em; font-weight:700; margin-bottom:14px; }
+  .cover h1{ font-size:2.2rem; line-height:1.12; margin-bottom:12px; }
+  .cover .subtitle{ color:var(--text-muted); font-size:1.02rem; line-height:1.65; margin-bottom:26px; }
+  .memory-verse{
+    border-left:3px solid var(--accent);
+    padding:4px 0 4px 18px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.14rem;
+    line-height:1.6;
+    margin-bottom:22px;
+  }
+  .memory-verse cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.85rem; color:var(--accent); margin-top:8px; font-weight:600; }
+  .readings{ font-size:.88rem; color:var(--text-muted); line-height:1.6; margin-bottom:28px; }
+  .readings b{ color:var(--text); }
+  .start-btn{
+    align-self:flex-start;
+    background:var(--accent);
+    color:#181517;
+    border:none;
+    min-height:52px;
+    padding:14px 28px;
+    border-radius:30px;
+    font-size:1rem;
+    font-weight:800;
+  }
+  .start-btn:active{ transform:scale(.98); }
+
+  /* VERSE + EGW */
+  .verse-block, .egw-block{ background:var(--bg-elevated); border-radius:14px; padding:18px 18px 16px; margin:22px 0; }
+  .verse-block{ border-left:4px solid var(--accent); }
+  .egw-block{ border-left:4px solid rgba(251,251,255,0.38); background:var(--bg-elevated-2); }
+  .block-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
+  .egw-block .block-label{ color:var(--text-muted); }
+  .verse-block blockquote, .egw-block blockquote{ margin:0; font-family:var(--serif); font-style:italic; font-size:1.06rem; line-height:1.65; }
+  .egw-block blockquote + blockquote{ margin-top:12px; }
+  .verse-block cite, .egw-block cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.84rem; color:var(--text-muted); margin-top:11px; }
+
+  ul.marks{ list-style:none; margin:18px 0; padding:0; }
+  ul.marks li{ position:relative; padding:0 0 15px 26px; font-size:1.04rem; line-height:1.65; }
+  ul.marks li::before{ content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700; }
+
+  /* QUESTIONS */
+  .question-card{ margin:28px 0 12px; background:var(--accent-dim); border:1px solid var(--accent-line); border-radius:16px; padding:18px; }
+  .question-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
+  .content-inner .question-text{ font-family:var(--serif); font-size:1.1rem; line-height:1.55; margin:0 0 15px; }
+  .answer-toggle{
+    background:transparent;
+    border:1.5px solid var(--accent);
+    color:var(--accent);
+    min-height:46px;
+    padding:10px 18px;
+    border-radius:24px;
+    font-size:.9rem;
+    font-weight:700;
+  }
+  .answer-toggle[aria-expanded="true"]{ background:var(--accent); color:#181517; }
+  .answer-toggle:active{ transform:scale(.98); }
+  .answer-panel{ display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--accent-line); }
+  .answer-panel.open{ display:block; }
+  .answer-panel .who{ font-size:.72rem; letter-spacing:.07em; font-weight:800; color:var(--text-muted); display:block; margin-bottom:8px; }
+  .content-inner .answer-panel p{ font-size:1rem; line-height:1.7; margin-bottom:.9em; }
+  .content-inner .answer-panel p:last-child{ margin-bottom:0; }
+
+  .closing-prompt{ margin-top:30px; padding:20px; border-radius:16px; background:var(--bg-elevated); text-align:center; border:1px solid var(--accent-line); }
+  .closing-prompt p{ margin-bottom:0; font-family:var(--serif); font-style:italic; font-size:1.08rem; }
+
+  /* FOOTER */
+  .app-footer{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .nav-btn{
+    flex:1 1 auto;
+    min-height:50px;
+    background:var(--bg-elevated);
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:13px 10px;
+    border-radius:14px;
+    font-size:.95rem;
+    font-weight:600;
+  }
+  .nav-btn.nav-btn--primary{ background:var(--accent); color:#181517; border-color:var(--accent); font-weight:800; }
+  .nav-btn:disabled{ opacity:.35; }
+  .nav-btn:active:not(:disabled){ transform:scale(.98); }
+  .toc-btn{
+    flex:0 0 50px; height:50px;
+    background:transparent; color:var(--text);
+    border:1px solid var(--line); border-radius:14px;
+    font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+  }
+
+  /* TOC */
+  .toc-overlay{
+    position:fixed; inset:0;
+    background:rgba(8,6,8,0.78);
+    display:none; align-items:flex-end;
+    z-index:20;
+  }
+  .toc-overlay.open{ display:flex; }
+  .toc-panel{
+    width:100%; max-height:82vh;
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    border-radius:20px 20px 0 0;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    overflow-y:auto;
+    animation:slideUp .26s ease;
+  }
+  @keyframes slideUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  .toc-head{
+    display:flex; justify-content:space-between; align-items:center;
+    max-width:var(--maxw); margin:0 auto 8px;
+    padding:6px 4px 12px;
+    font-family:var(--serif); font-size:1.12rem;
+    border-bottom:1px solid var(--line);
+  }
+  .toc-head button{ background:none; border:none; color:var(--text-muted); font-size:1.4rem; line-height:1; min-width:44px; min-height:44px; }
+  #tocList{ list-style:none; margin:0 auto; padding:0; max-width:var(--maxw); }
+  #tocList li button{
+    width:100%; text-align:left;
+    background:none; border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--text); padding:15px 4px; min-height:52px;
+    font-size:1rem; display:flex; gap:12px; align-items:baseline;
+  }
+  #tocList li button .n{ color:var(--accent); font-weight:800; font-size:.85rem; flex:0 0 auto; }
+  #tocList li button.active{ color:var(--accent); }
+
+  @media (min-width: 760px){
+    :root{ --maxw: 720px; }
+    .cover h1{ font-size:2.8rem; }
+    .lead{ font-size:1.32rem; }
+    .content-inner{ padding:46px 24px 80px; }
+    .content-inner p{ font-size:1.1rem; }
+    .page-title{ font-size:1.25rem; }
+    .app-footer{ padding-bottom:16px; }
+    .toc-overlay{ align-items:center; justify-content:center; }
+    .toc-panel{ max-width:560px; border-radius:20px; border:1px solid var(--line); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .content-inner.fade-in, .toc-panel{ animation:none; }
+    .progress-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 2</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice">≡</button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar">✕</button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite></div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 2 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        '<div class="cover">' +
+          '<span class="kicker">4TO TRIMESTRE 2026 · LECCIÓN 2</span>' +
+          '<h1>El llamado de un profeta</h1>' +
+          '<p class="subtitle">Cómo Dios llama, prepara y envía a personas imperfectas —de Abraham a Elena G. de White— para hablar en favor de un mundo caído, y qué significa que hoy nos haga la misma pregunta a nosotros.</p>' +
+          '<div class="memory-verse">«Después oí la voz del Señor, que decía: ¿A quién enviaré, y quién irá por nosotros? Entonces respondí yo: Heme aquí, envíame a mí.»<cite>Isaías 6:8 — Texto para memorizar</cite></div>' +
+          '<p class="readings"><b>Lee para el estudio de esta semana:</b> Génesis 15:6; Gálatas 3:6-9; 1 Reyes 18:19-39; Isaías 53; Daniel 2:46-48; Marcos 1:2-5; Mateo 11:1-6.</p>' +
+          '<button class="start-btn" id="startBtn">Comenzar la clase →</button>' +
+        '</div>'
+    },
+
+    /* 1 ---------------- QUÉ ES UN PROFETA */
+    {
+      tag: "Punto de partida",
+      title: "¿Qué es un profeta y por qué nos incumbe?",
+      html:
+        '<p class="lead">Un profeta no es, ante todo, alguien que adivina el futuro. Es alguien a quien Dios le confía un mensaje para un momento concreto.</p>' +
+        '<p>En la Biblia, el profeta es un vocero. Habla en nombre de Dios porque Dios decidió no actuar a oscuras con su pueblo.</p>' +
+        v('AMÓS 3:7', '«Porque no hará nada Jehová el Señor, sin que revele su secreto a sus siervos los profetas.»') +
+        '<p>A veces el profeta anuncia lo que vendrá, pero esa es solo una parte de su tarea. Los profetas fueron enviados sobre todo para <strong>restaurar la fidelidad del pueblo</strong>, para advertir contra la apostasía, contra la opresión de los pobres y contra la violación del pacto. Y, por encima de todo, para <strong>señalar al Mesías</strong> que traería la salvación.</p>' +
+        '<p>Casi nunca fue una tarea cómoda. Muchos profetas fueron ignorados, ridiculizados, golpeados, encarcelados o perseguidos como animales salvajes. Varios fueron asesinados. Con frecuencia, quienes más necesitaban el mensaje fueron quienes menos quisieron oírlo.</p>' +
+        '<p>Hoy ocurre algo parecido. En una generación saturada de violencia, codicia, inmoralidad y ruido informativo, la voz profética se rechaza o, más a menudo, simplemente se ignora. Esta clase nos pide dos cosas: aprender a escuchar esa voz y aceptar que nosotros también fuimos llamados a ser mensajeros de esperanza.</p>' +
+        '<p class="muted">Hoy recorreremos seis llamados: Abraham, Elías, Isaías, Daniel, Juan el Bautista y Elena G. de White. No para admirarlos de lejos, sino para descubrir un patrón: cómo llama Dios, a quién llama y para qué.</p>' +
+        q('Si la tarea principal del profeta no es predecir sino restaurar la fidelidad del pueblo, ¿por qué crees que tantas veces preferimos mensajeros que nos digan lo que queremos oír?',
+          '<p>Porque un mensaje que restaura casi siempre empieza confrontando. Pablo anticipó que llegaría el tiempo en que la gente, teniendo «comezón de oír», se rodearía de maestros a la medida de sus deseos (2 Tim. 4:3-4). El rey Acab lo dijo sin rodeos sobre el profeta Micaías: «nunca me profetiza cosa buena, sino solamente mal» (1 Rey. 22:8).</p><p>Lo que Acab sentía como ataque era, en realidad, el amor de Dios intentando rescatarlo. Ayuda a la clase a examinarse con honestidad: ¿qué voces busco cuando quiero tomar una decisión? ¿Alguna vez me alejé de un consejo bíblico simplemente porque me incomodaba?</p>')
+    },
+
+    /* 2 ---------------- ABRAHAM */
+    {
+      tag: "El pacto",
+      title: "Abraham: un llamado que empieza con una promesa",
+      html:
+        '<p class="lead">Dios no buscó a Abram porque fuera extraordinario. Lo llamó para convertirlo en un ejemplo de lo que la gracia puede hacer con una persona común.</p>' +
+        '<p>Abram vivía en un mundo marcado por la idolatría; la propia familia de su padre servía a otros dioses (Jos. 24:2). Allí, la iniciativa fue de Dios, no de Abram. Y el llamado venía con una doble dimensión: ser bendecido y ser <strong>bendición para otros</strong>.</p>' +
+        v('GÉNESIS 12:1-3', '«Pero Jehová había dicho a Abram: Vete de tu tierra y de tu parentela, y de la casa de tu padre, a la tierra que te mostraré. Y haré de ti una nación grande, y te bendeciré, y engrandeceré tu nombre, y serás bendición… y serán benditas en ti todas las familias de la tierra.»') +
+        '<p>Hebreos 11:8 resume la respuesta de Abram con una frase que conviene leer despacio: obedeció «sin saber a dónde iba». No recibió un mapa; recibió una promesa y una voz.</p>' +
+        '<p>Pero lo más profundo ocurre en Génesis 15:6. Después de que Dios le mostró cómo se lograría la salvación, la Escritura dice que Abram creyó y que eso le fue «contado por justicia». La justicia no se ganó: se <strong>acreditó</strong>. Pablo lo entendió así cuando escribió que Dios dio «de antemano la buena nueva a Abraham» (Gál. 3:8).</p>' +
+        v('GÁLATAS 3:6-9', '«Así Abraham creyó a Dios, y le fue contado por justicia. Sabed, por tanto, que los que son de fe, estos son hijos de Abraham… De modo que los de la fe son bendecidos con el creyente Abraham.»') +
+        e(['Este mismo pacto le fue renovado a Abraham en la promesa: “En tu simiente serán benditas todas las gentes de la tierra”. Esta promesa dirigía los pensamientos hacia Cristo. Así la entendió Abraham, y confió en Cristo para obtener el perdón de sus pecados. Fue esta fe la que se le contó como justicia.'], 'La fe por la cual vivo, 12 de marzo, p. 79') +
+        '<p>Abraham tampoco fue perfecto: mintió sobre Sara en Egipto (Gén. 12:10-20) y tomó un atajo con Agar (Gén. 16). Sin embargo, Dios lo llamó «amigo» (Isa. 41:8). Y en el monte Moriah, cuando se le pidió ofrecer a Isaac, Abraham obedeció y declaró que Dios mismo proveería el cordero (Gén. 22:8). Aquella escena fue un anticipo de la cruz, y Jesús dijo que Abraham «se gozó de que había de ver mi día» (Juan 8:56).</p>' +
+        q('Lee Génesis 15:6; Gálatas 3:6-9 y Hebreos 11:8. ¿Qué aspectos de la vida y el carácter de Abraham lo hicieron apto para el servicio de Dios a pesar de sus imperfecciones?',
+          '<p>No fue su historial, sino su <strong>confianza</strong>: creyó, salió sin saber a dónde iba, y su fe se expresó en obediencia (Gén. 22; Sant. 2:21-23). Dios usó a un hombre que falló, pero que volvía a confiar.</p><p>Conviene subrayar el orden: primero la fe que recibe la promesa, luego la obediencia que la acompaña. La obediencia de Abraham fue fruto de su fe, no el precio de su aceptación. Esto da esperanza a quienes sienten que sus fracasos los descalifican para servir.</p>') +
+        q('Las Escrituras dicen que Abram «creyó al Señor, y eso se le contó por justicia». ¿Cómo ves la promesa del evangelio revelada en este texto, y qué esperanza puedes obtener de ella para ti mismo?',
+          '<p>Aquí aparece el evangelio completo en miniatura: una justicia que no produce el ser humano sino que Dios le atribuye cuando confía. Abraham vivió siglos antes de la cruz, pero su fe miraba hacia Cristo.</p><p>Para nosotros significa que nuestra posición delante de Dios no depende de lo bien que nos fue esta semana, sino de en quién estamos confiando. Invita a la clase a pensar en algo concreto: ¿en qué momentos intento «ganarme» lo que Dios ya ofrece como regalo?</p>')
+    },
+
+    /* 3 ---------------- ELÍAS CARMELO */
+    {
+      tag: "El mensaje",
+      title: "Elías en el Carmelo: la hora de decidir",
+      html:
+        '<p class="lead">Elías no apareció ante el pueblo para ofrecer una charla religiosa más. Apareció para forzar una pregunta que Israel evitaba: ¿a quién pertenece realmente tu corazón?</p>' +
+        '<p>Israel no había dejado oficialmente a Jehová; simplemente lo había <strong>mezclado</strong> con Baal. Esa era la apostasía: no un rechazo abierto, sino una lealtad dividida. Por eso Elías lanzó la pregunta sin adornos.</p>' +
+        v('1 REYES 18:21', '«Y acercándose Elías a todo el pueblo, dijo: ¿Hasta cuándo claudicaréis vosotros entre dos pensamientos? Si Jehová es Dios, seguidle; y si Baal, id en pos de él. Y el pueblo no respondió palabra.»') +
+        '<p>La imagen hebrea es la de alguien que cojea entre dos apoyos. Y el silencio del pueblo dice mucho: nadie quiere decidir cuando la indecisión parece cómoda.</p>' +
+        '<p>Observa cómo Elías conduce la prueba. Deja que los profetas de Baal escojan primero, les da ventaja, y se burla de su frenesí al mediodía. Pero cuando llega su turno, hace algo sorprendente: antes de pedir fuego, <strong>repara el altar de Jehová que estaba arruinado</strong> (v. 30) con doce piedras, una por cada tribu. Elías no inventa una religión nueva; restaura lo que Dios ya había dado y el pueblo había abandonado.</p>' +
+        '<p>Su oración, además, es breve y serena. No hay manipulación ni espectáculo, sino una petición clara: que el pueblo sepa que Jehová es Dios y que él mismo «vuelve a ti el corazón de ellos» (v. 37). El fuego no era el objetivo; <strong>el corazón</strong> lo era.</p>' +
+        v('1 REYES 18:36-39', '«…Jehová Dios de Abraham, de Isaac y de Israel, sea hoy manifiesto que tú eres Dios en Israel, y que yo soy tu siervo… Respóndeme, Jehová, respóndeme, para que conozca este pueblo que tú, oh Jehová, eres el Dios, y que tú vuelves a ti el corazón de ellos. Entonces cayó fuego de Jehová… Viéndolo todo el pueblo, se postraron y dijeron: ¡Jehová es el Dios, Jehová es el Dios!»') +
+        '<p>Y un detalle que humaniza todo: Santiago recuerda que Elías era «hombre sujeto a pasiones semejantes a las nuestras» (Sant. 5:17). Pocos versículos después del Carmelo, el mismo hombre huye aterrado de Jezabel (1 Rey. 19:1-4). Dios no abandonó a su profeta: lo alimentó, lo dejó descansar y le habló en voz baja.</p>' +
+        q('Lee 1 Reyes 18:19-39. Elías repara el altar de Jehová antes de pedir fuego. ¿Qué nos enseña ese gesto acerca de cómo opera el don profético?',
+          '<p>Que el don profético no crea una religión nueva ni compite con la Palabra: <strong>restaura lo que Dios ya había dicho</strong> y el pueblo había descuidado. El profeta reconstruye el altar, no se coloca en él.</p><p>También enseña que el objetivo es el honor de Dios y la conversión del corazón, no la fama del mensajero. Elías ora para que el pueblo conozca a Jehová, no para ser reconocido como profeta. Cualquier mensajero genuino hoy, y cualquier maestro, debería mostrar esa misma dirección: señalar hacia Dios y hacia su Palabra.</p>') +
+        q('«¿Hasta cuándo claudicaréis entre dos pensamientos?» ¿Dónde vemos hoy esa lealtad dividida, y cómo podemos reconocerla en nuestra propia vida?',
+          '<p>La lealtad dividida rara vez se anuncia como rebeldía. Suele verse como <strong>religión de domingo y valores de lunes</strong>: confesamos a Cristo, pero tomamos nuestras decisiones de dinero, tiempo, relaciones y entretenimiento con criterios del mundo.</p><p>Una prueba práctica: ¿qué decisión importante tomé este mes sin preguntarme qué diría Dios al respecto? Conviene evitar que la clase señale solo defectos ajenos; el texto apunta al pueblo de Dios, no a «los de afuera».</p>')
+    },
+
+    /* 4 ---------------- ESPÍRITU DE ELÍAS Y HOGAR */
+    {
+      tag: "Avivamiento",
+      title: "El espíritu de Elías y el hogar",
+      html:
+        '<p class="lead">Malaquías no termina el Antiguo Testamento con una amenaza, sino con una promesa de reconciliación que empieza en la mesa de la cocina.</p>' +
+        v('MALAQUÍAS 4:5-6', '«He aquí, yo os envío el profeta Elías, antes que venga el día de Jehová, grande y terrible. Él hará volver el corazón de los padres hacia los hijos, y el corazón de los hijos hacia los padres, no sea que yo venga y hiera la tierra con maldición.»') +
+        '<p>Para los adventistas, este mensaje no quedó atrás: justo antes de la segunda venida de Cristo, Dios encarga a su iglesia proclamar de nuevo el espíritu del mensaje de Elías, un llamado a abandonar los ídolos y prepararse para el gran día del Señor.</p>' +
+        '<p>Y observa dónde sitúa Malaquías la señal del avivamiento: <strong>en el hogar</strong>. La familia es la piedra angular de la iglesia. Un avivamiento que no cambia cómo hablamos, escuchamos y perdonamos en casa todavía no ha llegado al corazón.</p>' +
+        e(['La mayor y más urgente de todas nuestras necesidades es la de un reavivamiento de la verdadera piedad en nuestro medio. Procurarlo debiera ser nuestra primera obra. Debe haber esfuerzos fervientes para obtener las bendiciones del Señor, no porque Dios no esté dispuesto a conferirnos sus bendiciones, sino porque no estamos preparados para recibirlas.'], 'Mensajes selectos, t. 1, p. 147') +
+        '<p>Elena de White insiste en que el primer paso es personal. En los días de Samuel, el pueblo no necesitaba más ritos, sino volver al Señor de todo corazón:</p>' +
+        e(['El arrepentimiento es el primer paso que debe dar todo aquel que quiera volver a Dios. Nadie puede hacer esta obra por otro. Individualmente debemos humillar nuestras almas ante Dios, y apartar nuestros ídolos.'], 'Recibiréis poder, 9 de septiembre, p. 263') +
+        '<p>Los ídolos de Baal eran prosperidad, placer y poder. Los nuestros suelen ser más educados, pero igual de exigentes.</p>' +
+        q('¿Qué tipo de ídolos, si los hay, existen en nuestros hogares, corazones e iglesias?',
+          '<p>Un ídolo es cualquier cosa que ocupa el lugar de Dios como fuente de seguridad, identidad o sentido. En los <strong>corazones</strong>: el dinero, el éxito, la aprobación ajena, el propio yo. En los <strong>hogares</strong>: las pantallas que ocupan los espacios donde antes se conversaba, el trabajo que consume a la familia, los hijos convertidos en proyecto de orgullo. En las <strong>iglesias</strong>: la tradición sin Cristo, el prestigio, el desempeño, la apariencia de ortodoxia sin amor.</p><p>Dos preguntas útiles para detectar un ídolo: ¿qué temo perder más que perder a Dios? ¿A qué le dedico mi mejor tiempo, mi dinero y mi atención? Anima a la clase a responder en voz alta solo si se sienten cómodos; basta con que lo piensen.</p>') +
+        q('Lee Malaquías 4:5-6. ¿Cómo debería influir el mensaje de Elías en los hogares de quienes siguen a Dios? Menciona acciones concretas.',
+          '<p>El texto habla de <strong>reconciliación bidireccional</strong>: padres hacia hijos e hijos hacia padres. En la práctica: pedir perdón en casa cuando hemos fallado, escuchar antes de corregir, tener un tiempo regular de adoración familiar aunque sea breve, y apagar las pantallas durante las comidas.</p><p>Un recordatorio para quienes no tienen hijos o no viven con familia: el principio incluye a la familia de la iglesia, a los vecinos y a los compañeros. El mensaje de Elías no es nostalgia por un hogar perfecto; es disposición a empezar la reconciliación donde estemos.</p>')
+    },
+
+    /* 5 ---------------- ISAÍAS LLAMADO */
+    {
+      tag: "El llamado",
+      title: "Isaías: antes de ser enviado, ser limpiado",
+      html:
+        '<p class="lead">Isaías recibió su llamado en el peor momento posible: «el año que murió el rey Uzías» (Isa. 6:1). El país perdía a su líder y se acercaban las fuerzas asirias.</p>' +
+        '<p>En medio de esa crisis, Isaías no recibió un plan político. Recibió una <strong>visión de Dios</strong>: el Señor sentado en un trono alto y sublime, serafines cubriendo su rostro y el templo lleno de gloria. Y la primera reacción del profeta no fue entusiasmo, sino un quiebre.</p>' +
+        v('ISAÍAS 6:5-8', '«Dije: ¡Ay de mí! que soy muerto; porque siendo hombre inmundo de labios, y habitando en medio de pueblo que tiene labios inmundos, han visto mis ojos al Rey, Jehová de los ejércitos. Y voló hacia mí uno de los serafines, teniendo en su mano un carbón encendido, tomado del altar con unas tenazas; y tocando con él sobre mi boca, dijo: He aquí que esto tocó tus labios, y es quitada tu culpa, y limpio tu pecado. Después oí la voz del Señor, que decía: ¿A quién enviaré, y quién irá por nosotros? Entonces respondí yo: Heme aquí, envíame a mí.»') +
+        '<p>Fíjate en el orden: <strong>visión, confesión, perdón, envío.</strong> Y hay una ironía profunda. Isaías había pronunciado seis «ayes» contra los pecados del pueblo (Isa. 5:8-22). Ahora, ante la santidad de Dios, el único «ay» que sale de su boca es contra sí mismo.</p>' +
+        e(['Isaías había denunciado el pecado de otros; pero ahora se veía a sí mismo expuesto a la misma condenación que había denunciado en ellos. Se había sentido satisfecho con una fría y hueca ceremonia en su culto a Dios. No se había dado cuenta de esto hasta que tuvo la visión del Señor.'], 'La fe por la cual vivo, 3 de julio, p. 192') +
+        e(['…Pero se le acercó un serafín con el fin de hacerle idóneo para su gran misión… El profeta había sido fortalecido para la obra que tenía delante de sí.'], 'Conflicto y valor, 14 de agosto, p. 232') +
+        '<p>Nota otro detalle: Dios formuló una pregunta abierta, no una orden. Y Isaías respondió «envíame» sin conocer todavía el mensaje, que resultaría duro y poco exitoso (Isa. 6:9-13). Su disponibilidad no dependía del resultado.</p>' +
+        q('¿Por qué la conciencia de nuestra indignidad es el punto de partida, y no un obstáculo, para ser usados por Dios?',
+          '<p>Porque Dios no necesita personas seguras de sí mismas, sino personas <strong>dependientes de su gracia</strong>. Mientras Isaías se sentía satisfecho con su religión, no estaba listo. Cuando vio a Dios, se vio a sí mismo con claridad, y entonces el perdón lo capacitó para servir.</p><p>Hay dos extremos que conviene evitar: la autosuficiencia, que cree no necesitar el carbón del altar, y la parálisis, que se queda en el «ay de mí» sin recibir el perdón que Dios ofrece. El texto no termina en la culpa, termina en el «envíame». Pablo vivió el mismo proceso cuando se llamó «el primero» de los pecadores (1 Tim. 1:15).</p>') +
+        q('Isaías dijo «envíame» antes de conocer lo difícil que sería su misión. ¿Qué implica estar disponible para Dios antes de saber el costo?',
+          '<p>Implica confiar en el <strong>carácter de quien llama</strong> más que en la comodidad de lo que se pide. Isaías había visto la santidad y había sido perdonado; esa experiencia le bastó para decir sí sin letra pequeña.</p><p>Lleva la pregunta a lo concreto: muchos decimos «sí» a Dios en abstracto, pero lo condicionamos cuando el llamado toca el tiempo, la carrera, el qué dirán o el dinero. Invita a la clase a pensar en un «sí» que han postergado.</p>')
+    },
+
+    /* 6 ---------------- ISAÍAS 53 */
+    {
+      tag: "Cristo en la profecía",
+      title: "Isaías 53: el profeta que vio la cruz",
+      html:
+        '<p class="lead">Siete siglos antes del Calvario, un profeta describió la cruz con una nitidez que todavía sorprende.</p>' +
+        '<p>Isaías 53 no habla de un héroe militar ni de un rey triunfante, sino de un siervo despreciado que carga con algo que no le correspondía. Y lo hace de forma explícita: <strong>en lugar de otros</strong>.</p>' +
+        v('ISAÍAS 53:5-6', '«Mas él herido fue por nuestras rebeliones, molido por nuestros pecados; el castigo de nuestra paz fue sobre él, y por su llaga fuimos nosotros curados. Todos nosotros nos descarriamos como ovejas, cada cual se apartó por su camino; mas Jehová cargó en él el pecado de todos nosotros.»') +
+        '<p>El versículo 6 hace dos declaraciones paralelas: <strong>todos</strong> nos descarriamos y <strong>todos</strong> nuestros pecados fueron cargados en él. La universalidad del pecado encuentra su respuesta en la universalidad de la cruz.</p>' +
+        '<p>El Nuevo Testamento reconoce este capítulo como cumplido en Jesús. Felipe lo usó para explicar el evangelio al etíope, empezando por este mismo pasaje (Hech. 8:32-35). Pedro lo cita al hablar de quien «llevó él mismo nuestros pecados en su cuerpo sobre el madero» (1 Ped. 2:24). Y Jesús mismo aplicó a su misión la frase «fue contado con los inicuos» (Luc. 22:37).</p>' +
+        '<p>Aquí aparece el valor de la profecía cumplida. Jesús lo explicó así a sus discípulos: «Os lo he dicho antes que suceda, para que cuando suceda, creáis» (Juan 14:29). La profecía no está para alimentar la curiosidad sobre el futuro, sino para <strong>fortalecer la confianza</strong>.</p>' +
+        '<p>Isaías, sin embargo, no tuvo una vida fácil. Su gente consideraba absurdas sus advertencias, como muchos hoy ante las consecuencias del pecado. Pero el profeta que anunció la cruz es el mismo que ofreció, una y otra vez, un camino de regreso.</p>' +
+        q('Lee de nuevo Isaías 53 y anota todo lo que Jesús hace por nosotros según esos versículos. ¿Qué gran esperanza significa para ti lo que el profeta reveló sobre la muerte de Cristo?',
+          '<p>Una lista posible: llevó nuestras enfermedades y dolores; fue herido por nuestras rebeliones y molido por nuestros pecados; sobre él cayó el castigo de nuestra paz; por su llaga somos curados; Jehová cargó en él nuestro pecado; no abrió su boca; derramó su vida hasta la muerte; justificará a muchos; llevará sus iniquidades; y <strong>intercedió por los transgresores</strong>.</p><p>La esperanza central es la <strong>sustitución</strong>: lo que nos correspondía recayó sobre él. Y el último verbo no es de dolor sino de intercesión: aun después de la cruz, su obra continúa a favor nuestro (Heb. 7:25).</p>')
+    },
+
+    /* 7 ---------------- DANIEL */
+    {
+      tag: "Fidelidad",
+      title: "Daniel: un testimonio vivo entre paganos",
+      html:
+        '<p class="lead">Nadie convenció a los reyes de Babilonia con un argumento. Los convenció una vida que no se doblaba.</p>' +
+        '<p>Daniel 1 muestra cómo empieza todo: «Daniel propuso en su corazón no contaminarse» (Dan. 1:8). Una decisión sobre comida y bebida, aparentemente pequeña, que formó el carácter que años después se mantendría firme ante un decreto de muerte (Dan. 6:10). Jesús lo diría así: el que es fiel en lo poco, también lo es en lo mucho (Luc. 16:10).</p>' +
+        '<p>Mira lo que dijeron cuatro gobernantes paganos al observar a Daniel y a su Dios:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Nabucodonosor:</strong> «Ciertamente el Dios vuestro es Dios de dioses, y Señor de los reyes» (Dan. 2:47).</li>' +
+          '<li><strong>Nabucodonosor, de nuevo:</strong> «mora en ti el espíritu de los dioses santos» (Dan. 4:18).</li>' +
+          '<li><strong>Belsasar:</strong> «en ti se halló luz, entendimiento y mayor sabiduría» (Dan. 5:14).</li>' +
+          '<li><strong>Darío:</strong> «él es el Dios viviente y permanece por todos los siglos… Él salva y libra» (Dan. 6:26-27).</li>' +
+        '</ul>' +
+        '<p>Ninguno de ellos escuchó un sermón de Daniel contra Babilonia. Vieron su integridad, su sabiduría y el poder de Dios obrando a través de él.</p>' +
+        e(['Fue firme donde muchos habrían cedido; fue verdadero donde ellos habrían sido falsos; fuerte donde ellos habrían sido débiles. Daniel fue un alto cedro del Líbano… Ojalá que la fe, la integridad, y la devoción del profeta Daniel pudieran vivir en los corazones del pueblo de Dios de hoy.'], 'Nuestra elevada vocación, 31 de agosto, p. 251') +
+        '<p>Daniel también fue profeta en el sentido más amplio. En Daniel 2, interpretó un sueño que describía la sucesión de imperios: Babilonia, Medo-Persia, Grecia y Roma. Y el sueño añade un detalle sobre lo que vendría después de Roma: unos pies de hierro y barro, que se mezclarían «pero no se unirán el uno con el otro, así como el hierro no se mezcla con el barro» (Dan. 2:43). Más de veinte siglos de historia europea muestran que nadie, ni por conquista ni por matrimonios entre casas reales, logró reunificar ese territorio de forma permanente. El sueño termina con una piedra que destruye la estatua y un reino que «permanecerá para siempre» (Dan. 2:44).</p>' +
+        q('Todos los reinos de Daniel 2 surgieron y cayeron tal como se predijo. ¿Qué nos dice eso sobre la confianza que merece esa misma profecía cuando se refiere a la llegada del reino eterno de Dios?',
+          '<p>Si el tramo de la profecía que ya podemos comprobar históricamente se cumplió con precisión, es razonable confiar en el tramo que aún no se ha cumplido. La profecía cumplida es una <strong>garantía acumulada</strong>: el Dios que acertó con los imperios no fallará con su reino.</p><p>Matiza algo importante para la clase: esta confianza no es mera curiosidad histórica. Daniel 2:44 promete que el reino de Dios no será sustituido por otro. Eso da estabilidad a quienes viven en tiempos de incertidumbre política y económica.</p>') +
+        q('Los gobernantes paganos no fueron convencidos por argumentos, sino por la vida de Daniel. ¿Qué rasgos de tu vida son hoy tu testimonio silencioso en el trabajo, el estudio o las redes sociales?',
+          '<p>Pregunta incómoda por diseño. Ayuda a la clase a distinguir entre lo que <strong>decimos</strong> creer y lo que <strong>mostramos</strong>: puntualidad, honestidad con el dinero y con los plazos, cómo tratamos a quienes no pueden devolvernos el favor, cómo reaccionamos cuando nos perjudican y qué publicamos cuando creemos que nadie nos evalúa.</p><p>Como Daniel, no se trata de perfección sino de coherencia sostenida. Jesús lo expresó con otra imagen: que vean nuestras buenas obras y glorifiquen al Padre (Mat. 5:16). Invita a elegir <em>una</em> decisión pequeña de esta semana, como la de Daniel 1.</p>')
+    },
+
+    /* 8 ---------------- JUAN EL BAUTISTA */
+    {
+      tag: "Preparación",
+      title: "Juan el Bautista: preparar el camino y sostenerse en la duda",
+      html:
+        '<p class="lead">Juan fue el profeta cuya misión era hacerse innecesario: señalar a otro y desaparecer.</p>' +
+        v('MARCOS 1:2-5', '«Como está escrito en Isaías el profeta: He aquí yo envío mi mensajero delante de tu faz, el cual preparará tu camino delante de ti. Voz del que clama en el desierto: Preparad el camino del Señor; enderezad sus sendas. Bautizaba Juan en el desierto, y predicaba el bautismo de arrepentimiento para perdón de pecados. Y salían a él toda la provincia de Judea, y todos los de Jerusalén; y eran bautizados por él en el río Jordán, confesando sus pecados.»') +
+        '<p>Su mensaje era directo: arrepentimiento y confesión, para que el pueblo estuviera listo para recibir al Mesías. Y su actitud ante Cristo quedó resumida en una frase: «Es necesario que él crezca, pero que yo mengüe» (Juan 3:30).</p>' +
+        e(['Que la humanidad retroceda para que todos puedan contemplar a Aquel en quien se cifran sus esperanzas de vida eterna… Que toda voz proclame con Juan: “He aquí el Cordero de Dios, que quita el pecado del mundo”.'], 'Exaltad a Jesús, 5 de agosto, p. 225') +
+        '<p>Pero la historia de Juan tiene un giro difícil. Encarcelado por Herodes, el profeta que había visto el cielo abierto sobre el Jordán empezó a dudar.</p>' +
+        v('MATEO 11:2-6', '«Y al oír Juan, en la cárcel, los hechos de Cristo, le envió dos de sus discípulos, para preguntarle: ¿Eres tú aquel que había de venir, o esperaremos a otro? Respondiendo Jesús, les dijo: Id, y haced saber a Juan las cosas que oís y veis. Los ciegos ven, los cojos andan, los leprosos son limpiados, los sordos oyen, los muertos son resucitados, y a los pobres es anunciado el evangelio; y bienaventurado el que no halle tropiezo en mí.»') +
+        '<p>Observa tres cosas. Primero, Juan llevó su duda <strong>a Jesús</strong>, no lejos de él. Segundo, Jesús no lo reprendió: respondió con evidencia, y la evidencia eran las mismas obras que Isaías había anunciado (Isa. 35:5-6; 61:1). Tercero, apenas se fueron los mensajeros, Jesús elogió públicamente a Juan (Mat. 11:11).</p>' +
+        '<p>Satanás había fracasado en hacer pecar a Jesús, y cambió de táctica: atacó a quien lo había preparado, usando la prisión y la incertidumbre. Pero Juan, aun sin entender por qué Jesús no lo liberaba, se mantuvo fiel hasta el final.</p>' +
+        q('¿Alguna vez te has sentido desconcertado, como Juan en la cárcel, a causa de una situación terrible que estabas atravesando? ¿Cómo mantuviste tu fe y tu confianza en Dios?',
+          '<p>Es una pregunta personal; invita a compartir sin presionar. Si la clase se queda en silencio, el maestro puede abrir con un ejemplo breve propio.</p><p>Resalta lo que muestra el texto: <strong>la duda llevada a Jesús no es incredulidad</strong>. Juan hizo lo correcto con su pregunta: la envió a la fuente. Jesús respondió con hechos, no con reproche. Dios nos permite preguntar «¿por qué?», aunque no siempre responda de inmediato, y nos recuerda lo que ya ha hecho. La bienaventuranza final, «el que no halle tropiezo en mí», es una invitación a confiar en el carácter de Cristo cuando las circunstancias no encajan.</p>') +
+        q('«Es necesario que él crezca, pero que yo mengüe.» ¿Qué significa eso en términos prácticos para quien enseña, predica o comparte contenido cristiano hoy?',
+          '<p>Significa ser un <strong>poste indicador</strong> y no el destino. Concretamente: preguntarse si lo que enseño lleva a la gente a Cristo o a mí; no buscar reconocimiento por lo que Dios hace; celebrar cuando otros crecen espiritualmente, aunque dejen de necesitarme; y aceptar roles poco visibles.</p><p>En la era de las redes, la tentación de construir una plataforma propia es real. Una prueba sencilla: si nadie supiera que fui yo quien lo dijo o lo hizo, ¿igual lo haría?</p>')
+    },
+
+    /* 9 ---------------- ELENA HARMON */
+    {
+      tag: "El don profético hoy",
+      title: "Elena Harmon: una voz en medio de la decepción",
+      html:
+        '<p class="lead">Dios suele hablar con más claridad cuando la gente siente que todo se derrumbó.</p>' +
+        '<p>En 1844, miles de creyentes, siguiendo el estudio de Daniel 8:14, esperaban el regreso de Jesús el 22 de octubre. Guillermo Miller nunca fijó esa fecha, pero sus seguidores la señalaron. Cuando Cristo no apareció, vino lo que se llamaría el <strong>gran chasco</strong>: una de las decepciones más profundas de la historia religiosa.</p>' +
+        '<p>Ese fue el escenario en el que, en diciembre de 1844, una joven de 17 años llamada Elena Harmon recibió su primera visión. El mensaje a los creyentes decepcionados era sencillo y consolador: Dios seguía con ellos.</p>' +
+        e(['Delante de ellos iba Jesús guiándolos hacia la ciudad, y si no apartaban los ojos de él, iban seguros.'], 'Notas biográficas de Elena G. de White, p. 64') +
+        '<p>Observa lo que había en esa visión: no un reproche por haberse equivocado, sino una invitación a mantener los ojos <strong>fijos en Jesús</strong>. Dios estaba creando un nuevo movimiento a partir de la confusión.</p>' +
+        '<p>El llamado de Elena no fue fácil. Era adolescente, de salud frágil, y temía ser la mensajera de Dios. Con el tiempo, el don fue aceptado gradualmente como genuino por la comunidad. Ser profeta del Señor nunca fue prestigioso. Se parece mucho a los llamados que hemos estudiado: Jeremías dijo «soy niño» y Dios le respondió que no usara esa excusa (Jer. 1:6-7).</p>' +
+        '<p>Y esto plantea una pregunta que toda persona reflexiva debe hacerse: ¿cómo distinguimos un mensajero genuino de uno falso? La Biblia no nos deja sin criterios. Para los adventistas, el don de Elena de White se examina a la luz de esas mismas pruebas, y ella misma lo presentó como una luz menor que conduce a la luz mayor, la Biblia.</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Coherencia con la Escritura:</strong> «¡A la ley y al testimonio! Si no dijeren conforme a esto, es porque no les ha amanecido» (Isa. 8:20).</li>' +
+          '<li><strong>Frutos:</strong> «Por sus frutos los conoceréis» (Mat. 7:16).</li>' +
+          '<li><strong>Cristo como centro:</strong> el espíritu verdadero confiesa a Jesucristo venido en carne (1 Jn. 4:1-3).</li>' +
+          '<li><strong>Cumplimiento:</strong> lo que se anuncia en nombre del Señor debe cumplirse (Deut. 18:22).</li>' +
+          '<li><strong>Examen abierto:</strong> «No menospreciéis las profecías. Examinadlo todo; retened lo bueno» (1 Tes. 5:20-21).</li>' +
+        '</ul>' +
+        q('¿Por qué crees que Dios escogió a una adolescente temerosa, en medio de una gran decepción, para dar un mensaje de ánimo a su pueblo? ¿Qué nos dice eso sobre cómo trabaja Dios?',
+          '<p>Dios no espera a que la situación sea ordenada ni a que el mensajero se sienta capaz. Usa a personas jóvenes (Jeremías, Samuel, Timoteo), a quienes se sienten pequeños (Gedeón) y a quienes llegan al llamado con miedo. Y suele hablar de manera especial <strong>cuando su pueblo está más desorientado</strong>.</p><p>Aplicación: nadie debería descalificarse por edad, inseguridad o historial. Y tampoco debemos esperar que una decepción sea la última palabra: el gran chasco fue el inicio de algo, no el final.</p>') +
+        q('Si alguien te preguntara cómo distinguir una voz profética genuina de una falsa, ¿qué criterios bíblicos le darías, y cuál de ellos te parece el más difícil de aplicar con honestidad?',
+          '<p>Parte de la lista de arriba, pero deja que la clase razone cuál le cuesta más. Muchos señalan el criterio de <strong>coherencia con la Escritura</strong>, porque exige conocer bien la Biblia; otros señalan los <strong>frutos</strong>, porque requiere paciencia y tiempo.</p><p>Añade una advertencia equilibrada: el criterio de «examinarlo todo» protege contra dos errores opuestos. Uno es creer cualquier cosa por entusiasmo; el otro es descartar todo por prejuicio o miedo (1 Tes. 5:20-21). En las próximas lecciones se estudiará con más detalle este tema.</p>')
+    },
+
+    /* 10 ---------------- SÍNTESIS */
+    {
+      tag: "Síntesis",
+      title: "Lo que une a todos estos llamados",
+      html:
+        '<p class="lead">Seis personas, seis épocas, seis contextos. Y sin embargo, un patrón que se repite.</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Dios toma la iniciativa.</strong> Abraham no se postuló; Isaías vio, fue limpiado y entonces oyó la pregunta; Elena no pidió el don.</li>' +
+          '<li><strong>Llama a personas imperfectas.</strong> Abraham mintió, Elías huyó, Isaías tenía «labios inmundos», Juan dudó, Elena temía. El carácter de Dios, no el del mensajero, es lo que sostiene el mensaje.</li>' +
+          '<li><strong>El mensaje apunta a Cristo.</strong> Abraham creyó en la simiente prometida, Isaías vio la cruz, Juan señaló al Cordero, Elena fue guiada por la mirada puesta en Jesús.</li>' +
+          '<li><strong>Restaura, no inventa.</strong> Elías reparó el altar, Juan pidió arrepentimiento, Daniel vivió la ley de Dios en Babilonia.</li>' +
+          '<li><strong>Cuesta algo.</strong> Rechazo, soledad, cárcel, burla, exilio. Pero Dios acompañó a cada uno.</li>' +
+        '</ul>' +
+        '<p>Y aquí viene un punto importante: aunque el don profético se concede a algunas personas con un propósito especial, el <strong>llamado a dar testimonio</strong> es para todos los creyentes. Pedro lo expresó así: somos «pueblo adquirido por Dios, para que anunciéis las virtudes de aquel que os llamó de las tinieblas a su luz admirable» (1 Ped. 2:9). Y Apocalipsis 14:6-12 encarga a la iglesia proclamar un mensaje de arrepentimiento, fe y fidelidad a toda nación.</p>' +
+        '<p>Sin embargo, algunos profetas intentaron evitar el llamado. Moisés dijo que no era elocuente (Éxo. 4:10); Jeremías, que era muy joven; Jonás, simplemente huyó. Dios no aceptó ninguna de las excusas, pero tampoco los dejó solos: «Yo estaré contigo» (Éxo. 3:12), «no tengas temor… porque yo estoy contigo para librarte» (Jer. 1:8).</p>' +
+        q('Moisés, Jeremías y Jonás intentaron evitar el llamado. ¿Qué excusas modernas damos para no ser mensajeros de Dios, y cuál es la tuya?',
+          '<p>Algunas excusas frecuentes: «no soy suficientemente bueno», «soy demasiado joven (o demasiado mayor)», «no sé hablar», «eso es trabajo del pastor», «ahora no es el momento», «mi vida no es un buen ejemplo».</p><p>Lo notable es que Dios responde a cada excusa con la <strong>misma promesa</strong>: «yo estaré contigo». El llamado no depende de nuestra capacidad sino de su presencia. Pide a la clase que identifique su excusa en silencio y, si lo desean, la compartan. Evita convertir esto en un momento de culpa: el objetivo es reconocer el miedo para poder entregárselo a Dios.</p>') +
+        q('Si todos los profetas fueron imperfectos y muchos fueron rechazados, ¿qué error cometemos si juzgamos un mensaje por la popularidad o por la perfección del mensajero?',
+          '<p>Cometemos un doble error. Si usamos la <strong>popularidad</strong>, Elías habría perdido ante 450 profetas de Baal, y Noé habría sido un fracaso. Si usamos la <strong>perfección del mensajero</strong>, tendríamos que descartar a casi todos los profetas de la Biblia.</p><p>El criterio bíblico es el mensaje mismo: ¿concuerda con la ley y el testimonio?, ¿señala a Cristo?, ¿produce frutos de arrepentimiento y amor? Eso no significa ignorar el carácter; significa no usarlo como excusa para descartar lo que Dios dice con claridad.</p>')
+    },
+
+    /* 11 ---------------- APLICACIÓN / CIERRE */
+    {
+      tag: "Respuesta",
+      title: "«Aquí estoy, envíame a mí»",
+      html:
+        '<p class="lead">La lección no termina con lo que aprendimos de ellos, sino con lo que respondemos nosotros. Dios sigue haciendo la misma pregunta.</p>' +
+        '<p>Tres pasos concretos, tomados de los llamados que estudiamos:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Repara el altar.</strong> Como Elías, identifica algo que Dios ya dio y que has dejado caer: un hábito de oración, el tiempo en familia, la lectura de la Biblia, la reconciliación con alguien.</li>' +
+          '<li><strong>Sé fiel en lo pequeño.</strong> Como Daniel en Daniel 1, escoge una decisión pequeña esta semana que muestre quién es tu Señor.</li>' +
+          '<li><strong>Señala a Cristo.</strong> Como Juan, busca una oportunidad de decir a alguien, con palabras sencillas, lo que Jesús ha hecho por ti.</li>' +
+        '</ul>' +
+        e(['Nada se gana con la cobardía o el temor de que se sepa que somos un pueblo que guarda los mandamientos de Dios. El ocultar nuestra luz, como si nos avergonzáramos de nuestra fe, redundará solo en desastre.'], 'Conflicto y valor, 22 de julio, p. 209') +
+        e(['No es la posesión de talentos magníficos lo que nos habilita para prestar un servicio aceptable, sino el cumplimiento concienzudo de los deberes diarios, el espíritu contento, el interés sincero y sin afectación por el bienestar de los demás… Las tareas más comunes, realizadas con una fidelidad impregnada de amor, son hermosas a la vista de Dios.'], 'Conflicto y valor, 3 de agosto, p. 221') +
+        '<p>Recuerda hacia dónde apunta todo esto. Apocalipsis 12:17 describe a un pueblo final como el que guarda los mandamientos de Dios y tiene el testimonio de Jesucristo, y Apocalipsis 19:10 explica que «el testimonio de Jesús es el espíritu de la profecía». El llamado profético, en su esencia, siempre ha sido el mismo: <strong>llevar a la gente a Jesús</strong>.</p>' +
+        q('¿Cuál es el obstáculo concreto que hoy te impide decir «Aquí estoy» a Dios, y cuál sería un primer paso realista que podrías dar esta semana?',
+          '<p>Cierra con una ronda breve y sin presión. Lo importante es la <strong>concreción</strong>: no «ser más fiel», sino «esta semana voy a hacer tal cosa, con tal persona, en tal momento».</p><p>Sugiere terminar orando por cada obstáculo mencionado, aunque sea en silencio. Y recuerda a la clase que Isaías dijo «envíame» después de ser perdonado, no antes: el punto de partida sigue siendo la gracia.</p>') +
+        '<div class="closing-prompt"><p>«Después oí la voz del Señor, que decía: ¿A quién enviaré, y quién irá por nosotros? Entonces respondí yo: Heme aquí, envíame a mí.» — Isaías 6:8</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
+})();
+</script>
+</body>
+</html>
