@@ -78,7 +78,7 @@ const lecciones = [
     numero: 2,
     titulo: 'El Llamado de un Profeta',
     pasaje: 'Isaías 6:8',
-    archivo: '/lecciones/2026/T4/26_04_02_El_llamado_de_un_profeta',
+    archivo: '/lecciones/2026/T4/26_04_02 El llamado de un profeta.html',
   },
 ]
 
