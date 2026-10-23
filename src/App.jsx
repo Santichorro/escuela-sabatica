@@ -95,7 +95,7 @@ const lecciones = [
     trimestre: 4,
     numero: 4,
     titulo: 'Profetas del Nuevo Testamento',
-    pasaje: 'Jeremías 1:7-8',
+    pasaje: '1 Corintios 12:4-6',
     archivo: '/lecciones/2026/T4/26_04_04 Profetas del Nuevo Testamento.html',
   }
 ]
