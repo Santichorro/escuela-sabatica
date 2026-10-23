@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#181517">
+<title>Profetas del Nuevo Testamento — Lección 4</title>
+<style>
+  :root{
+    --bg: #181517;
+    --bg-elevated: #232023;
+    --bg-elevated-2: #1F1B1E;
+    --line: rgba(251,251,255,0.13);
+    --text: #FBFBFF;
+    --text-muted: rgba(251,251,255,0.70);
+    --accent: #FF331F;
+    --accent-dim: rgba(255,51,31,0.13);
+    --accent-line: rgba(255,51,31,0.45);
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --maxw: 640px;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  h1,h2,h3{ font-family:var(--serif); font-weight:700; margin:0 0 .6em; }
+  p{ margin:0 0 1.15em; }
+  ::selection{ background:var(--accent); color:var(--bg); }
+  button{ font-family:var(--sans); cursor:pointer; }
+  button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .app{ height:100vh; height:100dvh; display:flex; flex-direction:column; }
+
+  /* HEADER */
+  .app-header{
+    flex:0 0 auto;
+    padding:calc(12px + env(safe-area-inset-top)) 18px 12px;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    z-index:5;
+  }
+  .header-row{
+    max-width:var(--maxw);
+    margin:0 auto;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .eyebrow{
+    display:block;
+    font-size:.72rem;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:3px;
+  }
+  .page-title{ font-size:1.1rem; line-height:1.25; margin:0; }
+  .page-counter{
+    flex:0 0 auto;
+    font-size:.8rem;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .progress-track{
+    max-width:var(--maxw);
+    margin:10px auto 0;
+    height:4px;
+    background:rgba(251,251,255,0.1);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:4px;
+    transition:width .35s ease;
+  }
+
+  /* CONTENT */
+  .content-scroll{ flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+  .content-inner{ max-width:var(--maxw); margin:0 auto; padding:26px 22px 64px; }
+  .content-inner.fade-in{ animation:fadeIn .3s ease; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+
+  .lead{ font-family:var(--serif); font-size:1.22rem; line-height:1.6; }
+  .content-inner p{ font-size:1.06rem; line-height:1.8; }
+  .content-inner p.muted{ color:var(--text-muted); }
+  .content-inner h2.section-h{ font-size:1.25rem; color:var(--accent); margin:1.6em 0 .5em; }
+  .content-inner strong{ color:var(--text); }
+  .rule{ border:0; border-top:1px solid var(--line); margin:26px 0; }
+
+  /* COVER */
+  .cover{ min-height:calc(100dvh - 190px); display:flex; flex-direction:column; justify-content:center; }
+  .cover .kicker{ color:var(--accent); font-size:.8rem; letter-spacing:.09em; font-weight:700; margin-bottom:14px; }
+  .cover h1{ font-size:2.2rem; line-height:1.12; margin-bottom:12px; }
+  .cover .subtitle{ color:var(--text-muted); font-size:1.02rem; line-height:1.65; margin-bottom:26px; }
+  .memory-verse{
+    border-left:3px solid var(--accent);
+    padding:4px 0 4px 18px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.14rem;
+    line-height:1.6;
+    margin-bottom:22px;
+  }
+  .memory-verse cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.85rem; color:var(--accent); margin-top:8px; font-weight:600; }
+  .readings{ font-size:.88rem; color:var(--text-muted); line-height:1.6; margin-bottom:28px; }
+  .readings b{ color:var(--text); }
+  .start-btn{
+    align-self:flex-start;
+    background:var(--accent);
+    color:#181517;
+    border:none;
+    min-height:52px;
+    padding:14px 28px;
+    border-radius:30px;
+    font-size:1rem;
+    font-weight:800;
+  }
+  .start-btn:active{ transform:scale(.98); }
+
+  /* VERSE + EGW */
+  .verse-block, .egw-block{ background:var(--bg-elevated); border-radius:14px; padding:18px 18px 16px; margin:22px 0; }
+  .verse-block{ border-left:4px solid var(--accent); }
+  .egw-block{ border-left:4px solid rgba(251,251,255,0.38); background:var(--bg-elevated-2); }
+  .block-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
+  .egw-block .block-label{ color:var(--text-muted); }
+  .verse-block blockquote, .egw-block blockquote{ margin:0; font-family:var(--serif); font-style:italic; font-size:1.06rem; line-height:1.65; }
+  .egw-block blockquote + blockquote{ margin-top:12px; }
+  .verse-block cite, .egw-block cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.84rem; color:var(--text-muted); margin-top:11px; }
+
+  ul.marks{ list-style:none; margin:18px 0; padding:0; }
+  ul.marks li{ position:relative; padding:0 0 15px 26px; font-size:1.04rem; line-height:1.65; }
+  ul.marks li::before{ content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700; }
+
+  /* QUESTIONS */
+  .question-card{ margin:28px 0 12px; background:var(--accent-dim); border:1px solid var(--accent-line); border-radius:16px; padding:18px; }
+  .question-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
+  .content-inner .question-text{ font-family:var(--serif); font-size:1.1rem; line-height:1.55; margin:0 0 15px; }
+  .answer-toggle{
+    background:transparent;
+    border:1.5px solid var(--accent);
+    color:var(--accent);
+    min-height:46px;
+    padding:10px 18px;
+    border-radius:24px;
+    font-size:.9rem;
+    font-weight:700;
+  }
+  .answer-toggle[aria-expanded="true"]{ background:var(--accent); color:#181517; }
+  .answer-toggle:active{ transform:scale(.98); }
+  .answer-panel{ display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--accent-line); }
+  .answer-panel.open{ display:block; }
+  .answer-panel .who{ font-size:.72rem; letter-spacing:.07em; font-weight:800; color:var(--text-muted); display:block; margin-bottom:8px; }
+  .content-inner .answer-panel p{ font-size:1rem; line-height:1.7; margin-bottom:.9em; }
+  .content-inner .answer-panel p:last-child{ margin-bottom:0; }
+
+  .closing-prompt{ margin-top:30px; padding:20px; border-radius:16px; background:var(--bg-elevated); text-align:center; border:1px solid var(--accent-line); }
+  .closing-prompt p{ margin-bottom:0; font-family:var(--serif); font-style:italic; font-size:1.08rem; }
+
+  /* FOOTER */
+  .app-footer{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .nav-btn{
+    flex:1 1 auto;
+    min-height:50px;
+    background:var(--bg-elevated);
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:13px 10px;
+    border-radius:14px;
+    font-size:.95rem;
+    font-weight:600;
+  }
+  .nav-btn.nav-btn--primary{ background:var(--accent); color:#181517; border-color:var(--accent); font-weight:800; }
+  .nav-btn:disabled{ opacity:.35; }
+  .nav-btn:active:not(:disabled){ transform:scale(.98); }
+  .toc-btn{
+    flex:0 0 50px; height:50px;
+    background:transparent; color:var(--text);
+    border:1px solid var(--line); border-radius:14px;
+    font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+  }
+
+  /* TOC */
+  .toc-overlay{
+    position:fixed; inset:0;
+    background:rgba(8,6,8,0.78);
+    display:none; align-items:flex-end;
+    z-index:20;
+  }
+  .toc-overlay.open{ display:flex; }
+  .toc-panel{
+    width:100%; max-height:82vh;
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    border-radius:20px 20px 0 0;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    overflow-y:auto;
+    animation:slideUp .26s ease;
+  }
+  @keyframes slideUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  .toc-head{
+    display:flex; justify-content:space-between; align-items:center;
+    max-width:var(--maxw); margin:0 auto 8px;
+    padding:6px 4px 12px;
+    font-family:var(--serif); font-size:1.12rem;
+    border-bottom:1px solid var(--line);
+  }
+  .toc-head button{ background:none; border:none; color:var(--text-muted); font-size:1.4rem; line-height:1; min-width:44px; min-height:44px; }
+  #tocList{ list-style:none; margin:0 auto; padding:0; max-width:var(--maxw); }
+  #tocList li button{
+    width:100%; text-align:left;
+    background:none; border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--text); padding:15px 4px; min-height:52px;
+    font-size:1rem; display:flex; gap:12px; align-items:baseline;
+  }
+  #tocList li button .n{ color:var(--accent); font-weight:800; font-size:.85rem; flex:0 0 auto; }
+  #tocList li button.active{ color:var(--accent); }
+
+  @media (min-width: 760px){
+    :root{ --maxw: 720px; }
+    .cover h1{ font-size:2.8rem; }
+    .lead{ font-size:1.32rem; }
+    .content-inner{ padding:46px 24px 80px; }
+    .content-inner p{ font-size:1.1rem; }
+    .page-title{ font-size:1.25rem; }
+    .app-footer{ padding-bottom:16px; }
+    .toc-overlay{ align-items:center; justify-content:center; }
+    .toc-panel{ max-width:560px; border-radius:20px; border:1px solid var(--line); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .content-inner.fade-in, .toc-panel{ animation:none; }
+    .progress-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 4</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice">≡</button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar">✕</button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite></div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 4 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        '<div class="cover">' +
+          '<span class="kicker">4TO TRIMESTRE 2026 · LECCIÓN 4</span>' +
+          '<h1>Profetas del Nuevo Testamento</h1>' +
+          '<p class="subtitle">Jesús, el profeta por excelencia; los apóstoles y los profetas que edificaron la iglesia; mujeres y jóvenes que sirvieron; y el peligro de los falsos profetas. Una sola fuente, un solo centro: el Espíritu Santo y Cristo.</p>' +
+          '<div class="memory-verse">«Ahora bien, hay diversos dones, pero el Espíritu es el mismo. Hay diversos ministerios, pero el Señor es el mismo; y hay diversas actividades, pero Dios, que efectúa todas las cosas en todos, es el mismo.»<cite>1 Corintios 12:4-6 — Para memorizar</cite></div>' +
+          '<p class="readings"><b>Lee para el estudio de esta semana:</b> Mateo 16:13-16; Efesios 2:20; Apocalipsis 22:6; Lucas 2:36-38; Hechos 21:9; Efesios 6:10-18.</p>' +
+          '<button class="start-btn" id="startBtn">Comenzar la clase →</button>' +
+        '</div>'
+    },
+
+    /* 1 ---------------- EL MISMO MOTOR */
+    {
+      tag: "Punto de partida",
+      title: "El mismo motor",
+      html:
+        '<p class="lead">Un padre y su hijo viajaban en automóvil. El hombre señaló otro vehículo y dijo: «¡Ese es igual al primer auto que tuve!».</p>' +
+        '<p>Al llegar a casa, el padre sacó los manuales de su primer auto y del actual, y fue comparando. Mucho había cambiado: la carrocería, las luces, las comodidades. Pero al comparar los motores, descubrió que <strong>eran idénticos</strong>. Habían cambiado muchas cosas, pero no el motor.</p>' +
+        '<p>Algo parecido ocurre con la profecía. Dios habló por medio de profetas en el Antiguo y en el Nuevo Testamento. Cambiaron los mensajeros, los idiomas, los escenarios y las formas, pero la fuente de la inspiración divina, el <strong>Espíritu Santo</strong>, permaneció invariable. Y en el centro de todos los mensajes proféticos está la misma persona.</p>' +
+        v('HEBREOS 1:1-3', '«Dios, habiendo hablado muchas veces y de muchas maneras en otro tiempo a los padres por los profetas, en estos postreros días nos ha hablado por el Hijo, a quien constituyó heredero de todo, y por quien asimismo hizo el universo; el cual, siendo el resplandor de su gloria, y la imagen misma de su sustancia, y quien sustenta todas las cosas con la palabra de su poder…»') +
+        '<p>Hoy veremos el don profético en el Nuevo Testamento: quiénes ministraban como profetas, en qué se diferenciaban de los apóstoles, qué papel tuvieron las mujeres y los jóvenes, y cómo protegernos de los falsos profetas.</p>' +
+        e(['Toda la Biblia es una revelación, pues toda revelación para los hombres viene a través de Cristo y toda se centra en él. Dios nos ha hablado por su Hijo, a quien pertenecemos por creación y por redención. Cristo vino a Juan, desterrado en la isla de Patmos, con el fin de darle la verdad para estos últimos días y mostrarle lo que debe suceder pronto. Jesucristo es el gran depositario de la revelación divina.'], 'El Cristo triunfante, 26 de diciembre, p. 369') +
+        q('Si cambian los mensajeros, las épocas y los estilos, pero el «motor» es el mismo, ¿qué consecuencias prácticas tiene eso para cómo leemos el Antiguo y el Nuevo Testamento juntos?',
+          '<p>Que no hay dos Biblias en tensión, sino <strong>una sola voz con muchos instrumentos</strong>. Lo que el Espíritu inspiró a Isaías no contradice lo que inspiró a Pablo. Cuando una lectura nos parece enfrentar ambos Testamentos, hay que sospechar de la interpretación, no de la Biblia.</p><p>Además, el mismo Espíritu que inspiró la Escritura es quien nos ayuda a entenderla (Juan 16:13; 1 Cor. 2:10-13). Por eso la oración antes de estudiar no es un adorno: es pedirle al «motor» que ponga en marcha nuestra comprensión.</p>') +
+        q('Elena de White afirma que «toda revelación para los hombres viene a través de Cristo y toda se centra en él». ¿Cómo cambia nuestra manera de estudiar la profecía si lo primero que buscamos en cada pasaje es a Cristo?',
+          '<p>Cambia el propósito del estudio: dejamos de buscar solo «datos» o fechas y empezamos a buscar a una persona. Jesús mismo dijo de las Escrituras: «ellas son las que dan testimonio de mí» (Juan 5:39), y Apocalipsis comienza con «la revelación de Jesucristo» (Apoc. 1:1).</p><p>Práctica concreta para la clase: ante cualquier profecía, preguntar «¿qué me muestra este texto sobre Jesús y qué me pide a mí?». Una profecía que nos deja más curiosos pero no más cerca de Cristo ha sido leída a medias.</p>')
+    },
+
+    /* 2 ---------------- JESÚS PROFETA */
+    {
+      tag: "El profeta prometido",
+      title: "Jesús como profeta: ¿quién dicen que soy?",
+      html:
+        '<p class="lead">Moisés anunció a un profeta que vendría, y la pregunta quedó abierta durante siglos: ¿quién sería?</p>' +
+        v('DEUTERONOMIO 18:15', '«Profeta de en medio de ti, de tus hermanos, como yo, te levantará Jehová tu Dios; a él oiréis.»') +
+        '<p>El Nuevo Testamento responde sin rodeos. Pedro, predicando en el templo, citó este texto y lo aplicó a Jesús: «Moisés dijo: El Señor vuestro Dios os levantará profeta de entre vuestros hermanos, como a mí; a él oiréis en todo lo que os hable» (Hech. 3:22; ver también Juan 6:14).</p>' +
+        '<p>Y los mismos evangelios nos muestran cómo respondía la gente de su época a la pregunta de quién era Jesús:</p>' +
+        v('MATEO 16:13-16', '«Viniendo Jesús a la región de Cesarea de Filipo, preguntó a sus discípulos, diciendo: ¿Quién dicen los hombres que es el Hijo del Hombre? Ellos dijeron: Unos, Juan el Bautista; otros, Elías; y otros, Jeremías, o alguno de los profetas. Él les dijo: Y vosotros, ¿quién decís que soy yo? Respondiendo Simón Pedro, dijo: Tú eres el Cristo, el Hijo del Dios viviente.»') +
+        '<p>Marcos (8:27-29) y Lucas (9:18-20) registran la misma escena con variaciones menores. Observa algo importante: <strong>todas las opiniones populares colocaban a Jesús dentro de la categoría de «profeta»</strong>. Era un elogio, pero se quedaba corto. Pedro dio el paso que la multitud no dio: Jesús no era uno más de la lista, era el Cristo.</p>' +
+        '<p>Jesús es aquel a quien todos los profetas del Antiguo Testamento señalaban. En el camino a Emaús, él mismo se identificó como el cumplimiento de esas profecías mesiánicas (Luc. 24:13-35). Para el Nuevo Testamento, Jesús es profeta, pero también es mucho más que un profeta: es el contenido de la profecía.</p>' +
+        q('¿Cuál fue el papel profético de Jesús y cómo se respondía esta pregunta en su época? (Mat. 16:13-16; Mar. 8:27-29; Luc. 9:18-20)',
+          '<p>Jesús ejerció el papel de profeta: habló con autoridad de parte de Dios, reveló el corazón de las personas, anunció el futuro (Mat. 24) y confrontó la hipocresía religiosa. Pero también fue el <strong>cumplimiento</strong> de lo que los profetas anunciaron.</p><p>En su época, la gente lo clasificaba entre los grandes profetas: Juan el Bautista, Elías, Jeremías. Pedro fue más lejos al reconocerlo como el Cristo. La conclusión para la clase: respetar a Jesús como maestro o profeta es un buen comienzo, pero no es suficiente para el Nuevo Testamento.</p>') +
+        q('Muchas personas hoy dicen respetar a Jesús como «un gran maestro» o «un buen hombre», pero no más. Según este pasaje, ¿qué le falta a esa respuesta y cómo podemos presentar a Jesús sin imponer ni diluir quién es?',
+          '<p>Le falta lo que Pedro confesó: que Jesús es el Cristo, el Hijo del Dios viviente. C. S. Lewis planteó un argumento conocido: quien dice lo que Jesús dijo de sí mismo no puede ser solo un buen maestro; o es lo que dice ser, o está equivocado de manera grave.</p><p>Para presentarlo sin imponer: hacer preguntas como lo hizo Jesús («¿quién decís que soy yo?»), mostrar sus palabras y obras (Juan 10:37-38), y dar testimonio personal de lo que ha hecho en nuestra vida. La pregunta de Jesús sigue siendo personal: no se responde por otros.</p>')
+    },
+
+    /* 3 ---------------- EL VERBO */
+    {
+      tag: "El profeta es el Creador",
+      title: "La Palabra que habló, murió y volverá",
+      html:
+        '<p class="lead">La descripción que Juan hace del Verbo no se ajusta a ningún ser humano, sea profeta o no.</p>' +
+        v('JUAN 1:1-5', '«En el principio era el Verbo, y el Verbo era con Dios, y el Verbo era Dios. Este era en el principio con Dios. Todas las cosas por él fueron hechas, y sin él nada de lo que ha sido hecho, fue hecho. En él estaba la vida, y la vida era la luz de los hombres. La luz en las tinieblas resplandece, y las tinieblas no prevalecieron contra ella.»') +
+        '<p>El Verbo es identificado como el <strong>Creador</strong>: «todas las cosas fueron hechas por él». Eso incluye el cosmos entero, cuya extensión observable se estima en unos 93 000 millones de años luz. Detrás de esa inmensidad, según Juan, hay una persona.</p>' +
+        '<p>Y hay una conexión que se pasa por alto: en cada «dijo Dios» de Génesis 1 escuchamos hablar a Jesús. Aquel que dijo «Haya luz» (Gén. 1:3) es también la «luz de los hombres» (Juan 1:4), quien disipaba las tinieblas de la tierra mediante el plan de salvación.</p>' +
+        '<p>Por eso la palabra profética es tan confiable. Pedro la compara con una lámpara y señala hacia dónde apunta:</p>' +
+        v('2 PEDRO 1:19', '«Tenemos también la palabra profética más segura, a la cual hacéis bien en estar atentos como a una antorcha que alumbra en lugar oscuro, hasta que el día esclarezca y el lucero de la mañana salga en vuestros corazones.»') +
+        '<p>La profecía seguirá iluminando este mundo hasta que Jesús, «la Estrella de la mañana» y fuente de esa luz, inaugure su reino eterno. Mientras tanto, él ofrece la eternidad a todos en virtud de su vida, muerte y resurrección. La única pregunta es si la aceptaremos o no.</p>' +
+        q('Reflexionemos sobre el hecho de que Jesús, el Creador (Juan 1:1-3), es también quien murió en la cruz por nuestros pecados. ¿Qué nos enseña esta asombrosa verdad acerca del amor de Dios para con nosotros?',
+          '<p>Que el amor de Dios no es una idea abstracta: el que sostiene las galaxias aceptó someterse a la muerte por criaturas que se habían rebelado contra él. Pablo lo dice así: «Dios muestra su amor para con nosotros, en que siendo aún pecadores, Cristo murió por nosotros» (Rom. 5:8). Y Colosenses 1:16-20 conecta ambas cosas: todo fue creado por él, y por medio de su sangre en la cruz todo es reconciliado.</p><p>También enseña algo sobre el valor humano: si el Creador pagó semejante precio, ninguna persona es insignificante. Pregunta útil: ¿a quién necesito ver hoy con el valor que Cristo le dio?</p>') +
+        q('Pedro dice que hacemos bien en prestar atención a la palabra profética «como a una antorcha que alumbra en lugar oscuro». ¿En qué «lugares oscuros» de nuestro mundo o de nuestra vida necesitamos hoy esa luz, y qué significa estarle «atentos» en la práctica?',
+          '<p>Lugares oscuros posibles: la incertidumbre del futuro, la violencia, la soledad, las decisiones morales difíciles, el sufrimiento sin explicación. La profecía ofrece algo que ninguna otra fuente puede dar: la certeza de que la historia no está fuera de control y que termina con el reino de Cristo.</p><p>Estar atentos implica hábitos: leer la Palabra con regularidad, compararla con lo que oímos y vivimos, y permitir que ordene nuestras prioridades. Una antorcha sirve solo si se lleva en la mano y se usa para caminar; no basta con admirarla.</p>')
+    },
+
+    /* 4 ---------------- SIMÓN Y MARÍA */
+    {
+      tag: "Jesús lee corazones",
+      title: "Simón, María y el profeta que veía más allá",
+      html:
+        '<p class="lead">En casa de Simón el fariseo, el anfitrión pensó: «Este, si fuera profeta, conocería quién y cuál es la mujer que le toca, que es pecadora» (Luc. 7:39). Tenía razón en lo que decía y estaba completamente equivocado en lo que concluía.</p>' +
+        '<p>Elena de White reconstruye lo que pasaba por la mente de Simón. Jesús lo había salvado de la lepra, pero ahora él dudaba de que el Salvador fuera profeta, porque Jesús permitió que una mujer pecadora se le acercara y no la rechazó con indignación.</p>' +
+        e(['Pero era la ignorancia de Simón respecto a Dios y a Cristo lo que lo inducía a pensar así. No comprendía que el Hijo de Dios debía actuar como Dios, con compasión, ternura y misericordia.'], 'El Deseado de todas las gentes, p. 519') +
+        '<p>La respuesta de Jesús fue una parábola de dos deudores. Y la manera de usarla recuerda una historia que ya estudiamos:</p>' +
+        e(['Como Natán con David, Cristo ocultó el objeto de su ataque bajo el velo de una parábola. Cargó a su huésped con la responsabilidad de pronunciar sentencia contra sí mismo.', 'Simón empezó ahora a verse a sí mismo desde un nuevo punto de vista. Vio cómo era considerada María por quien era más que profeta. Vio que, con penetrante ojo profético, Cristo había leído el corazón de amor y devoción de ella. Sobrecogido de vergüenza, comprendió que estaba en la presencia de uno que era superior a él.'], 'El Deseado de todas las gentes, pp. 519, 520') +
+        '<p>Aquí hay una ironía dolorosa: Simón dudaba de que Jesús fuera profeta porque no sabía quién era la mujer, y Jesús sabía quién era la mujer y también quién era Simón. El que se creía juez terminó juzgado, y la mujer a quien despreciaba terminó siendo el ejemplo.</p>' +
+        q('Simón concluyó que Jesús no era profeta porque no rechazó a una pecadora. ¿Qué ideas equivocadas sobre Dios lo llevaron a esa conclusión y cuáles de ellas siguen presentes hoy cuando juzgamos a quienes se acercan a Cristo?',
+          '<p>Simón creía que un hombre de Dios debía mantenerse lejos de los pecadores y rechazarlos. No entendía que el Dios verdadero actúa con <strong>compasión, ternura y misericordia</strong>. Hoy esa misma idea aparece cuando creemos que la iglesia es un lugar para «gente buena», cuando nos incomoda quien llega con un pasado complicado o cuando medimos la espiritualidad por la apariencia.</p><p>Pregunta para la clase: ¿cómo recibiría nuestra congregación a una persona como la mujer de este relato? ¿Qué cambiaríamos para que Jesús se sintiera en casa en nuestra iglesia?</p>') +
+        q('Jesús corrigió a Simón con una parábola, «como Natán con David». ¿Por qué puede ser más eficaz que alguien llegue a la verdad por sí mismo que recibirla como acusación directa, y cómo aplicarlo a nuestras conversaciones difíciles?',
+          '<p>Cuando alguien se juzga a sí mismo, la verdad deja de ser un ataque externo y se convierte en convicción propia. Simón pronunció la sentencia con sus propios labios («Pienso que aquel al cual perdonó más»), y entonces no pudo esquivarla.</p><p>Aplicación: hacer preguntas en lugar de acusar, contar historias, buscar el momento y el lugar adecuados (Mat. 18:15) y recordar que el objetivo es restaurar, no ganar. Una advertencia de equilibrio: el método no vuelve suave el mensaje; Jesús fue directo, pero su amor era evidente.</p>')
+    },
+
+    /* 5 ---------------- APÓSTOLES Y PROFETAS */
+    {
+      tag: "Los enviados",
+      title: "Apóstoles y profetas: mensajeros del mismo Señor",
+      html:
+        '<p class="lead">La palabra griega <em>apostolos</em> significa «mensajero» o «enviado». En los evangelios se refiere a los doce, pero el Nuevo Testamento incluye a otras personas que no formaban parte de ese grupo original.</p>' +
+        '<p>Pablo se llama a sí mismo apóstol doce veces en sus epístolas. En Romanos 1:1-2 conecta su llamado con el mensaje de los profetas del Antiguo Testamento, se identifica como apóstol de los gentiles (Rom. 11:13) y afirma que fue nombrado «por la voluntad de Dios» (1 Cor. 1:1).</p>' +
+        '<p>Este es un punto clave: a diferencia de los sacerdotes, cuya designación dependía de la pertenencia a una familia, Dios eligió a los profetas y a los apóstoles <strong>según su voluntad</strong>. Cuando se cuestionó el apostolado de Pablo, él defendió su ministerio en esos términos (1 Cor. 9:1-2).</p>' +
+        v('EFESIOS 2:20', '«Edificados sobre el fundamento de los apóstoles y profetas, siendo la principal piedra del ángulo Jesucristo mismo.»') +
+        v('EFESIOS 3:5', '«…misterio que en otras generaciones no se dio a conocer a los hijos de los hombres, como ahora es revelado a sus santos apóstoles y profetas por el Espíritu.»') +
+        '<p>Como receptores de la revelación, los apóstoles poseyeron el mismo nivel de inspiración que los profetas (Efe. 3:1-5). Pedro, en 2 Pedro 3:1-2, une las palabras de los profetas antiguos con el mandamiento de los apóstoles del Señor, como voces de la misma autoridad.</p>' +
+        '<p>Pero hay un matiz importante: <strong>no todos los profetas eran apóstoles</strong>. El don de profecía no estaba limitado a los doce ni a Pablo. En Hechos 15:32 aparecen Judas y Silas, quienes también eran profetas y consolaron y confirmaron a los hermanos. Es decir, hubo personas que ejercieron el don profético sin ser apóstoles.</p>' +
+        q('¿Cuál era la función de los apóstoles y los profetas en relación con Cristo y la iglesia según Efesios 2:20 y 3:5?',
+          '<p>Eran el <strong>fundamento</strong> sobre el cual se edifica la iglesia, con Cristo como piedra principal. Un fundamento se coloca una vez y sostiene todo lo demás: su mensaje, centrado en Cristo, es lo que da forma y estabilidad a la iglesia. Además, fueron los receptores de un «misterio» que el Espíritu reveló: el plan de salvación abierto a todos los pueblos.</p><p>Observa que el fundamento no es el apóstol o el profeta como personas, sino lo que ellos recibieron y enseñaron sobre Cristo. Por eso la iglesia se mantiene firme mientras se mantenga apoyada en esa enseñanza.</p>') +
+        q('Si Dios eligió a profetas y apóstoles «según su voluntad» y no por herencia, familia o título, ¿qué implica eso para cómo evaluamos hoy quién puede servir a Dios y quién no?',
+          '<p>Implica que los criterios humanos (linaje, estudios, carisma, posición) no son decisivos. Dios llamó a pescadores, a un recaudador de impuestos, a un perseguidor de la iglesia. Pero también implica que el llamado debe poder reconocerse: Pablo defendió su apostolado apelando a los frutos y a la verdad de su mensaje (1 Cor. 9:1-2).</p><p>Lección práctica: no descartar a nadie por su origen o por no «tener perfil», pero tampoco aceptar a quien diga tener un llamado sin examinarlo con la Palabra (1 Tes. 5:21).</p>')
+    },
+
+    /* 6 ---------------- AUTORIDAD FINAL Y EDIFICIO */
+    {
+      tag: "El fundamento",
+      title: "Un solo registro oficial y un templo en construcción",
+      html:
+        '<p class="lead">Jesús fue el centro de casi todo lo que los apóstoles escribieron: su vida, muerte, resurrección, ministerio sumosacerdotal y regreso.</p>' +
+        '<p>Y aquí hay un hecho sencillo y de enorme importancia: <strong>la Biblia es el único registro oficial que tenemos de las palabras de los apóstoles y profetas sobre Jesús</strong>, su vida y sus obras. No hay otra fuente con esa autoridad. Todo lo demás, por valioso que sea, debe ser evaluado a la luz de este registro.</p>' +
+        '<p>Elena de White describe la iglesia como un edificio que sigue en construcción. Los apóstoles pusieron el fundamento, y cada generación aporta materiales:</p>' +
+        e(['Pablo y los otros apóstoles, y todos los justos que han vivido desde entonces, hicieron su parte en la construcción del templo. Pero la estructura todavía no está completa. Los que vivimos en este tiempo tenemos una obra que hacer, una parte que realizar. Tenemos que traer material para el fundamento, que resista la prueba del fuego: oro, plata y piedras preciosas, «labradas como las de un palacio». Salmo 144:12.', 'El cristiano que presenta fielmente la Palabra de vida, guiando a hombres y mujeres por el camino de la santidad y la paz, coloca sobre el fundamento material que perdurará, y en el reino de Dios será honrado como sabio constructor.'], 'Reflejemos a Jesús, 29 de julio, p. 216') +
+        '<p>Y sobre el propósito de esa iglesia:</p>' +
+        e(['El Señor ha provisto a su iglesia de capacidades y bendiciones para que presente ante el mundo una imagen de su propia suficiencia, y para que su iglesia sea completa en él, una constante representación de otro mundo, el mundo eterno regido por leyes superiores a las terrenas. Su iglesia ha de ser un templo erigido a la semejanza divina…'], 'In Heavenly Places, p. 282; parcialmente en En los lugares celestiales, 2 de octubre, p. 284') +
+        q('La Biblia es el único registro oficial que tenemos de las palabras de los apóstoles y profetas sobre Jesús. ¿Qué nos dice esto de por qué la Biblia debe ser la autoridad final en lo que creemos sobre Jesús y su muerte por nosotros?',
+          '<p>Porque cualquier otra fuente (tradiciones, experiencias, escritos posteriores, opiniones de líderes) es secundaria y puede equivocarse, mientras que la Biblia es el testimonio directo de quienes recibieron la revelación. Si queremos saber qué enseñó Jesús, necesitamos acudir a quienes lo escucharon y a quienes el Espíritu inspiró.</p><p>Esto tiene consecuencias prácticas: ante una enseñanza nueva sobre Cristo, la primera pregunta es «¿qué dice la Escritura?». Y esa es también la razón por la que, para los adventistas, los escritos de Elena de White no reemplazan a la Biblia: la señalan y se evalúan a su luz.</p>') +
+        q('Elena de White dice que cada creyente puede traer material al edificio: «oro, plata y piedras preciosas» que resistan el fuego. ¿Qué «materiales» estamos aportando hoy a la iglesia con nuestras decisiones, conversaciones y servicio, y cuáles podrían quemarse?',
+          '<p>Pablo usa la imagen en 1 Corintios 3:10-15: lo que se edifica con oro, plata y piedras preciosas permanece; lo que se hace con madera, heno y paja se consume. En términos modernos: lo que perdura son las <strong>personas guiadas a Cristo</strong>, la verdad enseñada con fidelidad, el amor práctico y la unidad. Lo que se quema suele ser la búsqueda de reconocimiento, las divisiones, el chisme y el activismo sin Cristo.</p><p>Pide ejemplos concretos y pregunta: ¿qué sigo construyendo que preferiría no ver pasar por el fuego?</p>')
+    },
+
+    /* 7 ---------------- FUNCIONES */
+    {
+      tag: "Su misión",
+      title: "Edificar, exhortar y consolar",
+      html:
+        '<p class="lead">El Nuevo Testamento describe lo que hacen los profetas con tres verbos que no suelen ser los que primero vienen a la mente.</p>' +
+        v('1 CORINTIOS 14:3', '«Pero el que profetiza habla a los hombres para edificación, exhortación y consolación.»') +
+        v('EFESIOS 4:11-13', '«Y él mismo constituyó a unos, apóstoles; a otros, profetas; a otros, evangelistas; a otros, pastores y maestros, a fin de perfeccionar a los santos para la obra del ministerio, para la edificación del cuerpo de Cristo, hasta que todos lleguemos a la unidad de la fe y del conocimiento del Hijo de Dios, a un varón perfecto, a la medida de la estatura de la plenitud de Cristo.»') +
+        v('APOCALIPSIS 22:6', '«Y me dijo: Estas palabras son fieles y verdaderas. Y el Señor, el Dios de los espíritus de los profetas, ha enviado su ángel, para mostrar a sus siervos las cosas que deben suceder pronto.»') +
+        '<p>Estos versículos no presentan una visión completa de la tarea de los profetas del Nuevo Testamento, pero muestran algo claro: gran parte de lo que hicieron refleja lo que ya hacían los profetas del Antiguo Testamento. Eso demuestra la <strong>continuidad del don profético</strong>.</p>' +
+        '<p>Observa el contexto. La profecía aparece entre los dones espirituales (1 Cor. 12:10) y, en la metáfora del cuerpo de Cristo, se menciona a los profetas después de los apóstoles (1 Cor. 12:27-28). En Efesios 4, los dones tienen un propósito: preparar a los santos para el ministerio y llevar a todos a la unidad de la fe y a la madurez de Cristo.</p>' +
+        '<p>Hechos nos presenta a dos profetas, Judas y Silas, que no escribieron ningún libro de la Biblia pero que «consolaron y confirmaron a los hermanos con abundante palabra» (Hech. 15:32). Aunque a veces los profetas deben pronunciar advertencias, también ofrecen, según las circunstancias, palabras de aliento, especialmente en tiempos difíciles. Alentar a las personas es una obra mencionada en el contexto mismo de la profecía (1 Cor. 14:31).</p>' +
+        '<p>Y Apocalipsis 22:6 recuerda quién está detrás de todo: el Señor, «el Dios de los espíritus de los profetas». Por eso sus palabras son «fieles y verdaderas». En un mundo tan poco confiable, es un ancla.</p>' +
+        q('¿Qué nos dicen 1 Corintios 14:3, Efesios 4:11-13 y Apocalipsis 22:6 sobre la función de los profetas del Nuevo Testamento?',
+          '<p>Que su función es <strong>edificar</strong> (construir y fortalecer), <strong>exhortar</strong> (animar a obedecer y a avanzar) y <strong>consolar</strong> (sostener en la dificultad). Que forman parte de un conjunto de dones cuyo fin es madurar a la iglesia hasta «la plenitud de Cristo». Y que su mensaje viene de Dios mismo, por lo que es confiable.</p><p>Una observación valiosa: ninguno de los tres verbos es «predecir». La predicción tiene su lugar (Apocalipsis es un ejemplo claro), pero el énfasis del Nuevo Testamento está en el efecto pastoral de la profecía sobre la comunidad.</p>') +
+        q('Los profetas a veces deben advertir, pero también consolar y alentar. ¿Qué pasa en una iglesia o en una familia cuando solo hay advertencia, o cuando solo hay consuelo? ¿Cómo mantener el equilibrio?',
+          '<p>Solo advertencia produce miedo, agotamiento y una fe basada en la presión; solo consuelo produce comodidad, estancamiento y una gracia que no transforma. El Nuevo Testamento junta ambos: «edificación, exhortación y consolación».</p><p>Equilibrio práctico: preguntarse antes de hablar «¿esto edifica?», combinar la verdad con muestras de afecto (Ef. 4:15), y recordar que una advertencia hecha para salvar es una forma de amor. También conviene que la iglesia revise su «dieta»: ¿en qué proporción escuchamos aliento, enseñanza y confrontación?</p>')
+    },
+
+    /* 8 ---------------- DONES DEL ESPÍRITU */
+    {
+      tag: "Un solo Espíritu",
+      title: "Diversos dones, un mismo Espíritu",
+      html:
+        '<p class="lead">El texto para memorizar de esta semana nos recuerda que la diversidad de dones no es un problema que haya que resolver. Es el diseño.</p>' +
+        v('1 CORINTIOS 12:4-6', '«Ahora bien, hay diversidad de dones, pero el Espíritu es el mismo. Y hay diversidad de ministerios, pero el Señor es el mismo. Y hay diversidad de operaciones, pero Dios, que hace todas las cosas en todos, es el mismo.»') +
+        '<p>Pablo menciona la profecía en una lista junto con sabiduría, ciencia, fe, sanidades, milagros, discernimiento de espíritus, lenguas e interpretación (1 Cor. 12:8-10). Y concluye: «Todas estas cosas las hace uno y el mismo Espíritu, repartiendo a cada uno en particular como él quiere» (v. 11).</p>' +
+        '<p>Tres ideas importantes:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Origen común.</strong> Todos los dones vienen del mismo Espíritu, por lo que no hay lugar para la competencia ni la superioridad.</li>' +
+          '<li><strong>Reparto soberano.</strong> El Espíritu da «como él quiere», no como nosotros elegiríamos.</li>' +
+          '<li><strong>Propósito común.</strong> Los dones existen para edificar el cuerpo de Cristo, no para exhibir a quien los tiene.</li>' +
+        '</ul>' +
+        e(['Todos los hombres no reciben los mismos dones, pero se promete algún don del Espíritu a cada siervo del Maestro.', 'Los dones ya son nuestros en Cristo, pero su posesión verdadera depende de nuestra recepción del Espíritu de Dios.'], 'Palabras de vida del gran Maestro, p. 262') +
+        '<p>Y una advertencia que debería hacernos pensar:</p>' +
+        e(['La promesa del Espíritu no se aprecia como se debiera. Su cumplimiento no se comprende como se podría. La ausencia del Espíritu es lo que hace tan impotente el ministerio evangélico. Se puede poseer sabiduría, talentos, elocuencia, todo don natural o adquirido; pero sin la presencia del Espíritu de Dios no se conmoverá a ningún corazón ni ningún pecador será ganado para Cristo.'], 'Palabras de vida del gran Maestro, p. 263') +
+        q('Pablo dice que el Espíritu reparte los dones «como él quiere». ¿Cómo debería esto afectar la manera en que vemos nuestros propios dones y los de los demás, especialmente cuando nos comparamos?',
+          '<p>Si el don es un regalo repartido por el Espíritu, no hay mérito para el orgullo ni motivo para la envidia. Quien tiene un don lo tiene para servir, y quien tiene otro igualmente lo recibió. Pablo desarrolla esto en 1 Corintios 12:14-26: el ojo no puede decir a la mano «no te necesito».</p><p>Pregunta práctica: ¿qué don veo en otros que aprecio poco o no valoro, y cómo podría agradecerlo esta semana? Y también: ¿qué don creo tener y estoy dejando sin usar?</p>') +
+        q('Elena de White afirma que sin el Espíritu pueden existir «sabiduría, talentos, elocuencia» sin que ningún corazón se conmueva. ¿Qué actividades de nuestra iglesia podrían estar funcionando solo con talento humano, y cómo podemos pedir y depender del Espíritu de manera más real?',
+          '<p>Cualquier ministerio puede caer en esto: música bien ensayada, predicaciones bien estructuradas, programas bien organizados, pero sin oración, sin dependencia y sin fruto espiritual. No se trata de despreciar la preparación, sino de recordar que <strong>nada la sustituye</strong>.</p><p>Pasos concretos: orar antes de cada actividad por la presencia del Espíritu, dedicar tiempo de oración por las personas a quienes se espera alcanzar, y evaluar el fruto en términos de transformación de vidas y no solo de asistencia. Jesús lo dijo claramente: «separados de mí nada podéis hacer» (Juan 15:5).</p>')
+    },
+
+    /* 9 ---------------- ANA Y LAS HIJAS DE FELIPE */
+    {
+      tag: "Profetisas",
+      title: "Ana, Simeón y las hijas de Felipe",
+      html:
+        '<p class="lead">En los tiempos del Antiguo Testamento, Dios llamó tanto a hombres como a mujeres para que actuaran como sus mensajeros. En el Nuevo Testamento ocurre lo mismo.</p>' +
+        v('LUCAS 2:36-38', '«Estaba también allí Ana, profetisa, hija de Fanuel, de la tribu de Aser, de edad muy avanzada, pues había vivido con su marido siete años desde su virginidad, y era viuda hacía ochenta y cuatro años; y no se apartaba del templo, sirviendo de noche y de día con ayunos y oraciones. Esta, presentándose en la misma hora, daba gracias a Dios, y hablaba del niño a todos los que esperaban la redención en Jerusalén.»') +
+        v('HECHOS 21:9', '«Este tenía cuatro hijas doncellas que profetizaban.»') +
+        '<p><strong>Ana</strong> es la primera persona llamada «profetisa» en el Nuevo Testamento. Su ministerio era de tiempo completo: servía «de noche y de día con ayunos y oraciones». Y cuando vio a Jesús, lo reconoció y habló de él a todos los que esperaban la redención.</p>' +
+        '<p>Sobre <strong>las hijas de Felipe</strong> sabemos poco. Los autores cristianos posteriores, como Eusebio, tuvieron acceso a textos que mencionan dónde es posible que vivieran y dónde fueron sepultadas. Esto confirma la existencia de mujeres, probablemente jóvenes, con don profético. No conocemos el contenido de sus mensajes ni formaron parte del canon bíblico, como ocurre con muchos otros profetas genuinos.</p>' +
+        '<p>Y la escena del templo, en la que coinciden Simeón y Ana, merece atención:</p>' +
+        e(['Las cosas espirituales se disciernen espiritualmente. En el templo, el Hijo de Dios fue dedicado a la obra que había venido a hacer. El sacerdote lo miró como a cualquier otro niño. Pero aunque él no vio ni sintió nada insólito, el acto de Dios al dar a su Hijo al mundo no pasó inadvertido.', 'También Ana la profetisa vino y confirmó el testimonio de Simeón acerca de Cristo. Mientras hablaba Simeón, el rostro de ella se iluminó con la gloria de Dios, y expresó su sentido agradecimiento por habérsele permitido contemplar a Cristo el Señor.'], 'El Deseado de todas las gentes, pp. 36, 37') +
+        '<p>Observa el contraste: el sacerdote, que ocupaba el cargo oficial, <strong>miró al niño como a cualquier otro</strong>. Quienes lo reconocieron fueron un anciano justo y una viuda que vivía orando. Lo espiritual se discierne espiritualmente.</p>' +
+        q('Lee Lucas 2:36-38 y Hechos 21:9. ¿Qué dicen estos textos acerca de las profetisas?',
+          '<p>Que hubo mujeres con don profético reconocido en el Nuevo Testamento, y que su ministerio incluía oración, ayuno, adoración y testimonio sobre Cristo. Ana habló del niño «a todos los que esperaban la redención»: fue evangelista antes de que existiera la palabra.</p><p>Esto continúa lo visto en el Antiguo Testamento (Miriam, Débora, Hulda) y se alinea con la promesa de Joel 2:28-29, citada en Hechos 2:17-18: el Espíritu se derrama sobre «hijos e hijas». Y la cita de Elena de White destaca algo más: el don de Ana no era una posición, sino una vida de oración que la preparó para reconocer a Jesús.</p>') +
+        q('El sacerdote miró al niño Jesús «como a cualquier otro», pero Simeón y Ana lo reconocieron. ¿Qué nos enseña esto sobre cómo se prepara una persona para reconocer la obra de Dios cuando ocurre ante sus ojos?',
+          '<p>Simeón «esperaba la consolación de Israel» y el Espíritu Santo estaba sobre él (Luc. 2:25). Ana pasaba su vida en oración y ayuno. Ambos tenían <strong>expectativa, oración y sensibilidad al Espíritu</strong>. El sacerdote estaba ocupado en el rito y no esperaba nada.</p><p>Aplicación: es posible estar muy cerca de lo sagrado, en el templo y en la rutina, y no reconocer a Dios. Cultivar la expectativa («¿qué hará Dios hoy?») y dedicar tiempo a la oración afina la capacidad de reconocer su obra.</p>')
+    },
+
+    /* 10 ---------------- TIMOTEO Y TITO */
+    {
+      tag: "La nueva generación",
+      title: "Timoteo, Tito y el relevo del ministerio",
+      html:
+        '<p class="lead">Además de las profetisas, había jóvenes pastores que trabajaban en estrecha colaboración con los apóstoles, quienes los guiaban en el ministerio.</p>' +
+        '<p>Pablo se refirió a Timoteo como «verdadero hijo en la fe» (1 Tim. 1:2) y le recordó que su llamado estaba respaldado por profecías: «Hijo Timoteo, te encargo este mandato conforme a las profecías que antes se hicieron acerca de ti. Milita por ellas la buena milicia» (1 Tim. 1:18). Y le dio un consejo que sigue siendo vigente:</p>' +
+        v('1 TIMOTEO 4:12', '«Ninguno tenga en poco tu juventud, sino sé ejemplo de los creyentes en palabra, conducta, amor, espíritu, fe y pureza.»') +
+        '<p>Con <strong>Tito</strong>, a quien llamó «verdadero hijo en la común fe» (Tito 1:4), Pablo hizo algo similar: le encomendó nombrar líderes para la desafiante congregación de Creta, le dio orientación espiritual y concluyó: «Esto habla, exhorta y reprende con toda autoridad. Nadie te menosprecie» (Tito 2:15).</p>' +
+        '<p>Elena de White destaca el método de Pablo, que es también un desafío para la iglesia de hoy:</p>' +
+        e(['Pablo hacía del educar a los jóvenes para el ministerio evangélico una parte de su obra. Él los llevaba consigo en sus viajes misioneros, y así adquirirían una experiencia que más tarde los habilitaría para ocupar puestos de responsabilidad. Aun cuando estuviese separado de ellos, se mantenía siempre en contacto con su obra, y sus cartas a Timoteo y Tito son una prueba de cuán profundo era su deseo de que tuviesen éxito. «Lo que has oído de mí —escribió—, esto encarga a los hombres fieles que serán idóneos para enseñar también a otros». 2 Timoteo 2:2.', 'Los obreros experimentados hacen una obra noble cuando, en vez de tratar de llevar todas las cargas ellos mismos, preparan a hombres más jóvenes, y ponen cargas sobre sus hombros.'], 'Obreros evangélicos, pp. 107, 108') +
+        '<p>La misma fuente ofrece un consejo valioso para quien está aprendiendo: si aquel con quien trabaja sigue una conducta que no está en armonía con el «así dice Jehová», no debe acudir a una tercera persona, sino dirigirse a su superior y presentarle el asunto «expresando francamente su parecer». Así el aprendiz puede beneficiar al maestro.</p>' +
+        q('Jóvenes, ancianos, hombres, mujeres: todos podemos desempeñar un papel en la obra de Dios. ¿Cuál es el tuyo y cómo puedes hacer aún más?',
+          '<p>Pregunta personal; conviene dar tiempo para pensar. Algunos papeles posibles: enseñar, visitar, orar por otros, aconsejar, servir con las manos, abrir el hogar, acompañar a un joven, apoyar con recursos. Ana lo hizo con oración y ayuno; Timoteo, con juventud y ejemplo; Pablo, formando a otros.</p><p>Para el «hacer aún más», una pregunta clave: ¿a quién estoy preparando para que me releve? Y otra: ¿qué don o tiempo tengo sin usar? Termina con un compromiso pequeño y concreto para esta semana.</p>') +
+        q('Pablo preparó a Timoteo y a Tito para que continuaran la obra. ¿Qué dificultades hay en nuestras iglesias para traspasar responsabilidades a los más jóvenes, y qué actitud se necesita tanto de quienes enseñan como de quienes aprenden?',
+          '<p>Dificultades frecuentes: miedo a perder el control, la idea de que «nadie lo hará igual», falta de paciencia ante los errores, o jóvenes que esperan cargos sin pasar por el proceso. La cita de Elena de White propone que los experimentados <strong>repartan cargas</strong> en lugar de cargar con todo.</p><p>De los mentores se necesita humildad y confianza; de los aprendices, fidelidad, disposición a escuchar y valentía para hablar con respeto cuando algo no concuerda con «así dice Jehová», dirigiéndose directamente a quien corresponde, no a terceros. Y para ambos, un objetivo compartido: que la obra de Dios continúe.</p>')
+    },
+
+    /* 11 ---------------- FALSOS PROFETAS Y ARMADURA */
+    {
+      tag: "Discernimiento",
+      title: "Falsos profetas y la armadura de Dios",
+      html:
+        '<p class="lead">Jesús no pudo haber sido más claro: vendrán engaños, y serán convincentes.</p>' +
+        v('MATEO 24:23-24', '«Entonces, si alguno os dijere: Mirad, aquí está el Cristo, o mirad, allí está, no lo creáis. Porque se levantarán falsos Cristos, y falsos profetas, y harán grandes señales y prodigios, de tal manera que engañarán, si fuere posible, aun a los escogidos.»') +
+        '<p>Los engaños de los que nos advierte son muy persuasivos porque van acompañados de «grandes señales y prodigios». Y aquí hay un punto clave: <strong>las manifestaciones sobrenaturales no son en sí mismas evidencia de la obra de Dios</strong>. Tenemos enemigos sobrenaturales. Pablo lo advirtió: «no tenemos lucha contra sangre y carne, sino contra principados, contra potestades…» (Efe. 6:12).</p>' +
+        '<p>Jesús los describió con una imagen inolvidable: «lobos rapaces» que vienen «con vestidos de ovejas», y dio la clave para reconocerlos: «por sus frutos los conoceréis» (Mat. 7:15-16). Su principal ocupación es el engaño. Y Pablo anticipó por qué tendrían éxito:</p>' +
+        v('2 TIMOTEO 4:3', '«Porque vendrá tiempo cuando no sufrirán la sana doctrina, sino que teniendo comezón de oír, se amontonarán maestros conforme a sus propias concupiscencias.»') +
+        '<p>Frente a esto, Pablo describe una defensa completa en Efesios 6:10-18: la <strong>verdad</strong> como cinturón, la <strong>justicia</strong> como coraza, el <strong>evangelio de la paz</strong> como calzado, la <strong>fe</strong> como escudo, la <strong>salvación</strong> como yelmo, y la <strong>Palabra de Dios</strong> como espada del Espíritu, todo envuelto en oración constante.</p>' +
+        e(['En el mundo hay una multitud de maestros falsos. El apóstol declara que en los últimos días los hombres, «teniendo comezón de oír, se amontonarán maestros» (2 Timoteo 4:3), porque quieren escuchar cosas halagüeñas. Acerca de ellos Cristo amonestó: «Guardaos de los falsos profetas, que vienen a vosotros con vestidos de ovejas, pero por dentro son lobos rapaces. Por sus frutos los conoceréis». Mateo 7:15.', 'Los maestros religiosos que se describen aquí profesan ser cristianos. Poseen una apariencia de piedad y aparentan trabajar por el bien de las almas… Están en conflicto con Cristo y sus enseñanzas, y se hallan destituidos de su espíritu manso y humilde…'], 'Exaltad a Jesús, 18 de julio, p. 207') +
+        q('Lee Mateo 24:23-24. ¿Qué nos advierte Jesús aquí? ¿Por qué debemos prestar seria atención a esta advertencia?',
+          '<p>Advierte que habrá engañadores con señales y prodigios capaces de confundir «si fuere posible, aun a los escogidos». Debemos tomarla en serio porque el engaño no se presenta como engaño: se presenta como algo atractivo, religioso y con apariencia de poder. Y porque la advertencia incluye a los creyentes, no solo a quienes están lejos de Dios.</p><p>También enseña que lo sobrenatural no es criterio suficiente de verdad (Deut. 13:1-3). El criterio sigue siendo la Palabra: «a la ley y al testimonio» (Isa. 8:20).</p>') +
+        q('Según Efesios 6:10-18, ¿cómo podemos protegernos de cualquier tipo de engaño? ¿Qué puedes hacer para estar mejor equipado contra los engaños que azotan nuestro mundo?',
+          '<p>Protegiéndonos con la armadura completa: verdad, justicia, evangelio, fe, salvación, Palabra y oración. Casi todas las piezas son defensivas; solo la espada de la Palabra es ofensiva, y es la que Jesús usó en el desierto (Mat. 4).</p><p>En lo práctico, hoy los engaños llegan por redes sociales, videos, mensajes virales y también desde púlpitos. Hábitos concretos: conocer la Biblia lo suficiente para comparar, verificar fuentes antes de compartir, ser cautelosos con lo que «suena bien», orar pidiendo discernimiento y mantenerse en comunidad. Y recordar la advertencia de Elena de White: quienes menos meditan en Cristo, más confían en sí mismos.</p>') +
+        q('Pablo dice que la gente buscará maestros «conforme a sus propias concupiscencias» porque tienen «comezón de oír». ¿Qué tipo de mensajes tendemos a buscar hoy cuando queremos sentirnos bien, y cómo podemos examinar nuestros propios gustos?',
+          '<p>Tendemos a buscar mensajes que confirmen lo que ya pensamos, que nos hagan sentir bien sin pedirnos cambios, que justifiquen nuestras decisiones o que ataquen a quienes nos incomodan. Las plataformas digitales, con sus algoritmos, refuerzan ese hábito.</p><p>Una prueba personal útil: ¿cuándo fue la última vez que un mensaje me incomodó y lo recibí con gratitud? Si nunca, conviene preguntarse qué estoy filtrando. Un maestro fiel nos acerca a Cristo y a la obediencia, aunque cueste.</p>')
+    },
+
+    /* 12 ---------------- JESÚS Y SU PALABRA AL CENTRO */
+    {
+      tag: "Respuesta",
+      title: "Manteniendo a Jesús y su Palabra en el centro",
+      html:
+        '<p class="lead">Dios llamó a profetas en momentos específicos y les encomendó tareas importantes. Su función principal fue llevar a las personas al conocimiento de Dios y a una relación fiel con él.</p>' +
+        '<p>Esa fue la orientación que guio a Elena de White. Su ministerio tuvo dos funciones principales: <strong>llevar a las personas a Jesús y dirigir su atención hacia la Biblia</strong>.</p>' +
+        '<p>Sobre lo primero, ella amó profundamente a Jesús durante toda su vida. Su serie de cinco libros «El gran conflicto» comienza y termina con las palabras «Dios es amor». En <em>El camino a Cristo</em>, quizá su libro más popular, escribió:</p>' +
+        e(['Nuestro crecimiento en la gracia, nuestro gozo, nuestra utilidad, todo depende de nuestra unión con Cristo. Debemos crecer en la gracia por medio de la comunión con él día a día, hora a hora —permaneciendo en él—. Él no solo es el autor, sino también el perfeccionador de la fe.'], 'El camino a Cristo, p. 58') +
+        '<p>Y en su diario, durante la década de 1890, mientras escribía <em>El Deseado de todas las gentes</em>:</p>' +
+        e(['Al escribir sobre la vida de Cristo, me siento profundamente conmovida. Me olvido de respirar como debería. No puedo soportar la intensidad del sentimiento que me invade cuando pienso en lo que Cristo sufrió en nuestro mundo.'], 'Manuscrito 70, 1897') +
+        '<p>Sobre lo segundo, ella consideraba sus escritos una «luz menor» que guiaba a las personas hacia la «luz mayor»: la Biblia (Mensajes selectos, t. 3, p. 34). Al principio de su ministerio escribió:</p>' +
+        e(['Recomiendo al amable lector la Palabra de Dios como regla de fe y práctica.'], 'Mensajes selectos, t. 3, p. 33') +
+        e(['El Señor desea que estudies la Biblia. No ha dado ninguna luz adicional que sustituya a su Palabra. […] Si se asimila y se digiere, [su Palabra] es como la sangre vital del alma. Entonces, las buenas obras se verán como luz que brilla en la oscuridad.'], 'Carta 130, 1901') +
+        e(['…lo que Cristo había enseñado. Eso incluye lo que él había dicho, no solamente en persona, sino a través de todos los profetas y maestros del Antiguo Testamento. Excluye la enseñanza humana.'], 'El Deseado de todas las gentes, p. 766 (sobre quienes reclaman el manto profético de Cristo)') +
+        '<p class="muted">Para profundizar: Elena de White, Mensajes selectos, t. 3, cap. 4, pp. 33-38; y los capítulos «La voz profética en el Nuevo Testamento» de Ekkehardt Mueller y «El centro del ministerio profético de Elena G. de White» de Merlin D. Burt, en El don de profecía en las Escrituras y en la historia (Miami, FL: APIA, 2016), pp. 43-94 y 353-376.</p>' +
+        q('Elena de White quería que sus escritos llevaran a las personas a Jesús y a la Biblia, y afirmó que Dios «no ha dado ninguna luz adicional que sustituya a su Palabra». ¿Qué actitud hacia la Biblia y hacia los escritos de Elena de White se desprende de esto, y cómo evitamos tanto el descuido como la sustitución de la Escritura?',
+          '<p>Se desprende una actitud clara: <strong>la Biblia es la regla; los escritos inspirados la señalan y se miden con ella</strong>. El error de descuido sería leer a Elena de White y poco la Biblia; el error de sustitución, tratar sus escritos como una segunda Biblia o usarlos para cerrar una discusión sin volver al texto bíblico.</p><p>Una práctica sana: cuando leemos un consejo, buscar el principio bíblico que lo respalda; y dedicar más tiempo a la Escritura que a cualquier otra lectura espiritual. Así se cumple la función que ella misma describió: una luz menor que conduce a la mayor.</p>') +
+        q('Si hoy alguien te preguntara qué es lo más importante que aprendiste sobre los profetas del Nuevo Testamento, ¿qué le dirías en pocas palabras? ¿Y qué paso concreto darás esta semana para mantener a Jesús y su Palabra en el centro?',
+          '<p>Cierra con una ronda breve y sin presión. Una respuesta sólida suele incluir: el mismo Espíritu inspiró a todos los profetas; Jesús es el centro y el cumplimiento de la profecía; los profetas edifican, exhortan y consuelan; Dios llama a mujeres, hombres, jóvenes y ancianos; y la Palabra es la defensa frente al engaño.</p><p>Para el paso concreto, ayuda sugerir algo medible: un horario fijo de lectura bíblica, un pasaje para memorizar (1 Cor. 12:4-6), una conversación pendiente o un joven a quien acompañar. Termina con una oración breve por cada persona de la clase, pidiendo la presencia del Espíritu Santo.</p>') +
+        '<div class="closing-prompt"><p>«Hay diversos dones, pero el Espíritu es el mismo. Hay diversos ministerios, pero el Señor es el mismo.» — 1 Corintios 12:4-5</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#181517">
+<title>Profetas del Antiguo Testamento — Lección 3</title>
+<style>
+  :root{
+    --bg: #181517;
+    --bg-elevated: #232023;
+    --bg-elevated-2: #1F1B1E;
+    --line: rgba(251,251,255,0.13);
+    --text: #FBFBFF;
+    --text-muted: rgba(251,251,255,0.70);
+    --accent: #FF331F;
+    --accent-dim: rgba(255,51,31,0.13);
+    --accent-line: rgba(255,51,31,0.45);
+    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --maxw: 640px;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  h1,h2,h3{ font-family:var(--serif); font-weight:700; margin:0 0 .6em; }
+  p{ margin:0 0 1.15em; }
+  ::selection{ background:var(--accent); color:var(--bg); }
+  button{ font-family:var(--sans); cursor:pointer; }
+  button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .app{ height:100vh; height:100dvh; display:flex; flex-direction:column; }
+
+  /* HEADER */
+  .app-header{
+    flex:0 0 auto;
+    padding:calc(12px + env(safe-area-inset-top)) 18px 12px;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    z-index:5;
+  }
+  .header-row{
+    max-width:var(--maxw);
+    margin:0 auto;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .eyebrow{
+    display:block;
+    font-size:.72rem;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:3px;
+  }
+  .page-title{ font-size:1.1rem; line-height:1.25; margin:0; }
+  .page-counter{
+    flex:0 0 auto;
+    font-size:.8rem;
+    color:var(--text-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .progress-track{
+    max-width:var(--maxw);
+    margin:10px auto 0;
+    height:4px;
+    background:rgba(251,251,255,0.1);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--accent);
+    border-radius:4px;
+    transition:width .35s ease;
+  }
+
+  /* CONTENT */
+  .content-scroll{ flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+  .content-inner{ max-width:var(--maxw); margin:0 auto; padding:26px 22px 64px; }
+  .content-inner.fade-in{ animation:fadeIn .3s ease; }
+  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
+
+  .lead{ font-family:var(--serif); font-size:1.22rem; line-height:1.6; }
+  .content-inner p{ font-size:1.06rem; line-height:1.8; }
+  .content-inner p.muted{ color:var(--text-muted); }
+  .content-inner h2.section-h{ font-size:1.25rem; color:var(--accent); margin:1.6em 0 .5em; }
+  .content-inner strong{ color:var(--text); }
+  .rule{ border:0; border-top:1px solid var(--line); margin:26px 0; }
+
+  /* COVER */
+  .cover{ min-height:calc(100dvh - 190px); display:flex; flex-direction:column; justify-content:center; }
+  .cover .kicker{ color:var(--accent); font-size:.8rem; letter-spacing:.09em; font-weight:700; margin-bottom:14px; }
+  .cover h1{ font-size:2.2rem; line-height:1.12; margin-bottom:12px; }
+  .cover .subtitle{ color:var(--text-muted); font-size:1.02rem; line-height:1.65; margin-bottom:26px; }
+  .memory-verse{
+    border-left:3px solid var(--accent);
+    padding:4px 0 4px 18px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.14rem;
+    line-height:1.6;
+    margin-bottom:22px;
+  }
+  .memory-verse cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.85rem; color:var(--accent); margin-top:8px; font-weight:600; }
+  .readings{ font-size:.88rem; color:var(--text-muted); line-height:1.6; margin-bottom:28px; }
+  .readings b{ color:var(--text); }
+  .start-btn{
+    align-self:flex-start;
+    background:var(--accent);
+    color:#181517;
+    border:none;
+    min-height:52px;
+    padding:14px 28px;
+    border-radius:30px;
+    font-size:1rem;
+    font-weight:800;
+  }
+  .start-btn:active{ transform:scale(.98); }
+
+  /* VERSE + EGW */
+  .verse-block, .egw-block{ background:var(--bg-elevated); border-radius:14px; padding:18px 18px 16px; margin:22px 0; }
+  .verse-block{ border-left:4px solid var(--accent); }
+  .egw-block{ border-left:4px solid rgba(251,251,255,0.38); background:var(--bg-elevated-2); }
+  .block-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
+  .egw-block .block-label{ color:var(--text-muted); }
+  .verse-block blockquote, .egw-block blockquote{ margin:0; font-family:var(--serif); font-style:italic; font-size:1.06rem; line-height:1.65; }
+  .egw-block blockquote + blockquote{ margin-top:12px; }
+  .verse-block cite, .egw-block cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.84rem; color:var(--text-muted); margin-top:11px; }
+
+  ul.marks{ list-style:none; margin:18px 0; padding:0; }
+  ul.marks li{ position:relative; padding:0 0 15px 26px; font-size:1.04rem; line-height:1.65; }
+  ul.marks li::before{ content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700; }
+
+  /* QUESTIONS */
+  .question-card{ margin:28px 0 12px; background:var(--accent-dim); border:1px solid var(--accent-line); border-radius:16px; padding:18px; }
+  .question-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
+  .content-inner .question-text{ font-family:var(--serif); font-size:1.1rem; line-height:1.55; margin:0 0 15px; }
+  .answer-toggle{
+    background:transparent;
+    border:1.5px solid var(--accent);
+    color:var(--accent);
+    min-height:46px;
+    padding:10px 18px;
+    border-radius:24px;
+    font-size:.9rem;
+    font-weight:700;
+  }
+  .answer-toggle[aria-expanded="true"]{ background:var(--accent); color:#181517; }
+  .answer-toggle:active{ transform:scale(.98); }
+  .answer-panel{ display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--accent-line); }
+  .answer-panel.open{ display:block; }
+  .answer-panel .who{ font-size:.72rem; letter-spacing:.07em; font-weight:800; color:var(--text-muted); display:block; margin-bottom:8px; }
+  .content-inner .answer-panel p{ font-size:1rem; line-height:1.7; margin-bottom:.9em; }
+  .content-inner .answer-panel p:last-child{ margin-bottom:0; }
+
+  .closing-prompt{ margin-top:30px; padding:20px; border-radius:16px; background:var(--bg-elevated); text-align:center; border:1px solid var(--accent-line); }
+  .closing-prompt p{ margin-bottom:0; font-family:var(--serif); font-style:italic; font-size:1.08rem; }
+
+  /* FOOTER */
+  .app-footer{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .nav-btn{
+    flex:1 1 auto;
+    min-height:50px;
+    background:var(--bg-elevated);
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:13px 10px;
+    border-radius:14px;
+    font-size:.95rem;
+    font-weight:600;
+  }
+  .nav-btn.nav-btn--primary{ background:var(--accent); color:#181517; border-color:var(--accent); font-weight:800; }
+  .nav-btn:disabled{ opacity:.35; }
+  .nav-btn:active:not(:disabled){ transform:scale(.98); }
+  .toc-btn{
+    flex:0 0 50px; height:50px;
+    background:transparent; color:var(--text);
+    border:1px solid var(--line); border-radius:14px;
+    font-size:1.2rem; display:flex; align-items:center; justify-content:center;
+  }
+
+  /* TOC */
+  .toc-overlay{
+    position:fixed; inset:0;
+    background:rgba(8,6,8,0.78);
+    display:none; align-items:flex-end;
+    z-index:20;
+  }
+  .toc-overlay.open{ display:flex; }
+  .toc-panel{
+    width:100%; max-height:82vh;
+    background:var(--bg);
+    border-top:1px solid var(--line);
+    border-radius:20px 20px 0 0;
+    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+    overflow-y:auto;
+    animation:slideUp .26s ease;
+  }
+  @keyframes slideUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  .toc-head{
+    display:flex; justify-content:space-between; align-items:center;
+    max-width:var(--maxw); margin:0 auto 8px;
+    padding:6px 4px 12px;
+    font-family:var(--serif); font-size:1.12rem;
+    border-bottom:1px solid var(--line);
+  }
+  .toc-head button{ background:none; border:none; color:var(--text-muted); font-size:1.4rem; line-height:1; min-width:44px; min-height:44px; }
+  #tocList{ list-style:none; margin:0 auto; padding:0; max-width:var(--maxw); }
+  #tocList li button{
+    width:100%; text-align:left;
+    background:none; border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--text); padding:15px 4px; min-height:52px;
+    font-size:1rem; display:flex; gap:12px; align-items:baseline;
+  }
+  #tocList li button .n{ color:var(--accent); font-weight:800; font-size:.85rem; flex:0 0 auto; }
+  #tocList li button.active{ color:var(--accent); }
+
+  @media (min-width: 760px){
+    :root{ --maxw: 720px; }
+    .cover h1{ font-size:2.8rem; }
+    .lead{ font-size:1.32rem; }
+    .content-inner{ padding:46px 24px 80px; }
+    .content-inner p{ font-size:1.1rem; }
+    .page-title{ font-size:1.25rem; }
+    .app-footer{ padding-bottom:16px; }
+    .toc-overlay{ align-items:center; justify-content:center; }
+    .toc-panel{ max-width:560px; border-radius:20px; border:1px solid var(--line); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .content-inner.fade-in, .toc-panel{ animation:none; }
+    .progress-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 3</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice">≡</button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar">✕</button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite></div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 3 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        '<div class="cover">' +
+          '<span class="kicker">4TO TRIMESTRE 2026 · LECCIÓN 3</span>' +
+          '<h1>Profetas del Antiguo Testamento</h1>' +
+          '<p class="subtitle">Personas frágiles que sintieron temor, ira y desánimo, y a quienes Dios usó para orientar a su pueblo. Qué hacían, cómo se reconocían los verdaderos, qué papel tuvieron las mujeres y cómo detectar a los falsos.</p>' +
+          '<div class="memory-verse">«Óiganme, Judá y habitantes de Jerusalén: crean al Señor su Dios y estarán seguros; crean a sus profetas y serán prosperados.»<cite>2 Crónicas 20:20 — Para memorizar</cite></div>' +
+          '<p class="readings"><b>Lee para el estudio de esta semana:</b> Santiago 5:17-18; 1 Reyes 19:1-16; 22:1-14; Éxodo 15:20; 2 Reyes 22:11-14; Jeremías 14:1-15.</p>' +
+          '<button class="start-btn" id="startBtn">Comenzar la clase →</button>' +
+        '</div>'
+    },
+
+    /* 1 ---------------- GPS */
+    {
+      tag: "Punto de partida",
+      title: "Un «GPS» para el viaje",
+      html:
+        '<p class="lead">Un GPS te dice dónde estás, hacia dónde vas y qué peligros hay en el camino. Los profetas cumplieron una función muy parecida para el pueblo de Dios.</p>' +
+        '<p>En sus narraciones, consejos, profecías, poesía y alabanzas, los profetas del Antiguo Testamento orientaron a Israel para el presente y para el futuro. Hoy, quienes viajamos hacia el cielo seguimos necesitando esa orientación.</p>' +
+        '<p>Pero hay un detalle que cambia la forma de estudiarlos: <strong>eran personas como nosotros</strong>. Sintieron temor, ira y desánimo, y su vida estuvo llena de desafíos. Por eso la pregunta de hoy es práctica: ¿qué podemos aprender de ellos?</p>' +
+        '<p>Antes de empezar, una razón para no saltarse esta parte de la Biblia. El Antiguo Testamento no es una etapa superada, sino la mitad de la revelación de Cristo.</p>' +
+        e(['El Antiguo Testamento derrama luz sobre el Nuevo, y el Nuevo sobre el Antiguo. Cada uno es una revelación de la gloria de Dios en Jesús. Cristo manifestado a los patriarcas, simbolizado en los servicios de los sacrificios, esbozado en la ley, y revelado por los profetas, constituye las riquezas del Antiguo Testamento.'], 'Consejos para los maestros, p. 446') +
+        '<p>Y un modelo de cómo acercarse a estas páginas es Esdras, un hombre que no se conformó con una religión heredada:</p>' +
+        e(['Anhelaba estar en completa armonía con Dios; deseaba tener sabiduría para cumplir la voluntad divina. De manera que «había preparado su corazón para inquirir la ley de Jehová y para cumplirla».', 'Buscaba fervientemente a Dios con el fin de ser un obrero de quien el Señor no tuviera que avergonzarse.'], 'Ser semejante a Jesús, 18 de abril, p. 115') +
+        q('Muchos creyentes leen el Nuevo Testamento con frecuencia, pero el Antiguo casi nunca. ¿Qué nos perdemos al hacerlo, según la cita de Elena de White?',
+          '<p>Nos perdemos la mitad de la historia de Cristo. Según la cita, en el Antiguo Testamento Cristo aparece manifestado a los patriarcas, simbolizado en los sacrificios, esbozado en la ley y revelado por los profetas. Sin esa base, el Nuevo Testamento pierde profundidad: no se entiende por qué el Cordero, por qué el templo, por qué el Mesías.</p><p>Ejemplo claro: después de la resurrección, Jesús mismo explicó a los discípulos de Emaús «en todas las Escrituras lo que de él decían» (Luc. 24:27), y esas Escrituras eran el Antiguo Testamento. Anima a la clase a proponer un hábito sencillo: leer un salmo o un capítulo de un profeta junto con un pasaje del Nuevo Testamento.</p>') +
+        q('Esdras «preparó su corazón» antes de estudiar. ¿Qué significa prepararse antes de abrir la Biblia, y cómo se vería eso en una semana normal con celular, trabajo y compromisos?',
+          '<p>Prepararse el corazón implica llegar con disposición de obedecer, no solo de informarse. Esdras buscó entender y además <strong>cumplir</strong>. Una práctica concreta: pedir al Espíritu Santo que ilumine antes de leer (Sal. 119:18), elegir un lugar y un horario fijo, y silenciar notificaciones durante ese tiempo.</p><p>También ayuda preguntarse al terminar: «¿qué me pide este texto que haga hoy?». Evita convertir la respuesta en una lista de tareas; el objetivo es la relación con Dios, no cumplir un récord de lectura.</p>')
+    },
+
+    /* 2 ---------------- ELÍAS */
+    {
+      tag: "La humanidad de los profetas",
+      title: "Elías: un hombre «sujeto a pasiones semejantes a las nuestras»",
+      html:
+        '<p class="lead">Después de ver caer fuego del cielo, ¿quién esperaría encontrar a Elías pidiendo morir?</p>' +
+        v('SANTIAGO 5:17-18', '«Elías era hombre sujeto a pasiones semejantes a las nuestras, y oró fervientemente para que no lloviese sobre la tierra, y no llovió sobre la tierra por tres años y seis meses. Y otra vez oró, y el cielo dio lluvia, y la tierra produjo su fruto.»') +
+        '<p>Santiago presenta a Elías como un hombre de oración poderosa, y a la vez como alguien igual a nosotros. Ambas cosas son verdad.</p>' +
+        '<p>En el monte Carmelo, Dios obró uno de los milagros más asombrosos del Antiguo Testamento (1 Rey. 18:38). Pero en 1 Reyes 19 vemos lo que ocurrió después: una amenaza de Jezabel, un profeta que huye «para salvar su vida» (v. 3) y una oración que impresiona por su franqueza.</p>' +
+        v('1 REYES 19:4', '«Y él se fue por el desierto un día de camino, y vino y se sentó debajo de un enebro; y deseando morirse, dijo: Basta ya, oh Jehová, quítame la vida, pues no soy yo mejor que mis padres.»') +
+        '<p>La clave de su estado de ánimo aparece en el versículo 10: «Yo solo he quedado, y me buscan para quitarme la vida». Elías sentía que, pese a sus esfuerzos, la apostasía seguía en pie. Lo que había ocurrido en el Carmelo no había cambiado el corazón del palacio, y él lo interpretó como un fracaso total.</p>' +
+        '<p>Observa también la manera en que Dios responde: primero lo deja dormir, luego un ángel le prepara comida y agua (vv. 5-8). La corrección vendrá más tarde.</p>' +
+        e(['Parecía que, después de haber manifestado valor tan indómito y de haber triunfado tan completamente sobre el rey, los sacerdotes y el pueblo, Elías ya no podría ceder al desaliento ni verse acobardado por la timidez. Pero el que había sido bendecido con tantas evidencias del cuidado amante de Dios, no estaba exento de las debilidades humanas, y en esa hora sombría le abandonaron su fe y su valor…', 'Para los desalentados hay un remedio seguro en la fe, la oración y el trabajo.'], 'Conflicto y valor, 26 de julio, p. 213') +
+        q('Santiago afirma que Elías «era hombre sujeto a pasiones semejantes a las nuestras». ¿Qué quiso decir, y por qué crees que la Biblia insiste en mostrar esa humanidad de sus héroes?',
+          '<p>Quiso decir que Elías no era una especie de superhombre: sintió miedo, cansancio y desesperanza como cualquiera. Y la Biblia insiste porque esa honestidad cumple una función pastoral: si el poder de Elías venía de su perfección, nosotros no tendríamos esperanza; pero si venía de Dios, la oración de un hombre común puede mover el cielo.</p><p>Santiago lo usa justamente así: su argumento es que <strong>nosotros también podemos orar con eficacia</strong> (Sant. 5:16-18).</p>') +
+        q('¿Por qué a veces sentimos que hemos fracasado o que nuestros esfuerzos han sido en vano? ¿Qué promesas bíblicas ayudan a superar el desánimo?',
+          '<p>A veces medimos el éxito por resultados inmediatos y visibles, y cuando no los vemos concluimos que todo fue inútil. También influyen el cansancio, la comparación con otros y las amenazas reales.</p><p>Promesas útiles: «no desmayemos, pues a su tiempo segaremos» (Gál. 6:9); «vuestro trabajo en el Señor no es en vano» (1 Cor. 15:58); «los que esperan a Jehová tendrán nuevas fuerzas» (Isa. 40:31). Y la receta de la cita: fe, oración y trabajo. Invita a la clase a pensar en un área concreta donde necesiten volver a esa promesa.</p>')
+    },
+
+    /* 3 ---------------- QUÉ HACES AQUÍ */
+    {
+      tag: "Cuando huimos del deber",
+      title: "«¿Qué haces aquí, Elías?»",
+      html:
+        '<p class="lead">En el Horeb, Dios hizo una pregunta que ya conocía. Y esa pregunta sigue llegando a quienes se han refugiado lejos de su llamado.</p>' +
+        v('1 REYES 19:9-10', '«Y allí se metió en una cueva, donde pasó la noche. Y vino a él palabra de Jehová, el cual le dijo: ¿Qué haces aquí, Elías? Él respondió: He sentido un vivo celo por Jehová Dios de los ejércitos; porque los hijos de Israel han dejado tu pacto, han derribado tus altares, y han matado a espada a tus profetas; y sólo yo he quedado, y me buscan para quitarme la vida.»') +
+        '<p>Observa dos detalles. Primero, Dios no empieza con una reprensión, sino con una pregunta que invita a hablar. Segundo, Elías responde con su versión de los hechos, y esa versión tiene un error evidente: «sólo yo he quedado».</p>' +
+        v('1 REYES 19:12, 18', '«…Y tras el fuego un silbo apacible y delicado… Y yo haré que queden en Israel siete mil, cuyas rodillas no se doblaron ante Baal, y cuyas bocas no lo besaron.»') +
+        e(['Aunque el lugar del monte Horeb al cual Elías se había retirado era un sitio oculto para los hombres, era conocido por Dios; y el profeta cansado y desalentado, no fue abandonado para que luchase solo con las potestades de las tinieblas que le apremiaban…', 'Dios preguntó a su siervo: «¿Qué haces aquí, Elías?» Te mandé al arroyo Querit, y después a la viuda de Sarepta. Te ordené que volvieses a Israel y te presentases ante los sacerdotes idólatras en el monte Carmelo; luego te ceñí de fortaleza para guiar el carro del rey hasta la puerta de Jezreel. Pero ¿quién te mandó huir apresuradamente al desierto? ¿Qué tienes que hacer aquí?…'], 'Conflicto y valor, 27 de julio, p. 214') +
+        '<p>Y la aplicación llega hasta nosotros:</p>' +
+        e(['A todo hijo de Dios cuya voz el enemigo de las almas ha logrado silenciar, se le dirige la pregunta: «¿Qué haces aquí?» Te ordené que fueses a todo el mundo y predicases el evangelio, a fin de preparar a un pueblo para el día de Dios. ¿Por qué estás aquí?'], 'Conflicto y valor, 27 de julio, p. 214') +
+        '<p>Y la respuesta de Dios a la soledad de Elías encuentra eco en otro párrafo del mismo libro:</p>' +
+        e(['Elías había pensado que él era el único que adoraba al verdadero Dios en Israel; pero el que lee en todos los corazones reveló al profeta que eran muchos los que a través de los largos años de apostasía le habían permanecido fieles…', 'Sin embargo, esta apostasía, por extensa que haya llegado a ser, no es universal… Dios tiene a muchos… que esperan contra toda esperanza que Jesús vendrá pronto…'], 'Conflicto y valor, 28 de julio, p. 215') +
+        q('Si Dios te hiciera hoy la pregunta «¿Qué haces aquí?», ¿de qué responsabilidad o llamado podrías estar huyendo o escondiéndote, y por qué?',
+          '<p>Es una pregunta personal; no hace falta exigir respuestas públicas. Según la cita, Satanás procura que los fieles se olviden de su misión, ya sea por <strong>placeres, desaliento o persecución</strong>. Algunos escapes modernos: el exceso de trabajo, el entretenimiento, el aislamiento, el cinismo, o la excusa de que «ya hice suficiente».</p><p>Observa cómo Dios no humilla a Elías: le pregunta, lo escucha y luego le da una nueva tarea (1 Rey. 19:15-16). La pregunta busca <strong>restaurar</strong>, no condenar. Termina invitando a escribir en silencio una respuesta honesta.</p>') +
+        q('Elías creía que estaba solo, y Dios le dijo que había siete mil fieles. ¿En qué situaciones distorsiona el cansancio o el miedo nuestra visión de la realidad, y quién puede ayudarnos a corregirla?',
+          '<p>El cansancio y el miedo hacen que la mente generalice («nadie», «todo», «siempre»). Elías no estaba mintiendo; estaba describiendo lo que sentía como si fuera la realidad completa.</p><p>Dios corrige con dos recursos: una voz tranquila y una nueva perspectiva. En la vida cotidiana, esa perspectiva suele llegar a través de otros: un hermano de confianza, una conversación honesta, la comunidad de la iglesia. Pregunta a la clase: ¿con quién puedo ser tan sincero como lo fue Elías con Dios? Y también: ¿a quién estoy ayudando yo a ver que no está solo?</p>')
+    },
+
+    /* 4 ---------------- MICAÍAS */
+    {
+      tag: "Identificando a los verdaderos",
+      title: "Micaías: uno contra cuatrocientos",
+      html:
+        '<p class="lead">Un rey dijo de un profeta: «lo aborrezco, porque nunca me profetiza el bien sino solo el mal». Es una de las mejores recomendaciones que podría recibir un profeta.</p>' +
+        '<p>Hubo falsos profetas desde temprano en la historia de Israel (Deut. 18:20), pero Dios nunca dejó a su pueblo sin orientación sobre cómo reconocer a los verdaderos. En 1 Reyes 22 encontramos una escena que lo ilustra de manera dramática.</p>' +
+        '<p>Acab, rey de Israel, quiere recuperar Ramot de Galaad y propone a Josafat, rey de Judá, aliarse con él. Josafat acepta, pero pide una condición: «Te ruego que consultes hoy la palabra de Jehová» (v. 5). Entonces aparecen cuatrocientos profetas que, a una voz, prometen victoria. Hasta Sedequías fabrica unos cuernos de hierro y dramatiza el mensaje (v. 11).</p>' +
+        '<p>Pero Josafat no queda tranquilo:</p>' +
+        v('1 REYES 22:7-8', '«Y dijo Josafat: ¿Hay aún aquí algún profeta de Jehová, por el cual podamos consultar? El rey de Israel respondió a Josafat: Aún hay un varón por el cual podemos consultar a Jehová, Micaías hijo de Imla; mas yo le aborrezco, porque nunca me profetiza bien, sino solamente mal.»') +
+        '<p>Mientras llamaban a Micaías, el mensajero le hizo una presión muy humana: «las palabras de los profetas a una voz anuncian al rey cosas buenas; sea ahora tu palabra conforme a la palabra de alguno de ellos» (v. 13). Es decir, «no complique las cosas, sea como todos».</p>' +
+        v('1 REYES 22:14', '«Y Micaías respondió: Vive Jehová, que lo que Jehová me hablare, eso diré.»') +
+        '<p>Micaías se enfrentó solo a cuatrocientos, a un rey y a la posible venganza de una reina cruel. Y presentó la verdad que Dios le había revelado, sin importar cómo fuera recibida. La presión que sintió fue, probablemente, la misma que sintieron los otros profetas, pero él esperó que Dios le dijera qué decir.</p>' +
+        q('Lee 1 Reyes 22:1-14. ¿Qué nos dice este pasaje sobre cómo actúan los profetas fieles?',
+          '<p>Rasgos visibles: <strong>no ajustan el mensaje</strong> para agradar al poderoso; <strong>esperan la palabra de Dios</strong> en lugar de seguir la opinión popular; y están dispuestos a perder el favor del rey. También hablan el mensaje completo aunque sea impopular.</p><p>Contrasta con el comportamiento de los cuatrocientos: coincidían entre sí, decían lo que el rey quería y estaban rodeados de señales de éxito. Sin embargo, estaban equivocados. Un buen punto de reflexión: la unanimidad no garantiza la verdad.</p>') +
+        q('Es fácil concordar con lo que es popular. En vista de cuán corrupta puede ser la cultura, ¿por qué no es sabio proceder de esa manera? Da ejemplos actuales.',
+          '<p>Porque la cultura puede estar equivocada, y la popularidad solo mide <strong>atención y aprobación</strong>, no verdad. Noé fue minoría, los diez espías con informe negativo fueron mayoría (Núm. 13-14) y la multitud gritó «¡crucifícale!».</p><p>Ejemplos: decisiones familiares y de dinero basadas en lo que hace todo el mundo, tendencias en redes que presentan como normales conductas dañinas, o la presión de callar frente a una injusticia en el trabajo. El principio de Éxodo 23:2 sigue vigente: «No seguirás a los muchos para hacer mal». Y una advertencia de equilibrio: ser minoría tampoco prueba que uno tenga razón; lo decisivo es lo que dice la Palabra de Dios.</p>') +
+        q('Josafat sintió que algo no encajaba y pidió escuchar a un profeta de Jehová. ¿Cómo podemos cultivar ese «olfato espiritual» cuando todos a nuestro alrededor parecen estar de acuerdo?',
+          '<p>Josafat conocía el carácter de Dios y por eso detectó la diferencia. El discernimiento se cultiva con el <strong>conocimiento de la Palabra</strong>, con la oración y con la costumbre de preguntar: «¿hay aquí algo que venga realmente de Jehová?». Quien no conoce la Biblia no puede comparar.</p><p>Práctica concreta: antes de aceptar una idea muy popular, buscar qué dice la Biblia sobre el tema y consultar a una persona madura espiritualmente. Fíjate también en que Josafat no se quedó con la primera respuesta: insistió. Dios honra a quien busca.</p>')
+    },
+
+    /* 5 ---------------- SAMUEL Y ELISEO */
+    {
+      tag: "Hombres de Dios",
+      title: "Samuel y Eliseo: respetados, pero no perfectos",
+      html:
+        '<p class="lead">La Biblia registra con frecuencia el alto concepto que la gente tenía de los profetas. Pero ese respeto no los convertía en seres perfectos.</p>' +
+        '<p>Saúl andaba buscando unas asnas perdidas cuando su siervo le sugirió una idea: «He aquí ahora hay en esta ciudad un varón de Dios, que es hombre insigne; todo lo que él dice acontece sin falta» (1 Sam. 9:6). Fíjate en tres detalles del relato:</p>' +
+        '<ul class="marks">' +
+          '<li>El siervo lo llama <strong>«varón de Dios»</strong>, un título que los verdaderos profetas llevaban.</li>' +
+          '<li>Su credibilidad se basaba en que <strong>lo que decía se cumplía</strong>.</li>' +
+          '<li>La gente lo respetaba tanto que el pueblo no comía hasta que él bendecía el sacrificio (v. 13).</li>' +
+        '</ul>' +
+        '<p>Estas cualidades reflejan lo que se esperaba de un profeta: ejemplificar el carácter divino. Pero ser «hombre de Dios» no equivalía a no tener fallas. Samuel mismo, como padre, no logró que sus hijos anduvieran en sus caminos (1 Sam. 8:3). Y eso no lo descalificó.</p>' +
+        '<p>Un segundo ejemplo es <strong>Eliseo</strong>, ayudante de Elías y luego profeta. Elena de White destaca el tipo de persona que fue:</p>' +
+        e(['Eliseo fue elegido por el Señor como ayudante de Elías y, por medio de pruebas, demostró que era fiel y digno de confianza. Estaba dispuesto a ser y a hacer todo lo que el Señor indicara. No rehuyó el servicio más humilde, sino que fue fiel tanto en las tareas pequeñas como en las responsabilidades mayores.', '«Cuando habían pasado, Elías dijo a Eliseo: Pide lo que quieras que haga por ti, antes que yo sea quitado de ti. Y dijo Eliseo: Te ruego que una doble porción de tu espíritu sea sobre mí». 2 Reyes 2:9. No pidió honores del mundo, ni un lugar elevado entre los grandes de la tierra.'], 'Alza tus ojos, 13 de noviembre, p. 329') +
+        q('¿Has conocido a algún verdadero «hombre de Dios» que sea perfecto? ¿Qué nos enseña eso sobre las expectativas que tenemos hacia pastores, líderes y maestros?',
+          '<p>La respuesta honesta es que no. Todos los siervos de Dios son humanos. Esperar perfección genera dos problemas: <strong>idealizar</strong> al líder hasta que cualquier fallo destruye nuestra fe, o <strong>desecharlo</strong> por el primer error.</p><p>Una expectativa más bíblica: buscar fidelidad, arrepentimiento cuando fallan y coherencia con la Palabra. Y recordar que ellos también necesitan nuestra oración (1 Tes. 5:25; Heb. 13:7). Un buen ejercicio: orar esta semana por el maestro o pastor que más nos ha marcado.</p>') +
+        q('Si el Señor te hiciera hoy la pregunta que le hizo a Eliseo, «Pide lo que quieras», ¿qué habrías contestado? ¿Cuál es el mayor deseo de tu corazón al entregarte al servicio de Dios?',
+          '<p>Pregunta de aplicación personal. Eliseo no pidió fama ni comodidad: pidió <strong>capacidad para continuar la obra</strong>. Lo que reveló su corazón fue lo que consideró más valioso.</p><p>Invita a la clase a responder con honestidad, sin dar la respuesta «correcta». Es normal descubrir que nuestras primeras respuestas son más prácticas o personales (seguridad, reconocimiento, resultados). Conviene terminar preguntando: ¿qué cambiaría en mi semana si mi mayor deseo fuera el de Eliseo?</p>')
+    },
+
+    /* 6 ---------------- FUNCIONES */
+    {
+      tag: "Su misión",
+      title: "Funciones de los profetas: reyes, sacerdotes, maestros y naciones",
+      html:
+        '<p class="lead">Los profetas no eran personajes aislados del templo. Se movían entre el palacio, el santuario, la plaza y las fronteras.</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Ante los reyes:</strong> ayudar a los gobernantes infieles a volver a la ley de Dios. Esto los expuso a amenazas, y algunos fueron heridos o asesinados (1 Rey. 18:4-19; 2 Crón. 24:20-22).</li>' +
+          '<li><strong>Ante los sacerdotes:</strong> Moisés, profeta, ungió a Aarón y a sus hijos (Lev. 8:10-13), pero también hubo reprensiones severas por corrupción, como la dirigida a la familia de Elí (1 Sam. 2:27-36).</li>' +
+          '<li><strong>Ante el pueblo:</strong> eran maestros que presentaban los mensajes de Dios a sacerdotes, reyes y a la nación (2 Crón. 34; Jer. 5:31).</li>' +
+          '<li><strong>Ante las naciones:</strong> comunicaban el plan de Dios para los pueblos vecinos (Isa. 60:1-3; 62:1-2).</li>' +
+          '<li><strong>Como escritores:</strong> debían comunicar fielmente el mensaje y, a veces, ponerlo por escrito y conservarlo (2 Crón. 13:22).</li>' +
+        '</ul>' +
+        '<p>Un ejemplo muy revelador es 1 Samuel 8. Los ancianos de Israel piden un rey «como tienen todas las naciones» (v. 5). Dios advierte, por medio de Samuel, todo lo que ese rey tomaría: hijos, hijas, tierras, rebaños. Pero el pueblo respondió: «No, sino que habrá rey sobre nosotros» (v. 19).</p>' +
+        '<p>La historia retrata un peligro permanente: <strong>el deseo de ser como quienes nos rodean</strong>. Y ocurre aun después de que Dios haya advertido con claridad.</p>' +
+        '<p>El caso del profeta Natán muestra cómo un mensaje terrible puede entregarse con sabiduría:</p>' +
+        e(['El profeta Natán recibió órdenes de llevar un mensaje de reprensión a David. Era un mensaje terrible en su severidad. A pocos soberanos se les podría haber dirigido una reprensión sin que el mensajero perdiese la vida. Natán transmitió la sentencia divina sin vacilación, aunque con tal sabiduría celestial que despertó la simpatía y la conciencia del rey y le indujo a que con sus labios emitiera su propia sentencia de muerte…', 'De no haber sido por el espejo que Natán sostuvo delante de él, en el cual reconoció tan claramente su propia semejanza, no hubiera llegado a la convicción de su pecado atroz… La convicción de su culpa fue la salvación de su alma.'], 'Conflicto y valor, 22 de junio, p. 179') +
+        q('Lee 1 Samuel 8:4-22 y Levítico 8:10-13. ¿Cómo actuaban los profetas en relación con los reyes y los sacerdotes?',
+          '<p>Con los <strong>reyes</strong>, como consejeros y voz de advertencia: Samuel advierte sobre las consecuencias del reinado, y luego unge a Saúl por indicación de Dios. Con los <strong>sacerdotes</strong>, Moisés unge a Aarón (Lev. 8) y otros profetas los reprenden cuando se corrompen.</p><p>Es importante ver el equilibrio: los profetas no eran rivales de los reyes ni de los sacerdotes, sino un contrapeso espiritual. Su lealtad era a Dios, no a una institución. Eso explica que a veces apoyaran y a veces confrontaran.</p>') +
+        q('Elena de White dice que Natán usó un «espejo» para que David se viera a sí mismo. ¿Cómo podemos hoy corregir a otros de manera firme pero que lleve a la restauración y no a la humillación?',
+          '<p>Natán no suavizó el mensaje, pero eligió una historia que permitió que David reconociera su pecado por sí mismo. Principios para hoy: <strong>escuchar antes de hablar</strong>, corregir en privado (Mat. 18:15), apuntar al bien de la persona y no a ganar una discusión, y apoyarse en la Escritura en lugar de la opinión personal (Gál. 6:1).</p><p>La cita añade algo importante: la convicción de culpa fue «la salvación de su alma». Es decir, una reprensión hecha con amor y verdad puede ser un acto de rescate. Pregunta: ¿qué haría falta para que nuestra iglesia fuera un lugar donde se pueda decir la verdad con ese espíritu?</p>')
+    },
+
+    /* 7 ---------------- MUJERES */
+    {
+      tag: "Mujeres profetas",
+      title: "Miriam, Débora y el criterio que no es el género",
+      html:
+        '<p class="lead">Hay abundante evidencia en la Escritura de que Dios llamó a mujeres a servir como profetas.</p>' +
+        v('ÉXODO 15:20', '«Y María la profetisa, hermana de Aarón, tomó un pandero en su mano, y todas las mujeres salieron en pos de ella con panderos y danzas.»') +
+        v('JUECES 4:4', '«Gobernaba en aquel tiempo a Israel una mujer, Débora, profetisa, mujer de Lapidot.»') +
+        '<p>El texto usa la palabra hebrea <em>nevi’ah</em> (profetisa) en Éxodo 15:20, y el Nuevo Testamento usa la griega <em>profêtis</em> para Ana (Luc. 2:36). En Miqueas 6:4, Dios mismo presenta a Miriam junto a Moisés y Aarón como enviados para guiar al pueblo.</p>' +
+        '<p><strong>Miriam</strong> entonó un canto de victoria al cruzar el mar Rojo. Sin embargo, no estaba exenta de culpa: su actitud hacia Moisés y su esposa madianita le acarreó una disciplina muy seria (Núm. 12:1-10). Ser profeta no la hacía intocable.</p>' +
+        '<p><strong>Débora</strong> actuó como jueza en Israel. Hay pruebas claras de que recibió una revelación de Dios (Jue. 4:4-9, 14-22), y su canto de victoria (Jue. 5:2-31) reconoce la intervención divina y tuvo un profundo significado teológico para la nación.</p>' +
+        '<p>Y aquí viene un detalle que muchos pasan por alto: la Biblia también menciona a una <strong>falsa profetisa</strong>.</p>' +
+        v('NEHEMÍAS 6:14', '«Acuérdate, Dios mío, de Tobías y de Sanbalat, conforme a estas cosas que hicieron; también acuérdate de Noadías profetisa, y de los otros profetas que procuraban infundirme miedo.»') +
+        '<p>Noadías aparece en la misma lista que los enemigos de Nehemías. Su caso muestra que el criterio para distinguir a un profeta verdadero de uno falso <strong>no era el género</strong>, sino el mensaje, la fidelidad a Dios y el fruto. Y eso vale para hombres y mujeres por igual.</p>' +
+        v('JOEL 2:28-29', '«Y después de esto derramaré mi Espíritu sobre toda carne, y profetizarán vuestros hijos y vuestras hijas… Y también sobre los siervos y las siervas derramaré mi Espíritu en aquellos días.»') +
+        q('Lee Éxodo 15:20; Jueces 4:4; 2 Reyes 22:14 y Nehemías 6:14. ¿Qué enseñan estos textos acerca del papel profético?',
+          '<p>Enseñan que el don profético <strong>no estaba restringido por género</strong>: Miriam, Débora y Hulda fueron profetisas reconocidas y escuchadas. Y que había también profetas falsos de ambos géneros (Noadías), de modo que lo decisivo era el origen y contenido del mensaje.</p><p>Es útil notar que ninguna de ellas fue presentada como alguien que usurpaba una función: Dios las llamó y el pueblo las reconoció. Joel 2:28-29, citado en Hechos 2:17-18, confirma que el Espíritu se derrama sobre «hijos e hijas».</p>') +
+        q('Miriam fue profetisa y también fue disciplinada por Dios. ¿Qué nos enseña esto sobre la relación entre el don espiritual y la necesidad de rendir cuentas?',
+          '<p>Un don espiritual no elimina la necesidad de humildad ni de corrección. Miriam tuvo un don real y también un pecado real, y Dios trató ambos con seriedad. Esto protege contra dos errores: pensar que quien tiene un don no necesita corrección y pensar que quien falla no puede haber sido usado por Dios.</p><p>Aplicación: tanto quienes lideran como quienes siguen deben rendir cuentas ante la Palabra. Pregunta: ¿tengo personas en mi vida que puedan corregirme con libertad?</p>')
+    },
+
+    /* 8 ---------------- HULDA */
+    {
+      tag: "Una voz decisiva",
+      title: "Hulda: cuando el rey buscó a una profetisa",
+      html:
+        '<p class="lead">El rey Josías había oído el libro de la ley, y su reacción fue desgarradora. Entonces envió a los hombres más importantes de su reino a consultar a una mujer.</p>' +
+        v('2 REYES 22:11-14', '«Y cuando el rey hubo oído las palabras del libro de la ley, rasgó sus vestidos. Luego el rey dio orden al sacerdote Hilcías… diciendo: Id y preguntad a Jehová por mí, y por el pueblo, y por todo Judá, acerca de las palabras de este libro que se ha hallado; porque grande es la ira de Jehová que se ha encendido contra nosotros… Entonces fueron el sacerdote Hilcías, y Ahicam, Acbor, Safán y Asaías, a la profetisa Hulda… la cual moraba en Jerusalén en la segunda parte de la ciudad, y hablaron con ella.»') +
+        '<p>El asunto era gravísimo: se trataba del inminente juicio de Judá. Los principales consejeros del rey fueron directamente a Hulda, lo cual indica el respeto que se le tenía y la función que cumplía. Las reformas de Josías fueron fruto de los mensajes proféticos de Hulda.</p>' +
+        e(['En ese tiempo, la profetisa Hulda vivía en Jerusalén, cerca del templo. La mente del rey, llena de angustiosos presagios, se volvió hacia ella, y decidió consultar al Señor mediante su mensajera elegida, para averiguar si había algún medio a su alcance para salvar al errante Judá, ahora al borde de la ruina.', 'La gravedad de la situación, y el respeto que tenía por la profetisa, lo condujeron a elegir a los principales de su reino como sus mensajeros.'], 'Recibiréis poder, 16 de septiembre, p. 270') +
+        '<p>Fíjate en lo que muestra el relato: el rey no buscó a un hombre con más trayectoria ni consultó primero a otros; fue a quien Dios había dado el mensaje. Y envió a sus mejores hombres, no a un mensajero cualquiera.</p>' +
+        '<p>Pero también aquí aparece un tema que atraviesa toda la lección. Los profetas y profetisas, aunque llamados por Dios, eran pecadores que dependían de la gracia.</p>' +
+        e(['Ningún apóstol o profeta pretendió haber vivido sin pecado. Hombres que han vivido lo más cerca de Dios, hombres que sacrificaron sus vidas antes de cometer a sabiendas un acto pecaminoso, hombres a quienes Dios honró con luz divina y poder, confesaron su naturaleza pecaminosa. No pusieron su confianza en la carne, no pretendieron poseer una justicia propia, sino que confiaron completamente en la justicia de Cristo.', 'Cuanto más nos acercamos a él y cuanto más claramente discernimos la pureza de su carácter, tanto más claramente veremos la extraordinaria gravedad del pecado y tanto menos nos sentiremos tentados a exaltarnos a nosotros mismos.'], 'Los hechos de los apóstoles, p. 448') +
+        q('Lee 2 Reyes 22:11-14. ¿Por qué los hombres del rey Josías fueron a ver a Hulda? ¿Qué nos dice esto acerca de la importante función que cumplía en la nación?',
+          '<p>Fueron porque se trataba de un asunto de vida o muerte espiritual para la nación, y Hulda era reconocida como portavoz de Dios. Su respuesta confirmó que el juicio vendría por la infidelidad del pueblo, pero que Josías sería perdonado por su humildad (2 Rey. 22:15-20).</p><p>Muestra que su función era pública y decisiva: su mensaje impulsó una reforma nacional. También ilustra el valor de buscar a Dios <strong>ante una crisis</strong>: Josías no improvisó, consultó.</p>') +
+        q('Aunque llamados por Dios, los profetas y las profetisas también eran pecadores que necesitaban la gracia divina. ¿Qué esperanza puedes obtener de sus historias?',
+          '<p>Que Dios no espera perfección para usar a alguien, sino un corazón que dependa de su gracia. Si Elías, Miriam, Jonás y los demás fueron usados siendo imperfectos, nuestra imperfección no nos descalifica automáticamente.</p><p>Según la cita, cuanto más nos acercamos a Cristo, <strong>más claramente vemos nuestro pecado y menos tentados nos sentimos de exaltarnos</strong>. Es decir, la humildad es señal de cercanía, no de lejanía. Conviene cerrar con una invitación: reconocer, ante Dios, lo que necesitamos entregar, y confiar en la justicia de Cristo y no en la propia.</p>')
+    },
+
+    /* 9 ---------------- FALSOS PROFETAS */
+    {
+      tag: "Discernimiento",
+      title: "Falsos profetas: cuando se dice «Jehová dijo» y no es cierto",
+      html:
+        '<p class="lead">Satanás falsifica todo lo que Dios hace, y eso incluye el ministerio profético.</p>' +
+        '<p>Jeremías 14 describe una sequía devastadora, y Dios le encarga anunciar un juicio de «espada, hambre y pestilencia» (v. 12). Pero los profetas de la época decían lo contrario, y Dios los desenmascara sin rodeos:</p>' +
+        v('JEREMÍAS 14:13-15', '«Y yo dije: ¡Ah! ¡Ah, Señor Jehová! He aquí que los profetas les dicen: No veréis espada, ni habrá hambre entre vosotros, sino que en este lugar os daré paz verdadera. Me dijo entonces Jehová: Falsamente profetizan los profetas en mi nombre; no los envié, ni les mandé, ni les hablé; visión mentirosa, adivinación, vanidad y engaño de su corazón os profetizan. Por tanto, así ha dicho Jehová sobre los profetas que profetizan en mi nombre, los cuales yo no envié… con espada y con hambre serán consumidos esos profetas.»') +
+        '<p>Tres rasgos de estos falsos profetas:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Usaban el nombre de Dios</strong> sin haber sido enviados por él («no los envié, ni les mandé, ni les hablé»).</li>' +
+          '<li><strong>Su mensaje venía de su propio corazón</strong>, a menudo influido por falsos «dioses» a los que adoraban (Jer. 23:13-14, 26; Eze. 13:2).</li>' +
+          '<li><strong>Seguían la opinión popular</strong>, como los cuatrocientos de Acab, que se pusieron de acuerdo para animar la guerra (1 Rey. 22:6).</li>' +
+        '</ul>' +
+        '<p>Lo más inquietante es que el mensaje de los falsos profetas era agradable: paz verdadera, sin consecuencias, sin arrepentimiento. Y las personas lo preferían. El efecto fue devastador: el pueblo dejó de prepararse para lo que venía.</p>' +
+        q('Lee Jeremías 14:1-15. ¿Qué sucedía según este texto y cómo consideraba el Señor a quienes hablaban en su nombre como «profetas» sin serlo?',
+          '<p>Había sequía y crisis, Jeremías intercedía por el pueblo, y Dios anunciaba juicio por su rebeldía. Mientras tanto, los falsos profetas aseguraban que no habría espada ni hambre. Dios los considera <strong>mentirosos que usurpan su nombre</strong> y anuncia que ellos mismos sufrirán el juicio que negaban.</p><p>Observa la seriedad: hablar en nombre de Dios sin haber sido enviado es una falta grave, porque engaña a las personas en el momento en que más necesitan la verdad. También es un recordatorio para quienes enseñan hoy: la responsabilidad de representar a Dios con fidelidad es enorme (Sant. 3:1).</p>') +
+        q('¿Qué mensajes actuales, aunque suenen espirituales, ofrecen «paz» sin llamar al arrepentimiento ni al cambio? ¿Por qué resultan tan atractivos?',
+          '<p>Ejemplos: la idea de que Dios solo desea nuestro bienestar material, mensajes que eliminan el pecado, el juicio o la necesidad de obediencia, o la espiritualidad «a mi manera» que confirma lo que ya pensamos. Son atractivos porque <strong>no cuestan nada</strong> y alivian la conciencia sin exigir cambios.</p><p>Compara con Jeremías 6:14: «curan la herida de mi pueblo con liviandad, diciendo: Paz, paz; y no hay paz». Una pregunta útil para evaluar cualquier mensaje: ¿me acerca a Dios y me transforma, o solo me tranquiliza?</p>')
+    },
+
+    /* 10 ---------------- UNA SOLA PRUEBA */
+    {
+      tag: "Herramientas",
+      title: "Cómo examinar lo que dice venir de Dios",
+      html:
+        '<p class="lead">Elena de White hace la pregunta directamente. Y su respuesta es sencilla, pero exigente.</p>' +
+        e(['¿Cómo distinguiremos a los verdaderos siervos de Dios de los falsos profetas que Cristo dijo que surgirían para engañar a muchos? Hay una sola prueba del carácter: la ley de Jehová.'], 'A fin de conocerle, 24 de julio, p. 211') +
+        '<p>Esto coincide con el criterio bíblico central:</p>' +
+        v('ISAÍAS 8:20', '«¡A la ley y al testimonio! Si no dijeren conforme a esto, es porque no les ha amanecido.»') +
+        '<p>Pero la Biblia ofrece otros criterios que funcionan junto con este y no por separado:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Cumplimiento de lo predicho</strong> (Deut. 18:22), pero un cumplimiento no basta si el mensaje aleja de Dios (Deut. 13:1-3).</li>' +
+          '<li><strong>Frutos</strong> en la vida del mensajero y de quienes lo siguen (Mat. 7:15-20).</li>' +
+          '<li><strong>Cristo en el centro</strong> (1 Jn. 4:1-3).</li>' +
+          '<li><strong>Examen abierto</strong>: «Examinadlo todo; retened lo bueno» (1 Tes. 5:21).</li>' +
+        '</ul>' +
+        '<p>Y una advertencia sobre los últimos tiempos, que subraya por qué importa tanto conocer la Palabra:</p>' +
+        e(['La voz de Dios nos habla por medio de su Palabra, y hay muchas voces que vamos a oír; pero Cristo nos advirtió que debemos cuidarnos de los que nos dicen: «Aquí está el Cristo, o allí está». Entonces, ¿cómo sabemos que los tales no tienen la verdad a menos que cotejemos cada cosa con las Escrituras?', 'Se acerca el tiempo cuando Satanás obrará milagros directamente a la vista de ustedes, proclamando que él es el Cristo; y si sus pies no están firmemente establecidos en la verdad de Dios, entonces ustedes serán apartados de su fundamento. La única seguridad para ustedes es buscar la verdad como [se buscan los] tesoros escondidos. Excaven en busca de la verdad… y digan: «Ilumíname, enséñame qué es verdad».'], 'Ser semejante a Jesús, 17 de abril, p. 114') +
+        q('Si «hay una sola prueba del carácter: la ley de Jehová», ¿qué implica eso para cómo evaluamos a predicadores, videos, libros o publicaciones religiosas que consumimos? ¿Cómo se vería en la práctica?',
+          '<p>Implica que ningún mensaje se acepta por <strong>quién lo dice, cuántos lo siguen o cuán emocionante resulta</strong>, sino por su concordancia con la Palabra de Dios. En la práctica: abrir la Biblia mientras se escucha, comparar el texto citado con su contexto, preguntar si el mensaje honra los mandamientos de Dios y centra la atención en Cristo, y consultar con otros.</p><p>Muestra cuidado con los extremos: <strong>no</strong> se trata de desconfiar de todo, sino de «examinarlo todo» con la Escritura. La cita de Ser semejante a Jesús propone una actitud: cavar como quien busca tesoros.</p>') +
+        q('Elena de White dice que Satanás hará milagros. Si un mensajero hace señales, pero su mensaje contradice la Biblia, ¿qué debemos hacer según Deuteronomio 13:1-3? ¿Qué nos protege ante lo impresionante?',
+          '<p>Deuteronomio 13 enseña que aun cuando una señal se cumpla, si el mensajero promueve apartarse de Dios, <strong>no se le debe dar oído</strong>, porque Dios está probando si lo amamos. Lo impresionante no es prueba de verdad.</p><p>Lo que protege es tener «los pies firmemente establecidos en la verdad de Dios»: conocer la Palabra, haber desarrollado una relación con Cristo y, como dice la cita, pedir al Espíritu: «Ilumíname, enséñame qué es verdad». Quien depende de las impresiones es vulnerable; quien depende de la Palabra tiene un ancla.</p>')
+    },
+
+    /* 11 ---------------- ELENA */
+    {
+      tag: "Imperfectos pero dispuestos",
+      title: "Elena Harmon: temor, oración y obediencia",
+      html:
+        '<p class="lead">Nunca ha sido fácil ser mensajero de Dios. Elena de White experimentó las mismas inquietudes que los profetas bíblicos.</p>' +
+        '<p>Era joven, tímida y no gozaba de buena salud cuando recibió el llamado. Aunque una segunda visión confirmó ese llamado, siguió preocupada. Ella misma lo relató así:</p>' +
+        e(['Aproximadamente una semana después, el Señor me concedió otra visión en la que me mostró las pruebas por las que debía pasar; que debía ir y contar a otros lo que él me había revelado; que encontraría gran oposición y sufriría angustia espiritual. […]', 'Esta visión me turbó enormemente. Mi salud era muy delicada y solo tenía diecisiete años. […] Oré fervientemente para que esa carga recayera sobre otra persona. Pero la respuesta que obtuve fue: «Da a conocer a los demás lo que te he revelado». No estaba dispuesta a ir al mundo. Por naturaleza, tenía poca confianza en mí misma. […] Deseé morir. La muerte me parecía preferible a las responsabilidades que tendría que asumir.'], 'Spiritual Gifts, t. 2, pp. 35-36') +
+        '<p>Fíjate cuántos rasgos de los profetas que estudiamos aparecen aquí: la juventud de Jeremías, la inseguridad de Moisés, el deseo de huir de Elías. Y la respuesta de Dios es la misma: no la descarta ni la reprende, sino que la sostiene y le confirma la misión. Con oración y el ánimo de sus compañeros creyentes, accedió y dedicó el resto de su vida a obedecer los mandatos de Dios.</p>' +
+        '<p>Como resultado, llegaría a ser la voz más influyente de la futura Iglesia Adventista del Séptimo Día. Pero seguía siendo humana: tenía defectos, problemas de salud, desafíos familiares y conflictos interpersonales. La gran lección de su caso es que <strong>Dios elige a personas imperfectas dispuestas a servir</strong>.</p>' +
+        '<p>Su ministerio animó a los creyentes y los conectó con las verdades bíblicas. En 1860 ya tenía un papel destacado en el desarrollo de la confesión adventista y de su misión de proclamar los mensajes de los tres ángeles. Dios la usó para orientar a estos creyentes en la organización de la Iglesia Adventista del Séptimo Día en 1863, y en las décadas siguientes su voz fue determinante en el establecimiento de los sistemas adventistas de salud y educación. Pero la contribución más importante de su ministerio son las aproximadamente cien mil páginas de sus escritos inspirados, que continúan comunicando la instrucción divina en todo el mundo.</p>' +
+        '<p class="muted">Para profundizar: Elena de White, Mensajes selectos, t. 3, pp. 46-54; y Jiří Moskala, «La voz profética en el Antiguo Testamento», en El don de profecía en las Escrituras y en la historia, ed. por Dwain N. Esmond y Alberto R. Timm (Miami, FL: APIA, 2016), pp. 1-42.</p>' +
+        q('Elena de White quiso evitar su llamado, como lo hicieron Moisés, Jeremías y Jonás. ¿Qué te dice eso sobre el tipo de personas a quienes Dios llama y sobre cómo trata nuestras objeciones?',
+          '<p>Dios llama a personas que se sienten insuficientes, y no se ofende por sus objeciones sino que responde a ellas con ayuda y presencia. En todos los casos hubo oración sincera, resistencia inicial y, finalmente, obediencia. Elena de White escribió que oró para que la carga recayera sobre otra persona, y la respuesta fue una orden clara acompañada del apoyo de la comunidad.</p><p>Para la clase: nuestras dudas no descalifican; lo decisivo es lo que hacemos con ellas. ¿Las llevamos a Dios y a la comunidad, o las usamos para esquivar la tarea? Anota que ella no cumplió su misión sola, sino con el ánimo de sus compañeros creyentes: nadie sirve bien aislado.</p>') +
+        q('Si Dios elige a personas imperfectas y con límites reales, ¿cómo evitamos tanto idealizarlas como descartarlas? ¿Qué criterio usamos para valorar el mensaje de cualquier mensajero?',
+          '<p>El criterio bíblico mira primero el <strong>mensaje</strong>: ¿concuerda con la ley y el testimonio (Isa. 8:20), conduce a Cristo, produce frutos de arrepentimiento y amor? Y luego la <strong>coherencia del mensajero</strong>: arrepentimiento cuando falla, humildad, dependencia de la gracia.</p><p>Idealizar lleva a decepciones; descartar lleva a perder lo que Dios dice con claridad. Una actitud equilibrada es la de 1 Tesalonicenses 5:20-21: no menospreciar las profecías, examinarlo todo y retener lo bueno. Aplica igual a los profetas bíblicos y a cualquier voz posterior.</p>')
+    },
+
+    /* 12 ---------------- CIERRE */
+    {
+      tag: "Respuesta",
+      title: "Creer a sus profetas y ser fieles",
+      html:
+        '<p class="lead">El texto para memorizar surgió en una crisis nacional. Y sigue siendo una brújula para la nuestra.</p>' +
+        v('2 CRÓNICAS 20:20', '«Josafat se puso en pie y dijo: Óiganme, Judá y habitantes de Jerusalén: crean al Señor su Dios y estarán seguros; crean a sus profetas y serán prosperados.»') +
+        '<p>Josafat, el mismo rey que años atrás había dudado de los cuatrocientos profetas de Acab y pidió escuchar a Micaías, ahora llama al pueblo a confiar en Dios y en sus profetas. La fe en Dios y la atención a su Palabra profética van juntas. Esa lección la aprendió con dolor, y le sirvió para enfrentar el peligro con paz.</p>' +
+        '<p>Resumamos lo que hemos visto:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Eran humanos.</strong> Elías se desanimó, Miriam fue disciplinada, Samuel no pudo corregir a sus hijos, y Elena de White temía su llamado.</li>' +
+          '<li><strong>Dios no los descartó.</strong> Alimentó a Elías, le hizo una pregunta y le dio una nueva tarea.</li>' +
+          '<li><strong>Cumplían funciones concretas</strong> ante reyes, sacerdotes, el pueblo y las naciones.</li>' +
+          '<li><strong>Había mujeres y hombres</strong> a quienes Dios llamó, y también falsos de ambos géneros.</li>' +
+          '<li><strong>Había falsos profetas</strong>, y la prueba era la Palabra de Dios, no la popularidad ni los milagros.</li>' +
+        '</ul>' +
+        '<p>Tres pasos para esta semana:</p>' +
+        '<ul class="marks">' +
+          '<li><strong>Responde la pregunta de Dios.</strong> Escribe qué le contestarías a «¿Qué haces aquí?» y cuál es el siguiente paso para volver a lo que te pidió.</li>' +
+          '<li><strong>Examina un mensaje.</strong> Elige algo que hayas escuchado o visto últimamente y compáralo con la Biblia, como quien busca un tesoro.</li>' +
+          '<li><strong>Sostén a un «Elías».</strong> Identifica a alguien que sirve y puede estar agotado, y dale algo concreto: tiempo, comida, escucha o una palabra de ánimo.</li>' +
+        '</ul>' +
+        q('Si tuvieras que explicarle a un amigo por qué confiar en los profetas bíblicos sigue siendo razonable hoy, y cómo evitar a los falsos, ¿qué le dirías en pocas palabras?',
+          '<p>Cierra con una ronda breve y sin presión. Una respuesta sólida incluye: Dios habló a través de personas reales y frágiles, cuyos mensajes se pueden <strong>comprobar con la Escritura</strong>; los falsos profetas existieron y existen, y el antídoto es conocer la Palabra; y el objetivo de todo profeta genuino es llevarnos a confiar en Dios y obedecerle.</p><p>Termina con una oración breve por cada persona de la clase, pidiendo que Dios dé oído para escuchar su voz y valor para hablar con fidelidad. Y puedes cerrar leyendo juntos 2 Crónicas 20:20.</p>') +
+        '<div class="closing-prompt"><p>«Crean al Señor su Dios y estarán seguros; crean a sus profetas y serán prosperados.» — 2 Crónicas 20:20</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
+})();
+</script>
+</body>
+</html>

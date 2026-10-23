@@ -87,7 +87,16 @@ const lecciones = [
     numero: 3,
     titulo: 'Profetas del Antiguo Testamento',
     pasaje: 'Jeremías 1:7-8',
-    archivo: '/lecciones/2026/T4/26_04_03 Profetas del Antiguo Testamento',
+    archivo: '/lecciones/2026/T4/26_04_03 Profetas del Antiguo Testamento.html',
+  },
+
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 4,
+    titulo: 'Profetas del Nuevo Testamento',
+    pasaje: 'Jeremías 1:7-8',
+    archivo: '/lecciones/2026/T4/26_04_04 Profetas del Nuevo Testamento.html',
   }
 ]
 
