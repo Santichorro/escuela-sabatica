@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import Dock from './components/Dock.jsx'
 import ProgressiveBlur from './components/Blur.jsx'
 import './App.css'
@@ -246,6 +247,7 @@ export default function App() {
       <ProgressiveBlur position="top" height="70px" blurAmount="6px" />
       <ProgressiveBlur position="bottom" height="150px" blurAmount="10px" />
       <Dock />
+      <Analytics />
     </>
   )
 }
