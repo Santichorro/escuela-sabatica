@@ -3,263 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#181517">
 <title>Profetas del Antiguo Testamento — Lección 3</title>
-<style>
-  :root{
-    --bg: #181517;
-    --bg-elevated: #232023;
-    --bg-elevated-2: #1F1B1E;
-    --line: rgba(251,251,255,0.13);
-    --text: #FBFBFF;
-    --text-muted: rgba(251,251,255,0.70);
-    --accent: #FF331F;
-    --accent-dim: rgba(255,51,31,0.13);
-    --accent-line: rgba(255,51,31,0.45);
-    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
-    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --maxw: 640px;
-  }
-
-  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body{ height:100%; }
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--sans);
-    -webkit-font-smoothing:antialiased;
-    overflow:hidden;
-  }
-  h1,h2,h3{ font-family:var(--serif); font-weight:700; margin:0 0 .6em; }
-  p{ margin:0 0 1.15em; }
-  ::selection{ background:var(--accent); color:var(--bg); }
-  button{ font-family:var(--sans); cursor:pointer; }
-  button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-
-  .app{ height:100vh; height:100dvh; display:flex; flex-direction:column; }
-
-  /* HEADER */
-  .app-header{
-    flex:0 0 auto;
-    padding:calc(12px + env(safe-area-inset-top)) 18px 12px;
-    background:var(--bg);
-    border-bottom:1px solid var(--line);
-    z-index:5;
-  }
-  .header-row{
-    max-width:var(--maxw);
-    margin:0 auto;
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:10px;
-  }
-  .eyebrow{
-    display:block;
-    font-size:.72rem;
-    letter-spacing:.07em;
-    text-transform:uppercase;
-    color:var(--accent);
-    font-weight:700;
-    margin-bottom:3px;
-  }
-  .page-title{ font-size:1.1rem; line-height:1.25; margin:0; }
-  .page-counter{
-    flex:0 0 auto;
-    font-size:.8rem;
-    color:var(--text-muted);
-    font-variant-numeric:tabular-nums;
-  }
-  .progress-track{
-    max-width:var(--maxw);
-    margin:10px auto 0;
-    height:4px;
-    background:rgba(251,251,255,0.1);
-    border-radius:4px;
-    overflow:hidden;
-  }
-  .progress-fill{
-    height:100%;
-    width:0%;
-    background:var(--accent);
-    border-radius:4px;
-    transition:width .35s ease;
-  }
-
-  /* CONTENT */
-  .content-scroll{ flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
-  .content-inner{ max-width:var(--maxw); margin:0 auto; padding:26px 22px 64px; }
-  .content-inner.fade-in{ animation:fadeIn .3s ease; }
-  @keyframes fadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
-
-  .lead{ font-family:var(--serif); font-size:1.22rem; line-height:1.6; }
-  .content-inner p{ font-size:1.06rem; line-height:1.8; }
-  .content-inner p.muted{ color:var(--text-muted); }
-  .content-inner h2.section-h{ font-size:1.25rem; color:var(--accent); margin:1.6em 0 .5em; }
-  .content-inner strong{ color:var(--text); }
-  .rule{ border:0; border-top:1px solid var(--line); margin:26px 0; }
-
-  /* COVER */
-  .cover{ min-height:calc(100dvh - 190px); display:flex; flex-direction:column; justify-content:center; }
-  .cover .kicker{ color:var(--accent); font-size:.8rem; letter-spacing:.09em; font-weight:700; margin-bottom:14px; }
-  .cover h1{ font-size:2.2rem; line-height:1.12; margin-bottom:12px; }
-  .cover .subtitle{ color:var(--text-muted); font-size:1.02rem; line-height:1.65; margin-bottom:26px; }
-  .memory-verse{
-    border-left:3px solid var(--accent);
-    padding:4px 0 4px 18px;
-    font-family:var(--serif);
-    font-style:italic;
-    font-size:1.14rem;
-    line-height:1.6;
-    margin-bottom:22px;
-  }
-  .memory-verse cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.85rem; color:var(--accent); margin-top:8px; font-weight:600; }
-  .readings{ font-size:.88rem; color:var(--text-muted); line-height:1.6; margin-bottom:28px; }
-  .readings b{ color:var(--text); }
-  .start-btn{
-    align-self:flex-start;
-    background:var(--accent);
-    color:#181517;
-    border:none;
-    min-height:52px;
-    padding:14px 28px;
-    border-radius:30px;
-    font-size:1rem;
-    font-weight:800;
-  }
-  .start-btn:active{ transform:scale(.98); }
-
-  /* VERSE + EGW */
-  .verse-block, .egw-block{ background:var(--bg-elevated); border-radius:14px; padding:18px 18px 16px; margin:22px 0; }
-  .verse-block{ border-left:4px solid var(--accent); }
-  .egw-block{ border-left:4px solid rgba(251,251,255,0.38); background:var(--bg-elevated-2); }
-  .block-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
-  .egw-block .block-label{ color:var(--text-muted); }
-  .verse-block blockquote, .egw-block blockquote{ margin:0; font-family:var(--serif); font-style:italic; font-size:1.06rem; line-height:1.65; }
-  .egw-block blockquote + blockquote{ margin-top:12px; }
-  .verse-block cite, .egw-block cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.84rem; color:var(--text-muted); margin-top:11px; }
-
-  ul.marks{ list-style:none; margin:18px 0; padding:0; }
-  ul.marks li{ position:relative; padding:0 0 15px 26px; font-size:1.04rem; line-height:1.65; }
-  ul.marks li::before{ content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700; }
-
-  /* QUESTIONS */
-  .question-card{ margin:28px 0 12px; background:var(--accent-dim); border:1px solid var(--accent-line); border-radius:16px; padding:18px; }
-  .question-label{ display:block; font-size:.7rem; letter-spacing:.09em; font-weight:800; color:var(--accent); margin-bottom:9px; }
-  .content-inner .question-text{ font-family:var(--serif); font-size:1.1rem; line-height:1.55; margin:0 0 15px; }
-  .answer-toggle{
-    background:transparent;
-    border:1.5px solid var(--accent);
-    color:var(--accent);
-    min-height:46px;
-    padding:10px 18px;
-    border-radius:24px;
-    font-size:.9rem;
-    font-weight:700;
-  }
-  .answer-toggle[aria-expanded="true"]{ background:var(--accent); color:#181517; }
-  .answer-toggle:active{ transform:scale(.98); }
-  .answer-panel{ display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--accent-line); }
-  .answer-panel.open{ display:block; }
-  .answer-panel .who{ font-size:.72rem; letter-spacing:.07em; font-weight:800; color:var(--text-muted); display:block; margin-bottom:8px; }
-  .content-inner .answer-panel p{ font-size:1rem; line-height:1.7; margin-bottom:.9em; }
-  .content-inner .answer-panel p:last-child{ margin-bottom:0; }
-
-  .closing-prompt{ margin-top:30px; padding:20px; border-radius:16px; background:var(--bg-elevated); text-align:center; border:1px solid var(--accent-line); }
-  .closing-prompt p{ margin-bottom:0; font-family:var(--serif); font-style:italic; font-size:1.08rem; }
-
-  /* FOOTER */
-  .app-footer{
-    flex:0 0 auto;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:var(--bg);
-    border-top:1px solid var(--line);
-  }
-  .nav-btn{
-    flex:1 1 auto;
-    min-height:50px;
-    background:var(--bg-elevated);
-    color:var(--text);
-    border:1px solid var(--line);
-    padding:13px 10px;
-    border-radius:14px;
-    font-size:.95rem;
-    font-weight:600;
-  }
-  .nav-btn.nav-btn--primary{ background:var(--accent); color:#181517; border-color:var(--accent); font-weight:800; }
-  .nav-btn:disabled{ opacity:.35; }
-  .nav-btn:active:not(:disabled){ transform:scale(.98); }
-  .toc-btn{
-    flex:0 0 50px; height:50px;
-    background:transparent; color:var(--text);
-    border:1px solid var(--line); border-radius:14px;
-    font-size:1.2rem; display:flex; align-items:center; justify-content:center;
-  }
-
-  /* TOC */
-  .toc-overlay{
-    position:fixed; inset:0;
-    background:rgba(8,6,8,0.78);
-    display:none; align-items:flex-end;
-    z-index:20;
-  }
-  .toc-overlay.open{ display:flex; }
-  .toc-panel{
-    width:100%; max-height:82vh;
-    background:var(--bg);
-    border-top:1px solid var(--line);
-    border-radius:20px 20px 0 0;
-    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
-    overflow-y:auto;
-    animation:slideUp .26s ease;
-  }
-  @keyframes slideUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
-  .toc-head{
-    display:flex; justify-content:space-between; align-items:center;
-    max-width:var(--maxw); margin:0 auto 8px;
-    padding:6px 4px 12px;
-    font-family:var(--serif); font-size:1.12rem;
-    border-bottom:1px solid var(--line);
-  }
-  .toc-head button{ background:none; border:none; color:var(--text-muted); font-size:1.4rem; line-height:1; min-width:44px; min-height:44px; }
-  #tocList{ list-style:none; margin:0 auto; padding:0; max-width:var(--maxw); }
-  #tocList li button{
-    width:100%; text-align:left;
-    background:none; border:none;
-    border-bottom:1px solid var(--line);
-    color:var(--text); padding:15px 4px; min-height:52px;
-    font-size:1rem; display:flex; gap:12px; align-items:baseline;
-  }
-  #tocList li button .n{ color:var(--accent); font-weight:800; font-size:.85rem; flex:0 0 auto; }
-  #tocList li button.active{ color:var(--accent); }
-
-  @media (min-width: 760px){
-    :root{ --maxw: 720px; }
-    .cover h1{ font-size:2.8rem; }
-    .lead{ font-size:1.32rem; }
-    .content-inner{ padding:46px 24px 80px; }
-    .content-inner p{ font-size:1.1rem; }
-    .page-title{ font-size:1.25rem; }
-    .app-footer{ padding-bottom:16px; }
-    .toc-overlay{ align-items:center; justify-content:center; }
-    .toc-panel{ max-width:560px; border-radius:20px; border:1px solid var(--line); }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .content-inner.fade-in, .toc-panel{ animation:none; }
-    .progress-fill{ transition:none; }
-  }
-</style>
+<meta name="theme-color" content="#181517">
+<link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../leccion.css">
 </head>
 <body>
 <div class="app">
 
   <header class="app-header">
     <div class="header-row">
+      <a class="back-link" href="/#biblioteca" aria-label="Volver a la biblioteca"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span class="back-link__text" aria-hidden="true">Biblioteca</span></a>
       <div>
         <span class="eyebrow" id="sectionLabel">Lección 3</span>
         <h1 class="page-title" id="pageTitle">Portada</h1>
@@ -275,7 +30,7 @@
 
   <footer class="app-footer">
     <button class="nav-btn" id="prevBtn">‹ Anterior</button>
-    <button class="toc-btn" id="tocBtn" aria-label="Índice">≡</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg></button>
     <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
   </footer>
 
@@ -283,7 +38,7 @@
     <div class="toc-panel">
       <div class="toc-head">
         <span>Índice de la lección</span>
-        <button id="tocClose" aria-label="Cerrar">✕</button>
+        <button id="tocClose" aria-label="Cerrar"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
       </div>
       <ul id="tocList"></ul>
     </div>

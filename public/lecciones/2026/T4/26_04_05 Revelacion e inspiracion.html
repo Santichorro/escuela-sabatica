@@ -3,204 +3,330 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Revelación e inspiración · Lección 5</title>
-<style>
-:root{--bg:#181517;--tx:#FBFBFF;--ac:#FF331F;--sf:#231f22;--mu:#c9c6cc;--ln:#3a3438}
-*{box-sizing:border-box;margin:0}
-html,body{height:100%}
-body{background:var(--bg);color:var(--tx);font-family:Georgia,"Times New Roman",serif;font-size:19px;line-height:1.75;-webkit-text-size-adjust:100%}
-#bar{position:fixed;top:0;left:0;height:4px;background:var(--ac);width:0;transition:width .3s;z-index:20}
-header{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 12px) 18px 10px;background:linear-gradient(var(--bg) 70%,transparent);font:15px/1.2 system-ui,sans-serif;color:var(--mu)}
-header button{background:none;border:1px solid var(--ln);color:var(--tx);border-radius:10px;padding:10px 14px;font:inherit;min-height:44px}
-main{height:100%;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 76px) 22px calc(env(safe-area-inset-bottom,0px) + 110px)}
-.page{display:none;max-width:680px;margin:0 auto}
-.page.on{display:block;animation:in .35s ease}
-@keyframes in{from{opacity:0}to{opacity:1}}
-@media(prefers-reduced-motion:reduce){.page.on{animation:none}#bar{transition:none}}
-h1{font-size:2.3rem;line-height:1.15;color:var(--ac);margin-bottom:18px}
-h2{font-size:1.6rem;line-height:1.25;color:var(--ac);margin-bottom:16px}
-h3{font-size:1.1rem;margin:26px 0 6px;color:var(--tx)}
-p{margin-bottom:16px}
-.lead{font-size:1.15rem;color:var(--mu)}
-.verse,.ellen{border-left:4px solid var(--ac);background:var(--sf);padding:14px 18px;margin:20px 0;border-radius:0 12px 12px 0}
-.verse{font-style:italic}
-.verse b,.ellen b{display:block;font:600 .85rem/1.4 system-ui,sans-serif;font-style:normal;color:var(--ac);margin-top:6px}
-.ellen{border-left-style:double;border-left-width:6px}
-.q{border:1px solid var(--ac);border-radius:14px;padding:16px 18px;margin:26px 0}
-.q>p{font-weight:700;margin-bottom:12px}
-.q summary{cursor:pointer;list-style:none;display:inline-block;background:var(--ac);color:var(--bg);font:700 1rem system-ui,sans-serif;padding:12px 18px;border-radius:10px;min-height:44px}
-.q summary::-webkit-details-marker{display:none}
-.q[open] summary{background:none;color:var(--ac);border:1px solid var(--ac)}
-.q .a{margin-top:14px;padding-top:14px;border-top:1px dashed var(--ln);color:var(--mu);font-size:1.02rem}
-.a:before{content:"Para el maestro: ";color:var(--ac);font:700 .85rem system-ui,sans-serif}
-ul{padding-left:22px;margin-bottom:16px}li{margin-bottom:8px}
-hr{border:0;border-top:1px solid var(--ln);margin:26px 0}
-nav.dock{position:fixed;bottom:0;left:0;right:0;z-index:10;display:flex;gap:10px;justify-content:center;padding:14px 18px calc(env(safe-area-inset-bottom,0px) + 14px);background:linear-gradient(transparent,var(--bg) 35%)}
-nav.dock button{flex:1;max-width:260px;min-height:52px;border-radius:12px;font:700 1.05rem system-ui,sans-serif;border:1px solid var(--ac);background:none;color:var(--tx)}
-nav.dock #nx{background:var(--ac);color:var(--bg)}
-nav.dock button:disabled{opacity:.3}
-button:focus-visible,summary:focus-visible{outline:3px solid var(--tx);outline-offset:2px}
-#idx{position:fixed;inset:0;background:rgba(24,21,23,.97);z-index:30;display:none;padding:calc(env(safe-area-inset-top,0px) + 24px) 22px;overflow:auto}
-#idx.on{display:block}
-#idx ol{max-width:520px;margin:0 auto;padding:0;list-style:none}
-#idx li button{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--ln);color:var(--tx);font:1.05rem system-ui,sans-serif;padding:16px 4px;min-height:52px}
-#idx li button.cur{color:var(--ac);font-weight:700}
-@media(min-width:900px){body{font-size:21px}main{padding-top:100px}h1{font-size:3rem}}
-</style>
+<title>Revelación e inspiración — Lección 5</title>
+<meta name="theme-color" content="#181517">
+<link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../leccion.css">
 </head>
 <body>
-<div id="bar"></div>
-<header><span id="pg">1 / 9</span><button id="mn" aria-label="Abrir índice">Índice</button></header>
-<main id="main">
+<div class="app">
 
-<section class="page" data-t="Apertura">
-<h1>Revelación e inspiración</h1>
-<p class="lead">Lección 5 · Sábado 31 de octubre de 2026</p>
-<p>Imagina que alguien te entrega un mensaje de una persona que nunca has visto. ¿Cómo sabrías que es auténtico? ¿Que no fue alterado en el camino? ¿Que quien lo trajo no le añadió nada propio?</p>
-<p>Eso mismo es lo que está en juego cuando abrimos la Biblia. No preguntamos solo <em>qué</em> dice, sino <em>de dónde viene</em> y <em>por qué podemos confiar en ella</em>.</p>
-<div class="verse">«La revelación de Jesucristo, que Dios le dio para manifestar a sus siervos lo que debe suceder pronto; y la declaró mediante su ángel a su siervo Juan.»<b>Apocalipsis 1:1-2 (texto para memorizar)</b></div>
-<p>Juan, anciano y desterrado en Patmos, es el último eslabón de una cadena: Dios Padre, Jesucristo, el ángel, Juan, las iglesias. Hoy recorreremos esa cadena para entender cómo Dios se comunica y por qué lo hace.</p>
-<div class="q"><p>Si Dios pudiera hablarte hoy de la forma que quisiera, ¿cómo crees que lo haría? ¿Por qué crees que eligió hacerlo mediante personas?</p>
-<details><summary>Ver respuesta</summary><div class="a">Deje que varios respondan antes de revelar. Idea central: Dios eligió a humanos porque su mensaje no es solo información, es relación. Por medio de Jesús, «el Verbo hecho carne», ya había mostrado que su método es la encarnación: lo divino expresado en lo humano. La Biblia sigue ese mismo patrón.</div></details></div>
-</section>
+  <header class="app-header">
+    <div class="header-row">
+      <a class="back-link" href="/#biblioteca" aria-label="Volver a la biblioteca"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span class="back-link__text" aria-hidden="true">Biblioteca</span></a>
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 5</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
 
-<section class="page" data-t="Dos libros: naturaleza y Escritura">
-<h2>Dos libros que hablan de Dios</h2>
-<p>Dios habla de dos maneras complementarias. La primera es la <strong>revelación general</strong>: la creación.</p>
-<div class="verse">«Los cielos cuentan la gloria de Dios, y el firmamento anuncia la obra de sus manos.»<b>Salmo 19:1</b></div>
-<div class="verse">«Los atributos invisibles de Dios, su eterno poder y su divinidad, se ven claramente desde la creación del mundo.»<b>Romanos 1:20</b></div>
-<p>La naturaleza nos habla de poder, orden y cuidado. Pero también guarda sombras: espinos, enfermedad, depredación, muerte. Un mismo bosque puede mostrar un Creador bueno… y un mundo herido. ¿Cómo interpretar ese mensaje ambiguo?</p>
-<p>Ahí entra la <strong>revelación especial</strong>: Jesucristo y la Biblia que da testimonio de él (Juan 5:39). Solo la Escritura explica el origen del mal, el plan de redención y el final de la historia.</p>
-<div class="ellen">«“Dios es amor” está escrito en cada capullo de flor que se abre, en cada tallo de la naciente hierba.»<b>Elena G. de White, El camino a Cristo, p. 9</b></div>
-<p>Observa el equilibrio: la naturaleza escribe «Dios es amor» con tinta de flores; la Palabra lo explica con palabras y con una cruz.</p>
-<div class="q"><p>Hay personas que dicen sentirse más cerca de Dios en un bosque que en una iglesia. ¿Qué tiene de cierto esa idea y qué le falta?</p>
-<details><summary>Ver respuesta</summary><div class="a">Es cierto que la creación revela a Dios (Rom. 1:20). Le falta que no responde a las preguntas decisivas: ¿por qué sufrimos?, ¿cómo se perdona el pecado?, ¿qué hay después de la muerte? La naturaleza señala al Creador; la Escritura y Cristo nos dicen quién es y qué hizo por nosotros. Ambas se necesitan.</div></details></div>
-</section>
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
 
-<section class="page" data-t="¿Qué hace diferente a la Biblia?">
-<h2>¿Qué hace diferente a la Biblia?</h2>
-<p>Existen millones de libros religiosos, filosóficos y morales. Hebreos 1:1-2 afirma que Dios habló «muchas veces y de muchas maneras» por los profetas, y por fin «por el Hijo». La Biblia no es una biblioteca de ideas humanas sobre Dios: es el registro de Dios hablando.</p>
-<div class="verse">«Toda la Escritura es inspirada por Dios, y útil para enseñar, para redargüir, para corregir, para instruir en justicia.»<b>2 Timoteo 3:16</b></div>
-<div class="verse">«Toda buena dádiva y todo don perfecto desciende de lo alto, del Padre de las luces, en el cual no hay mudanza.»<b>Santiago 1:17</b></div>
-<h3>Qué es la inspiración</h3>
-<p>Es la asistencia del Espíritu Santo a los profetas genuinos para que comunicaran con fidelidad los mensajes divinos, tanto al <em>recibirlos</em> como al <em>transmitirlos</em>.</p>
-<p>Dios usó sueños y visiones (Núm. 12:6; Isa. 6), testigos oculares (1 Juan 1:1-3), investigación histórica guiada por el Espíritu (Luc. 1:1-3) e impresiones en la mente (2 Ped. 1:21).</p>
-<h3>Un punto clave</h3>
-<p>Los profetas usaron <strong>sus propias palabras</strong>, pero el mensaje no fue alterado ni distorsionado. Por eso cada libro tiene el estilo de su autor, sin que haya «grados» de inspiración.</p>
-<div class="q"><p>Si los escritores bíblicos usaron sus propias palabras y estilo, ¿cómo podemos estar seguros de que el mensaje sigue siendo de Dios?</p>
-<details><summary>Ver respuesta</summary><div class="a">Porque la inspiración actúa sobre los pensamientos y el mensaje, no solo sobre las palabras (2 Ped. 1:21: «inspirados por el Espíritu Santo»). Piensa en un buen intérprete: usa su voz y su acento, pero lleva fielmente el mensaje. Además, la unidad de la Biblia, escrita por unos cuarenta autores a lo largo de siglos, apunta a una sola Mente detrás.</div></details></div>
-</section>
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg></button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
 
-<section class="page" data-t="Mensajes orales">
-<h2>Cuando Dios habla en voz alta</h2>
-<p>La primera forma de comunicación fue oral. Dios habló con Adán y Eva antes y después de la caída (Gén. 2:16-17; 3:9-19), y ellos entendieron cada palabra. Su voz resonó en el Sinaí (Éx. 20), en el bautismo y en la transfiguración de Jesús.</p>
-<div class="verse">«Nunca la profecía fue traída por voluntad humana, sino que los santos hombres de Dios hablaron siendo inspirados por el Espíritu Santo.»<b>2 Pedro 1:21</b></div>
-<p>Muchos profetas jamás escribieron un libro: Noé, Natán, Elías, Eliseo, Juan el Bautista. Su palabra no fue menos inspirada. Jesús mismo no dejó un solo escrito (solo trazó en el suelo, Juan 8:6) y enseñaba «con autoridad» (Mat. 7:29).</p>
-<p>Natán llegó ante un rey poderoso con un mensaje incómodo: «Tú eres aquel hombre». Fue un mensaje oral, pero tan vinculante que David respondió: «Pequé contra Jehová».</p>
-<div class="ellen">«Todo daño o agravio que se haga a otros se extiende del perjudicado a Dios.»<b>Elena G. de White, Historia de los patriarcas y profetas, pp. 780-782</b></div>
-<div class="q"><p>Algunos profetas no tienen libro en la Biblia. ¿Por qué eso no les quita autoridad? ¿Qué nos enseña sobre cómo Dios define la autoridad?</p>
-<details><summary>Ver respuesta</summary><div class="a">La autoridad viene de quién habla, no del formato. Un mensaje divino es válido sea hablado o escrito. El canon recoge lo que Dios quiso preservar para todas las generaciones, pero no mide cuánto habló. Aplicación: no despreciemos un consejo bíblico porque venga en forma de una conversación sencilla; Dios aún usa voces humanas.</div></details></div>
-<div class="q"><p>¿Por qué crees que Dios envió a Natán en lugar de dejar que David descubriera su pecado solo?</p>
-<details><summary>Ver respuesta</summary><div class="a">David llevaba cerca de un año sin confesar (Sal. 32:3-5). Un corazón endurecido no se corrige por sí mismo. Dios usó una parábola (la oveja del pobre) para sortear las defensas del rey. Todos tenemos puntos ciegos; necesitamos Palabra externa y personas fieles que nos hablen con verdad y amor.</div></details></div>
-</section>
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
 
-<section class="page" data-t="Mensajes escritos">
-<h2>Por qué Dios pidió escribir</h2>
-<p>Las palabras habladas se desvanecen o se distorsionan. Por eso Dios ordenó a Moisés: «Escribe esto para memoria en un libro» (Éx. 17:14). Desde entonces, el Espíritu guio a los profetas hasta completar los 66 libros.</p>
-<div class="verse">«Estas cosas les acontecieron como ejemplo, y están escritas para amonestarnos a nosotros, a quienes han alcanzado los fines de los siglos.»<b>1 Corintios 10:11</b></div>
-<div class="verse">«Estas se han escrito para que creáis que Jesús es el Cristo, el Hijo de Dios, y para que creyendo, tengáis vida en su nombre.»<b>Juan 20:31</b></div>
-<h3>Razones para escribir</h3>
-<ul>
-<li><strong>Memoria:</strong> preservar lo que Dios hizo y dijo (Éx. 17:14).</li>
-<li><strong>Fe:</strong> llevar a las personas a Cristo y a la vida (Juan 20:31).</li>
-<li><strong>Advertencia y ejemplo:</strong> aprender de aciertos y errores ajenos (1 Cor. 10:11).</li>
-<li><strong>Futuro:</strong> alcanzar a quienes no estuvieron presentes (Apoc. 1:19).</li>
-</ul>
-<p>Hay algo conmovedor: la Biblia no maquilla a sus héroes. Abraham miente, David cae, Pedro niega.</p>
-<div class="ellen">«Es alentador para nuestro corazón abatido saber que por la gracia de Dios ellos pudieron obtener nuevo vigor para levantarse por encima de su naturaleza mala.»<b>Elena G. de White, Conflicto y valor, 1.º de enero, p. 7</b></div>
-<div class="q"><p>La Biblia incluye pecados de sus personajes, e incluso palabras de Satanás (Gén. 3:1-5). ¿Significa que Dios aprueba todo lo que registra? ¿Cómo distinguimos entre lo que se <em>describe</em> y lo que se <em>enseña</em>?</p>
-<details><summary>Ver respuesta</summary><div class="a">No. Registrar no es aprobar. Para distinguir: ¿qué dice el contexto y el resto de la Escritura?, ¿cómo evalúa Dios el hecho (consecuencias, reproche, arrepentimiento)?, ¿qué principio aparece en las enseñanzas directas? La honestidad de la Biblia es una evidencia de autenticidad: una historia inventada habría ocultado las caídas de sus héroes.</div></details></div>
-</section>
+</div>
 
-<section class="page" data-t="Mensajes representados">
-<h2>Cuando el mensaje se actúa</h2>
-<p>A veces las palabras no bastan. Dios pidió a sus profetas que <em>vivieran</em> el mensaje. Ezequiel dibujó Jerusalén en un adobe, la sitió con maquetas y estuvo acostado 390 días sobre un lado y 40 sobre el otro (Eze. 4:1-8). Oseas se casó con Gomer para mostrar la infidelidad de Israel y la fidelidad de Dios (Ose. 1:2-9).</p>
-<p>Pensemos en los símbolos que Dios usó: el santuario (Heb. 8:1-6), las estatuas y bestias de Daniel (Dan. 2; 7; 8), Jesús como Pan de Vida, Luz del mundo y Vid verdadera (Juan 6; 8; 15).</p>
-<div class="ellen">«Empleó ilustraciones en su enseñanza que despertaban los recuerdos y simpatías más puros para así poder alcanzar el templo interior del alma.»<b>Elena G. de White, El Cristo triunfante, 6 de agosto, p. 227</b></div>
-<p>Las representaciones impactan porque se recuerdan: una cosa es oír que Dios sufre por su pueblo, y otra ver a un profeta atado durante meses.</p>
-<div class="verse">«Yo conozco tus obras, que ni eres frío ni caliente… Por tanto, yo te aconsejo que de mí compres oro refinado en fuego… y unge tus ojos con colirio, para que veas.»<b>Apocalipsis 3:15, 18</b></div>
-<div class="q"><p>Si Dios quisiera advertirnos hoy sobre la condición laodicense, ¿qué «representación» podría usar? ¿Qué hace tibia a una persona o a una iglesia?</p>
-<details><summary>Ver respuesta</summary><div class="a">Respuestas abiertas. Laodicea se sentía rica y no necesitaba nada (Apoc. 3:17). Hoy sería la comodidad, la rutina religiosa sin relación, el consumo constante de información sin obediencia. Dios no los rechaza: ofrece oro, vestiduras y colirio, es decir, fe, justicia de Cristo y discernimiento del Espíritu. La advertencia es misericordia.</div></details></div>
-</section>
-
-<section class="page" data-t="Elena G. de White">
-<h2>Elena G. de White y la inspiración</h2>
-<p>Los adventistas creemos que Elena de White fue una verdadera profeta, con la misma clase de inspiración que los profetas bíblicos, pero sin igualar sus escritos a la Biblia. Ella siempre exaltó la Escritura como la revelación autoritativa e infalible de Dios.</p>
-<div class="ellen">«No son las palabras de la Biblia las inspiradas, sino los hombres son los que fueron inspirados. La inspiración no obra en las palabras del hombre ni en sus expresiones, sino en el hombre mismo.»<b>Elena G. de White, Mensajes selectos, t. 1, p. 24</b></div>
-<div class="ellen">«Hay oportunidades cuando deben declararse cosas comunes… Tales palabras, tal información, no son dadas bajo la inspiración especial del Espíritu de Dios.»<b>Elena G. de White, Mensajes selectos, t. 1, pp. 45-46</b></div>
-<p>Esta distinción protege de dos extremos: rechazar todo lo que escribió o tratar cada carta y cada diario como si fuera una revelación.</p>
-<h3>Cómo leerla bien</h3>
-<ul>
-<li>La Biblia es la norma; los escritos de Elena de White la iluminan y aplican.</li>
-<li>Debemos leer su contexto: época, destinatarios, propósito.</li>
-<li>Su mensaje apunta a Cristo y a la Escritura, no a sí misma.</li>
-</ul>
-<div class="q"><p>¿Qué peligros hay si tratamos cada línea de un escritor inspirado como si fuera un mandato universal, o si descartamos todo lo que no entendemos?</p>
-<details><summary>Ver respuesta</summary><div class="a">El primero produce legalismo y rigidez; el segundo, escepticismo. La actitud correcta combina humildad y discernimiento: estudiar el contexto, comparar con la Escritura (Hech. 17:11) y pedir la luz del Espíritu. Jesús mismo advirtió contra tergiversar la Palabra (Mar. 12:24).</div></details></div>
-</section>
-
-<section class="page" data-t="Aplicación">
-<h2>Vivir bajo una Palabra inspirada</h2>
-<p>Una Palabra inspirada exige una respuesta. Tres enfoques para esta semana:</p>
-<h3>Estudiarla con humildad</h3>
-<p>«Dificultades» en la Biblia no son una debilidad; son la señal de que Dios es mayor que nuestra mente. Elena de White señala que debemos acercarnos «con espíritu humilde y dócil» (El conflicto de los siglos, p. 584).</p>
-<h3>Rodearnos de voces adecuadas</h3>
-<p>Vivimos saturados de opiniones, algoritmos y noticias. Si todo es «información», ¿qué lugar ocupa la voz de Dios? Decide un momento diario sin pantallas para escuchar su Palabra.</p>
-<h3>Compartirla de forma comprensible</h3>
-<p>Dios habló en lenguaje humano. Nosotros también podemos usar historias, imágenes, un gesto de servicio, para que otros entiendan su amor.</p>
-<div class="verse">«Cuanto más escudriña [la Biblia], tanto más se profundiza su convicción de que es la Palabra del Dios vivo.»<b>Elena G. de White, El camino a Cristo, pp. 106-108</b></div>
-<div class="q"><p>¿Qué hábito concreto puedes cambiar esta semana para que la Biblia deje de ser «un libro más» y se convierta en la voz de Dios para ti?</p>
-<details><summary>Ver respuesta</summary><div class="a">Guíe hacia compromisos concretos y pequeños: leer un capítulo antes del celular, orar antes de abrir la Biblia, anotar un versículo y compartirlo con alguien, estudiar en pareja o en familia. Mejor un paso real que una promesa grandiosa.</div></details></div>
-</section>
-
-<section class="page" data-t="Cierre">
-<h2>La cadena sigue abierta</h2>
-<p>Dios Padre habló al Hijo, el Hijo al ángel, el ángel a Juan, Juan a las iglesias… y la cadena llega hasta ti. No eres un espectador: eres el siguiente destinatario del mensaje.</p>
-<ul>
-<li>Dios se comunica porque quiere que lo conozcamos y confiemos en él.</li>
-<li>Usó voces, escritos y representaciones para alcanzarnos.</li>
-<li>La inspiración une lo divino y lo humano sin perder la verdad.</li>
-<li>La respuesta adecuada es la fe obediente.</li>
-</ul>
-<div class="verse">«Tenemos también la palabra profética más segura, a la cual hacéis bien en estar atentos como a una antorcha que alumbra en lugar oscuro.»<b>2 Pedro 1:19</b></div>
-<p>Cerremos con una oración sencilla: pedir al Espíritu que, así como inspiró la Palabra, nos ayude a entenderla y vivirla.</p>
-<div class="q"><p>Si tuvieras que explicar a un amigo en una sola frase por qué confías en la Biblia, ¿qué dirías?</p>
-<details><summary>Ver respuesta</summary><div class="a">Anime respuestas personales. Ejemplo: «Confío en ella porque es coherente, porque me ha cambiado y porque me presenta a Jesús, quien cumple lo que prometió.»</div></details></div>
-</section>
-
-</main>
-<div id="idx" role="dialog" aria-label="Índice"><ol id="list"></ol></div>
-<nav class="dock"><button id="pv">Anterior</button><button id="nx">Siguiente</button></nav>
 <script>
 (function(){
-var P=[].slice.call(document.querySelectorAll('.page')),i=0,M=document.getElementById('main'),
-pg=document.getElementById('pg'),bar=document.getElementById('bar'),pv=document.getElementById('pv'),nx=document.getElementById('nx'),
-idx=document.getElementById('idx'),list=document.getElementById('list');
-P.forEach(function(p,n){var li=document.createElement('li'),b=document.createElement('button');b.textContent=(n+1)+'. '+p.dataset.t;b.onclick=function(){go(n);idx.classList.remove('on')};li.appendChild(b);list.appendChild(li)});
-function go(n){n=Math.max(0,Math.min(P.length-1,n));i=n;
-P.forEach(function(p,k){p.classList.toggle('on',k===n)});
-pg.textContent=(n+1)+' / '+P.length+' · '+P[n].dataset.t;
-bar.style.width=((n+1)/P.length*100)+'%';
-pv.disabled=n===0;nx.disabled=n===P.length-1;
-[].forEach.call(list.querySelectorAll('button'),function(b,k){b.className=k===n?'cur':''});
-M.scrollTop=0;try{history.replaceState(null,'','#'+(n+1))}catch(e){}}
-pv.onclick=function(){go(i-1)};nx.onclick=function(){go(i+1)};
-document.getElementById('mn').onclick=function(){idx.classList.toggle('on')};
-document.addEventListener('keydown',function(e){if(e.key==='ArrowRight')go(i+1);else if(e.key==='ArrowLeft')go(i-1);else if(e.key==='Escape')idx.classList.remove('on')});
-var sx=0,sy=0;
-M.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
-M.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*2)go(i+(dx<0?1:-1))},{passive:true});
-go((parseInt(location.hash.slice(1),10)||1)-1);
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite></div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 5 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        '<div class="cover"><span class="kicker">4TO TRIMESTRE 2026 · LECCIÓN 5</span><h1>Revelación e inspiración</h1><p class="subtitle">Cómo se comunica Dios —por medio de la creación, de su Palabra y de sus profetas— y por qué podemos confiar en que la Biblia es su voz.</p><div class="memory-verse">«La revelación de Jesucristo, que Dios le dio para manifestar a sus siervos lo que debe suceder pronto; y la declaró mediante su ángel a su siervo Juan.»<cite>Apocalipsis 1:1-2 — Texto para memorizar</cite></div><p class="readings"><b>Sábado 31 de octubre de 2026</b></p><button class="start-btn" id="startBtn">Comenzar la clase →</button></div>'
+    },
+
+    /* 1 ---------------- PUNTO DE PARTIDA */
+    {
+      tag: "Punto de partida",
+      title: "Apertura",
+      html:
+        '<p class="lead">Imagina que alguien te entrega un mensaje de una persona que nunca has visto. ¿Cómo sabrías que es auténtico? ¿Que no fue alterado en el camino? ¿Que quien lo trajo no le añadió nada propio?</p>' +
+        '<p>Eso mismo es lo que está en juego cuando abrimos la Biblia. No preguntamos solo <em>qué</em> dice, sino <em>de dónde viene</em> y <em>por qué podemos confiar en ella</em>.</p>' +
+        v('APOCALIPSIS 1:1-2 (TEXTO PARA MEMORIZAR)', '«La revelación de Jesucristo, que Dios le dio para manifestar a sus siervos lo que debe suceder pronto; y la declaró mediante su ángel a su siervo Juan.»') +
+        '<p>Juan, anciano y desterrado en Patmos, es el último eslabón de una cadena: Dios Padre, Jesucristo, el ángel, Juan, las iglesias. Hoy recorreremos esa cadena para entender cómo Dios se comunica y por qué lo hace.</p>' +
+        q('Si Dios pudiera hablarte hoy de la forma que quisiera, ¿cómo crees que lo haría? ¿Por qué crees que eligió hacerlo mediante personas?',
+          '<p>Deje que varios respondan antes de revelar. Idea central: Dios eligió a humanos porque su mensaje no es solo información, es relación. Por medio de Jesús, «el Verbo hecho carne», ya había mostrado que su método es la encarnación: lo divino expresado en lo humano. La Biblia sigue ese mismo patrón.</p>')
+    },
+
+    /* 2 ---------------- DOS LIBROS: NATURALEZA Y ESCRITURA */
+    {
+      tag: "Dos libros: naturaleza y Escritura",
+      title: "Dos libros que hablan de Dios",
+      html:
+        '<p class="lead">Dios habla de dos maneras complementarias. La primera es la <strong>revelación general</strong>: la creación.</p>' +
+        v('SALMO 19:1', '«Los cielos cuentan la gloria de Dios, y el firmamento anuncia la obra de sus manos.»') +
+        v('ROMANOS 1:20', '«Los atributos invisibles de Dios, su eterno poder y su divinidad, se ven claramente desde la creación del mundo.»') +
+        '<p>La naturaleza nos habla de poder, orden y cuidado. Pero también guarda sombras: espinos, enfermedad, depredación, muerte. Un mismo bosque puede mostrar un Creador bueno… y un mundo herido. ¿Cómo interpretar ese mensaje ambiguo?</p>' +
+        '<p>Ahí entra la <strong>revelación especial</strong>: Jesucristo y la Biblia que da testimonio de él (Juan 5:39). Solo la Escritura explica el origen del mal, el plan de redención y el final de la historia.</p>' +
+        e('«“Dios es amor” está escrito en cada capullo de flor que se abre, en cada tallo de la naciente hierba.»', 'Elena G. de White, El camino a Cristo, p. 9') +
+        '<p>Observa el equilibrio: la naturaleza escribe «Dios es amor» con tinta de flores; la Palabra lo explica con palabras y con una cruz.</p>' +
+        q('Hay personas que dicen sentirse más cerca de Dios en un bosque que en una iglesia. ¿Qué tiene de cierto esa idea y qué le falta?',
+          '<p>Es cierto que la creación revela a Dios (Rom. 1:20). Le falta que no responde a las preguntas decisivas: ¿por qué sufrimos?, ¿cómo se perdona el pecado?, ¿qué hay después de la muerte? La naturaleza señala al Creador; la Escritura y Cristo nos dicen quién es y qué hizo por nosotros. Ambas se necesitan.</p>')
+    },
+
+    /* 3 ---------------- INSPIRACIÓN */
+    {
+      tag: "Inspiración",
+      title: "¿Qué hace diferente a la Biblia?",
+      html:
+        '<p class="lead">Existen millones de libros religiosos, filosóficos y morales. Hebreos 1:1-2 afirma que Dios habló «muchas veces y de muchas maneras» por los profetas, y por fin «por el Hijo». La Biblia no es una biblioteca de ideas humanas sobre Dios: es el registro de Dios hablando.</p>' +
+        v('2 TIMOTEO 3:16', '«Toda la Escritura es inspirada por Dios, y útil para enseñar, para redargüir, para corregir, para instruir en justicia.»') +
+        v('SANTIAGO 1:17', '«Toda buena dádiva y todo don perfecto desciende de lo alto, del Padre de las luces, en el cual no hay mudanza.»') +
+        '<h2 class="section-h">Qué es la inspiración</h2>' +
+        '<p>Es la asistencia del Espíritu Santo a los profetas genuinos para que comunicaran con fidelidad los mensajes divinos, tanto al <em>recibirlos</em> como al <em>transmitirlos</em>.</p>' +
+        '<p>Dios usó sueños y visiones (Núm. 12:6; Isa. 6), testigos oculares (1 Juan 1:1-3), investigación histórica guiada por el Espíritu (Luc. 1:1-3) e impresiones en la mente (2 Ped. 1:21).</p>' +
+        '<h2 class="section-h">Un punto clave</h2>' +
+        '<p>Los profetas usaron <strong>sus propias palabras</strong>, pero el mensaje no fue alterado ni distorsionado. Por eso cada libro tiene el estilo de su autor, sin que haya «grados» de inspiración.</p>' +
+        q('Si los escritores bíblicos usaron sus propias palabras y estilo, ¿cómo podemos estar seguros de que el mensaje sigue siendo de Dios?',
+          '<p>Porque la inspiración actúa sobre los pensamientos y el mensaje, no solo sobre las palabras (2 Ped. 1:21: «inspirados por el Espíritu Santo»). Piensa en un buen intérprete: usa su voz y su acento, pero lleva fielmente el mensaje. Además, la unidad de la Biblia, escrita por unos cuarenta autores a lo largo de siglos, apunta a una sola Mente detrás.</p>')
+    },
+
+    /* 4 ---------------- MENSAJES ORALES */
+    {
+      tag: "Mensajes orales",
+      title: "Cuando Dios habla en voz alta",
+      html:
+        '<p class="lead">La primera forma de comunicación fue oral. Dios habló con Adán y Eva antes y después de la caída (Gén. 2:16-17; 3:9-19), y ellos entendieron cada palabra. Su voz resonó en el Sinaí (Éx. 20), en el bautismo y en la transfiguración de Jesús.</p>' +
+        v('2 PEDRO 1:21', '«Nunca la profecía fue traída por voluntad humana, sino que los santos hombres de Dios hablaron siendo inspirados por el Espíritu Santo.»') +
+        '<p>Muchos profetas jamás escribieron un libro: Noé, Natán, Elías, Eliseo, Juan el Bautista. Su palabra no fue menos inspirada. Jesús mismo no dejó un solo escrito (solo trazó en el suelo, Juan 8:6) y enseñaba «con autoridad» (Mat. 7:29).</p>' +
+        '<p>Natán llegó ante un rey poderoso con un mensaje incómodo: «Tú eres aquel hombre». Fue un mensaje oral, pero tan vinculante que David respondió: «Pequé contra Jehová».</p>' +
+        e('«Todo daño o agravio que se haga a otros se extiende del perjudicado a Dios.»', 'Elena G. de White, Historia de los patriarcas y profetas, pp. 780-782') +
+        q('Algunos profetas no tienen libro en la Biblia. ¿Por qué eso no les quita autoridad? ¿Qué nos enseña sobre cómo Dios define la autoridad?',
+          '<p>La autoridad viene de quién habla, no del formato. Un mensaje divino es válido sea hablado o escrito. El canon recoge lo que Dios quiso preservar para todas las generaciones, pero no mide cuánto habló. Aplicación: no despreciemos un consejo bíblico porque venga en forma de una conversación sencilla; Dios aún usa voces humanas.</p>') +
+        q('¿Por qué crees que Dios envió a Natán en lugar de dejar que David descubriera su pecado solo?',
+          '<p>David llevaba cerca de un año sin confesar (Sal. 32:3-5). Un corazón endurecido no se corrige por sí mismo. Dios usó una parábola (la oveja del pobre) para sortear las defensas del rey. Todos tenemos puntos ciegos; necesitamos Palabra externa y personas fieles que nos hablen con verdad y amor.</p>')
+    },
+
+    /* 5 ---------------- MENSAJES ESCRITOS */
+    {
+      tag: "Mensajes escritos",
+      title: "Por qué Dios pidió escribir",
+      html:
+        '<p class="lead">Las palabras habladas se desvanecen o se distorsionan. Por eso Dios ordenó a Moisés: «Escribe esto para memoria en un libro» (Éx. 17:14). Desde entonces, el Espíritu guio a los profetas hasta completar los 66 libros.</p>' +
+        v('1 CORINTIOS 10:11', '«Estas cosas les acontecieron como ejemplo, y están escritas para amonestarnos a nosotros, a quienes han alcanzado los fines de los siglos.»') +
+        v('JUAN 20:31', '«Estas se han escrito para que creáis que Jesús es el Cristo, el Hijo de Dios, y para que creyendo, tengáis vida en su nombre.»') +
+        '<h2 class="section-h">Razones para escribir</h2>' +
+        '<ul class="marks"><li><strong>Memoria:</strong> preservar lo que Dios hizo y dijo (Éx. 17:14).</li><li><strong>Fe:</strong> llevar a las personas a Cristo y a la vida (Juan 20:31).</li><li><strong>Advertencia y ejemplo:</strong> aprender de aciertos y errores ajenos (1 Cor. 10:11).</li><li><strong>Futuro:</strong> alcanzar a quienes no estuvieron presentes (Apoc. 1:19).</li></ul>' +
+        '<p>Hay algo conmovedor: la Biblia no maquilla a sus héroes. Abraham miente, David cae, Pedro niega.</p>' +
+        e('«Es alentador para nuestro corazón abatido saber que por la gracia de Dios ellos pudieron obtener nuevo vigor para levantarse por encima de su naturaleza mala.»', 'Elena G. de White, Conflicto y valor, 1.º de enero, p. 7') +
+        q('La Biblia incluye pecados de sus personajes, e incluso palabras de Satanás (Gén. 3:1-5). ¿Significa que Dios aprueba todo lo que registra? ¿Cómo distinguimos entre lo que se <em>describe</em> y lo que se <em>enseña</em>?',
+          '<p>No. Registrar no es aprobar. Para distinguir: ¿qué dice el contexto y el resto de la Escritura?, ¿cómo evalúa Dios el hecho (consecuencias, reproche, arrepentimiento)?, ¿qué principio aparece en las enseñanzas directas? La honestidad de la Biblia es una evidencia de autenticidad: una historia inventada habría ocultado las caídas de sus héroes.</p>')
+    },
+
+    /* 6 ---------------- MENSAJES REPRESENTADOS */
+    {
+      tag: "Mensajes representados",
+      title: "Cuando el mensaje se actúa",
+      html:
+        '<p class="lead">A veces las palabras no bastan. Dios pidió a sus profetas que <em>vivieran</em> el mensaje. Ezequiel dibujó Jerusalén en un adobe, la sitió con maquetas y estuvo acostado 390 días sobre un lado y 40 sobre el otro (Eze. 4:1-8). Oseas se casó con Gomer para mostrar la infidelidad de Israel y la fidelidad de Dios (Ose. 1:2-9).</p>' +
+        '<p>Pensemos en los símbolos que Dios usó: el santuario (Heb. 8:1-6), las estatuas y bestias de Daniel (Dan. 2; 7; 8), Jesús como Pan de Vida, Luz del mundo y Vid verdadera (Juan 6; 8; 15).</p>' +
+        e('«Empleó ilustraciones en su enseñanza que despertaban los recuerdos y simpatías más puros para así poder alcanzar el templo interior del alma.»', 'Elena G. de White, El Cristo triunfante, 6 de agosto, p. 227') +
+        '<p>Las representaciones impactan porque se recuerdan: una cosa es oír que Dios sufre por su pueblo, y otra ver a un profeta atado durante meses.</p>' +
+        v('APOCALIPSIS 3:15, 18', '«Yo conozco tus obras, que ni eres frío ni caliente… Por tanto, yo te aconsejo que de mí compres oro refinado en fuego… y unge tus ojos con colirio, para que veas.»') +
+        q('Si Dios quisiera advertirnos hoy sobre la condición laodicense, ¿qué «representación» podría usar? ¿Qué hace tibia a una persona o a una iglesia?',
+          '<p>Respuestas abiertas. Laodicea se sentía rica y no necesitaba nada (Apoc. 3:17). Hoy sería la comodidad, la rutina religiosa sin relación, el consumo constante de información sin obediencia. Dios no los rechaza: ofrece oro, vestiduras y colirio, es decir, fe, justicia de Cristo y discernimiento del Espíritu. La advertencia es misericordia.</p>')
+    },
+
+    /* 7 ---------------- ELENA G. DE WHITE */
+    {
+      tag: "Elena G. de White",
+      title: "Elena G. de White y la inspiración",
+      html:
+        '<p class="lead">Los adventistas creemos que Elena de White fue una verdadera profeta, con la misma clase de inspiración que los profetas bíblicos, pero sin igualar sus escritos a la Biblia. Ella siempre exaltó la Escritura como la revelación autoritativa e infalible de Dios.</p>' +
+        e('«No son las palabras de la Biblia las inspiradas, sino los hombres son los que fueron inspirados. La inspiración no obra en las palabras del hombre ni en sus expresiones, sino en el hombre mismo.»', 'Elena G. de White, Mensajes selectos, t. 1, p. 24') +
+        e('«Hay oportunidades cuando deben declararse cosas comunes… Tales palabras, tal información, no son dadas bajo la inspiración especial del Espíritu de Dios.»', 'Elena G. de White, Mensajes selectos, t. 1, pp. 45-46') +
+        '<p>Esta distinción protege de dos extremos: rechazar todo lo que escribió o tratar cada carta y cada diario como si fuera una revelación.</p>' +
+        '<h2 class="section-h">Cómo leerla bien</h2>' +
+        '<ul class="marks"><li>La Biblia es la norma; los escritos de Elena de White la iluminan y aplican.</li><li>Debemos leer su contexto: época, destinatarios, propósito.</li><li>Su mensaje apunta a Cristo y a la Escritura, no a sí misma.</li></ul>' +
+        q('¿Qué peligros hay si tratamos cada línea de un escritor inspirado como si fuera un mandato universal, o si descartamos todo lo que no entendemos?',
+          '<p>El primero produce legalismo y rigidez; el segundo, escepticismo. La actitud correcta combina humildad y discernimiento: estudiar el contexto, comparar con la Escritura (Hech. 17:11) y pedir la luz del Espíritu. Jesús mismo advirtió contra tergiversar la Palabra (Mar. 12:24).</p>')
+    },
+
+    /* 8 ---------------- APLICACIÓN */
+    {
+      tag: "Aplicación",
+      title: "Vivir bajo una Palabra inspirada",
+      html:
+        '<p class="lead">Una Palabra inspirada exige una respuesta. Tres enfoques para esta semana:</p>' +
+        '<h2 class="section-h">Estudiarla con humildad</h2>' +
+        '<p>«Dificultades» en la Biblia no son una debilidad; son la señal de que Dios es mayor que nuestra mente. Elena de White señala que debemos acercarnos «con espíritu humilde y dócil» (El conflicto de los siglos, p. 584).</p>' +
+        '<h2 class="section-h">Rodearnos de voces adecuadas</h2>' +
+        '<p>Vivimos saturados de opiniones, algoritmos y noticias. Si todo es «información», ¿qué lugar ocupa la voz de Dios? Decide un momento diario sin pantallas para escuchar su Palabra.</p>' +
+        '<h2 class="section-h">Compartirla de forma comprensible</h2>' +
+        '<p>Dios habló en lenguaje humano. Nosotros también podemos usar historias, imágenes, un gesto de servicio, para que otros entiendan su amor.</p>' +
+        e('«Cuanto más escudriña [la Biblia], tanto más se profundiza su convicción de que es la Palabra del Dios vivo.»', 'Elena G. de White, El camino a Cristo, pp. 106-108') +
+        q('¿Qué hábito concreto puedes cambiar esta semana para que la Biblia deje de ser «un libro más» y se convierta en la voz de Dios para ti?',
+          '<p>Guíe hacia compromisos concretos y pequeños: leer un capítulo antes del celular, orar antes de abrir la Biblia, anotar un versículo y compartirlo con alguien, estudiar en pareja o en familia. Mejor un paso real que una promesa grandiosa.</p>')
+    },
+
+    /* 9 ---------------- CIERRE */
+    {
+      tag: "Cierre",
+      title: "La cadena sigue abierta",
+      html:
+        '<p class="lead">Dios Padre habló al Hijo, el Hijo al ángel, el ángel a Juan, Juan a las iglesias… y la cadena llega hasta ti. No eres un espectador: eres el siguiente destinatario del mensaje.</p>' +
+        '<ul class="marks"><li>Dios se comunica porque quiere que lo conozcamos y confiemos en él.</li><li>Usó voces, escritos y representaciones para alcanzarnos.</li><li>La inspiración une lo divino y lo humano sin perder la verdad.</li><li>La respuesta adecuada es la fe obediente.</li></ul>' +
+        v('2 PEDRO 1:19', '«Tenemos también la palabra profética más segura, a la cual hacéis bien en estar atentos como a una antorcha que alumbra en lugar oscuro.»') +
+        '<p>Cerremos con una oración sencilla: pedir al Espíritu que, así como inspiró la Palabra, nos ayude a entenderla y vivirla.</p>' +
+        q('Si tuvieras que explicar a un amigo en una sola frase por qué confías en la Biblia, ¿qué dirías?',
+          '<p>Anime respuestas personales. Ejemplo: «Confío en ella porque es coherente, porque me ha cambiado y porque me presenta a Jesús, quien cumple lo que prometió.»</p>') +
+        '<div class="closing-prompt"><p>«La revelación de Jesucristo, que Dios le dio para manifestar a sus siervos lo que debe suceder pronto; y la declaró mediante su ángel a su siervo Juan.» — Apocalipsis 1:1-2</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
 })();
 </script>
 </body>

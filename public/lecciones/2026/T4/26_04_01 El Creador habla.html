@@ -4,253 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>El Creador habla — Lección 1</title>
-<style>
-  :root{
-    --bg: #181517;
-    --text: #FBFBFF;
-    --accent: #FF331F;
-
-    --on-accent: var(--bg);
-    --bg-elevated: color-mix(in srgb, var(--text) 4%, var(--bg));
-    --bg-elevated-2: color-mix(in srgb, var(--text) 2.5%, var(--bg));
-    --line: color-mix(in srgb, var(--text) 12%, transparent);
-    --text-muted: color-mix(in srgb, var(--text) 66%, transparent);
-    --text-faint: color-mix(in srgb, var(--text) 35%, transparent);
-    --accent-dim: color-mix(in srgb, var(--accent) 16%, transparent);
-    --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
-
-    --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
-    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --maxw: 640px;
-  }
-
-  *{ box-sizing:border-box; }
-  html,body{ height:100%; }
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--sans);
-    -webkit-font-smoothing:antialiased;
-    overflow:hidden;
-  }
-  h1,h2,h3{ font-family:var(--serif); font-weight:700; margin:0 0 .6em; }
-  p{ margin:0 0 1.1em; }
-  ::selection{ background:var(--accent); color:var(--bg); }
-  button{ font-family:var(--sans); cursor:pointer; }
-
-  .app{ height:100vh; height:100dvh; display:flex; flex-direction:column; }
-
-  /* ---------- HEADER ---------- */
-  .app-header{
-    flex:0 0 auto;
-    padding:14px 18px 12px;
-    background:var(--bg);
-    border-bottom:1px solid var(--line);
-    z-index:5;
-  }
-  .header-row{
-    max-width:var(--maxw);
-    margin:0 auto;
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:10px;
-  }
-  .eyebrow{
-    display:block;
-    font-size:.72rem;
-    letter-spacing:.06em;
-    color:var(--accent);
-    font-weight:600;
-    margin-bottom:2px;
-  }
-  .page-title{ font-size:1.08rem; line-height:1.25; margin:0; }
-  .page-counter{
-    flex:0 0 auto;
-    font-size:.78rem;
-    color:var(--text-muted);
-    font-variant-numeric:tabular-nums;
-    padding-top:2px;
-  }
-  .progress-track{
-    max-width:var(--maxw);
-    margin:10px auto 0;
-    height:4px;
-    background:rgba(254,248,236,0.1);
-    border-radius:4px;
-    overflow:hidden;
-  }
-  .progress-fill{
-    height:100%;
-    width:0%;
-    background:var(--accent);
-    border-radius:4px;
-    transition:width .35s ease;
-  }
-
-  /* ---------- MAIN CONTENT ---------- */
-  .content-scroll{ flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; }
-  .content-inner{ max-width:var(--maxw); margin:0 auto; padding:26px 20px 56px; }
-  .content-inner.fade-in{ animation:fadeIn .32s ease; }
-  @keyframes fadeIn{
-    from{ opacity:0; transform:translateY(6px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
-
-  .lead{ font-family:var(--serif); font-size:1.18rem; line-height:1.6; color:var(--text); }
-  .content-inner p{ font-size:1.02rem; line-height:1.75; color:var(--text); }
-  .content-inner p.muted{ color:var(--text-muted); }
-  .content-inner h2.section-h{ font-size:1.3rem; line-height:1.3; margin-top:.2em; }
-
-  /* portada */
-  .cover{ min-height:calc(100dvh - 160px); display:flex; flex-direction:column; justify-content:center; }
-  .cover .kicker{ color:var(--accent); font-size:.8rem; letter-spacing:.08em; font-weight:600; margin-bottom:14px; }
-  .cover h1{ font-size:2.1rem; line-height:1.15; margin-bottom:10px; }
-  .cover .subtitle{ color:var(--text-muted); font-size:1rem; margin-bottom:28px; }
-  .memory-verse{
-    border-left:3px solid var(--accent);
-    padding:4px 0 4px 18px;
-    font-family:var(--serif);
-    font-style:italic;
-    font-size:1.12rem;
-    line-height:1.55;
-    margin-bottom:28px;
-  }
-  .memory-verse cite{ display:block; font-style:normal; font-size:.85rem; color:var(--accent); margin-top:8px; }
-  .start-btn{
-    align-self:flex-start;
-    background:var(--accent);
-    color:#1C0D1B;
-    border:none;
-    padding:14px 26px;
-    border-radius:30px;
-    font-size:1rem;
-    font-weight:700;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-  }
-  .start-btn:active{ transform:scale(.98); }
-
-  /* verse + egw blocks */
-  .verse-block, .egw-block{ background:var(--bg-elevated); border-radius:14px; padding:18px 18px 16px; margin:20px 0; }
-  .verse-block{ border-left:4px solid var(--accent); }
-  .egw-block{ border-left:4px solid rgba(254,248,236,0.35); background:var(--bg-elevated-2); }
-  .block-label{ display:block; font-size:.7rem; letter-spacing:.08em; font-weight:700; color:var(--accent); margin-bottom:8px; }
-  .egw-block .block-label{ color:var(--text-muted); }
-  .verse-block blockquote, .egw-block blockquote{ margin:0; font-family:var(--serif); font-style:italic; font-size:1.04rem; line-height:1.6; }
-  .verse-block cite, .egw-block cite{ display:block; font-style:normal; font-family:var(--sans); font-size:.84rem; color:var(--text-muted); margin-top:10px; }
-
-  ul.marks{ list-style:none; margin:18px 0; padding:0; }
-  ul.marks li{ position:relative; padding:0 0 14px 24px; font-size:1.02rem; line-height:1.6; }
-  ul.marks li::before{ content:"—"; position:absolute; left:0; color:var(--accent); font-weight:700; }
-  ul.marks li strong{ color:var(--text); }
-
-  /* question cards */
-  .question-card{ margin:26px 0 10px; background:var(--accent-dim); border:1px solid var(--accent-line); border-radius:16px; padding:18px; }
-  .question-label{ display:block; font-size:.7rem; letter-spacing:.08em; font-weight:700; color:var(--accent); margin-bottom:8px; }
-  .question-text{ font-family:var(--serif); font-size:1.08rem; line-height:1.5; margin:0 0 14px; }
-  .answer-toggle{ background:transparent; border:1.5px solid var(--accent); color:var(--accent); padding:9px 16px; border-radius:22px; font-size:.86rem; font-weight:700; }
-  .answer-toggle:active{ transform:scale(.98); }
-  .answer-panel{ display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--accent-line); }
-  .answer-panel.open{ display:block; }
-  .answer-panel .who{ font-size:.72rem; letter-spacing:.06em; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px; }
-  .answer-panel p{ font-size:.98rem; line-height:1.65; color:var(--text); margin-bottom:0; }
-
-  .closing-prompt{ margin-top:30px; padding:18px; border-radius:16px; background:var(--bg-elevated); text-align:center; }
-  .closing-prompt p{ margin-bottom:0; color:var(--text-muted); font-size:.95rem; }
-
-  /* ---------- FOOTER NAV ---------- */
-  .app-footer{
-    flex:0 0 auto;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:var(--bg);
-    border-top:1px solid var(--line);
-  }
-  .app-footer > *{ flex:0 0 auto; }
-  .nav-btn{
-    flex:1 1 auto;
-    background:var(--bg-elevated);
-    color:var(--text);
-    border:1px solid var(--line);
-    padding:13px 10px;
-    border-radius:14px;
-    font-size:.92rem;
-    font-weight:600;
-    text-align:center;
-  }
-  .nav-btn.nav-btn--primary{ background:var(--accent); color:#1C0D1B; border-color:var(--accent); }
-  .nav-btn:disabled{ opacity:.35; }
-  .nav-btn:active:not(:disabled){ transform:scale(.98); }
-  .toc-btn{
-    flex:0 0 46px; height:46px;
-    background:transparent; color:var(--text);
-    border:1px solid var(--line); border-radius:14px;
-    font-size:1.15rem; display:flex; align-items:center; justify-content:center;
-  }
-
-  /* ---------- TOC OVERLAY ---------- */
-  .toc-overlay{
-    position:fixed; inset:0;
-    background:rgba(10,4,9,0.72);
-    backdrop-filter:blur(2px);
-    display:none; align-items:flex-end;
-    z-index:20;
-  }
-  .toc-overlay.open{ display:flex; }
-  .toc-panel{
-    width:100%; max-height:80vh;
-    background:var(--bg);
-    border-top:1px solid var(--line);
-    border-radius:20px 20px 0 0;
-    padding:16px 16px calc(16px + env(safe-area-inset-bottom));
-    overflow-y:auto;
-    animation:slideUp .28s ease;
-  }
-  @keyframes slideUp{ from{ transform:translateY(24px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
-  .toc-head{
-    display:flex; justify-content:space-between; align-items:center;
-    max-width:var(--maxw); margin:0 auto 8px;
-    padding:6px 4px 12px;
-    font-family:var(--serif); font-size:1.1rem;
-    border-bottom:1px solid var(--line);
-  }
-  .toc-head button{ background:none; border:none; color:var(--text-muted); font-size:1.3rem; line-height:1; }
-  #tocList{ list-style:none; margin:0; padding:0; max-width:var(--maxw); margin:0 auto; }
-  #tocList li button{
-    width:100%; text-align:left;
-    background:none; border:none;
-    border-bottom:1px solid var(--line);
-    color:var(--text); padding:14px 4px;
-    font-size:.98rem; display:flex; gap:12px; align-items:baseline;
-  }
-  #tocList li button .n{ color:var(--accent); font-weight:700; font-size:.85rem; flex:0 0 auto; }
-  #tocList li button.active{ color:var(--accent); }
-
-  @media (min-width: 760px){
-    :root{ --maxw: 700px; }
-    .cover h1{ font-size:2.6rem; }
-    .lead{ font-size:1.28rem; }
-    .content-inner{ padding:44px 24px 70px; }
-    .page-title{ font-size:1.2rem; }
-    .app-footer{ padding-bottom:16px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .content-inner.fade-in, .toc-panel{ animation:none; }
-    .progress-fill{ transition:none; }
-  }
-</style>
+<meta name="theme-color" content="#181517">
+<link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../leccion.css">
 </head>
 <body>
 <div class="app">
 
   <header class="app-header">
     <div class="header-row">
+      <a class="back-link" href="/#biblioteca" aria-label="Volver a la biblioteca"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span class="back-link__text" aria-hidden="true">Biblioteca</span></a>
       <div>
         <span class="eyebrow" id="sectionLabel">Página 1 de 10</span>
         <h1 class="page-title" id="pageTitle">Portada</h1>
@@ -266,7 +30,7 @@
 
   <footer class="app-footer">
     <button class="nav-btn" id="prevBtn">‹ Anterior</button>
-    <button class="toc-btn" id="tocBtn" aria-label="Índice">≡</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg></button>
     <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
   </footer>
 
@@ -274,7 +38,7 @@
     <div class="toc-panel">
       <div class="toc-head">
         <span>Índice de la lección</span>
-        <button id="tocClose" aria-label="Cerrar">✕</button>
+        <button id="tocClose" aria-label="Cerrar"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
       </div>
       <ul id="tocList"></ul>
     </div>
