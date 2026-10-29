@@ -9,17 +9,60 @@
 
   /* ---- Derivados de la paleta (no hace falta tocarlos) ---- */
   --on-accent: var(--bg);
-  --bg-elevated: color-mix(in srgb, var(--text) 4%, var(--bg));
+
+  /* Rojo para TEXTO: el Scarlet puro da 4.96:1 sobre Onyx (AA justo) y cae
+     a ~4.2:1 sobre superficies rojizas y ~3.3:1 con protanopía. Mezclarlo
+     con un poco de Ghost White lo sube a ~6.2:1 sin cambiar de tono.
+     Regla: --accent para rellenos y líneas, --accent-text para letras. */
+  --accent-text: color-mix(in srgb, var(--accent) 74%, var(--text));
+
+  /* Texto largo un poco por debajo del blanco puro: 17.6:1 produce halo
+     en modo oscuro; ~88% sigue por encima de 13:1. */
+  --text-body: color-mix(in srgb, var(--text) 88%, var(--bg));
+  --text-muted: color-mix(in srgb, var(--text) 70%, var(--bg));
+  --text-faint: color-mix(in srgb, var(--text) 52%, var(--bg));
+
+  --bg-elevated: color-mix(in srgb, var(--text) 4.5%, var(--bg));
   --bg-elevated-2: color-mix(in srgb, var(--text) 2.5%, var(--bg));
-  --line: color-mix(in srgb, var(--text) 12%, transparent);
-  --text-muted: color-mix(in srgb, var(--text) 66%, transparent);
-  --text-faint: color-mix(in srgb, var(--text) 35%, transparent);
-  --accent-dim: color-mix(in srgb, var(--accent) 16%, transparent);
-  --accent-line: color-mix(in srgb, var(--accent) 40%, transparent);
+  --bg-deep: color-mix(in srgb, #000 35%, var(--bg));
+  --line: color-mix(in srgb, var(--text) 11%, transparent);
+  --line-strong: color-mix(in srgb, var(--text) 22%, transparent);
+  --accent-dim: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 38%, transparent);
+  --accent-line: color-mix(in srgb, var(--accent) 45%, transparent);
 
   /* ---- Tipografía ---- */
-  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --sans: 'Outfit Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --serif: 'Newsreader Variable', Georgia, 'Iowan Old Style', serif;
+
+  /* ---- Ritmo ---- */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --section-space: clamp(88px, 13vw, 168px);
+  --header-h: 72px;
+
+  /* ---- Movimiento ----
+     ease-out: entradas y cambios de color, sin rebote.
+     spring: desplazamientos al pasar el mouse; resorte amortiguado con un
+     ~3% de sobrepaso para que el movimiento tenga peso y no se vea mecánico. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: linear(0, 0.07, 0.227, 0.41, 0.585, 0.732, 0.845, 0.927, 0.98, 1.011, 1.026, 1.031, 1.03, 1.026, 1.02, 1.014, 1.009, 1.006, 1.003, 1.001, 1, 0.999, 0.999, 0.999, 1);
+  --dur-fast: 0.25s;
+  --dur: 0.5s;
+  --dur-slow: 0.8s;
+
+  /* Sombras teñidas con el tono del fondo, no negro puro. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--bg) 60%, #000);
+  --shadow-lg: 0 24px 60px -20px color-mix(in srgb, var(--bg) 40%, #000);
+
+  /* Capas */
+  --z-content: 1;
+  --z-blur: 35;
+  --z-header: 40;
+  --z-dock: 45;
+  --z-skip: 100;
 
   color-scheme: dark;
 }
@@ -32,6 +75,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -39,14 +83,29 @@ body {
   margin: 0;
   min-height: 100vh;
   background: var(--bg);
-  color: var(--text);
+  color: var(--text-body);
   font-family: var(--sans);
-  font-size: 1.02rem;
+  font-size: 1.0625rem;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Grano muy sutil sobre todo el fondo para que el negro no se vea plano. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -56,13 +115,17 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-family: var(--serif);
-  font-weight: 700;
-  line-height: 1.2;
+  font-family: var(--sans);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-wrap: balance;
 }
 
 p {
   margin: 0;
+  text-wrap: pretty;
 }
 
 ul,
@@ -84,6 +147,7 @@ svg {
 
 button {
   font: inherit;
+  color: inherit;
   cursor: pointer;
 }
 
@@ -93,9 +157,41 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 6px;
+  outline: 3px solid var(--accent-text);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+/* Enlace para saltar directo al contenido con teclado o lector de pantalla. */
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: var(--z-skip);
+  padding: 12px 18px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: 999px;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -108,4 +204,15 @@ button {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* Con Lenis activo, el desplazamiento lo controla JS. */
+html.lenis,
+html.lenis body {
+  height: auto;
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
 }

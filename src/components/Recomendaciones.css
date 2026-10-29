@@ -1,0 +1,164 @@
+/* Solo variables de la paleta (index.css). */
+
+/* ---------- Móvil / tablet: lista con líneas ---------- */
+.tips {
+  border-top: 1px solid var(--line-strong);
+}
+
+.tip {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 12px;
+  padding-block: 26px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tip__num {
+  padding-top: 3px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-text);
+}
+
+.tip h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.tip p {
+  margin-top: 6px;
+  color: var(--text-muted);
+}
+
+/* ---------- Escritorio: acordeón horizontal ---------- */
+.accordion {
+  display: flex;
+  gap: 10px;
+  height: 400px;
+}
+
+.accordion__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--text) 2.5%, var(--bg-deep));
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition:
+    flex-grow var(--dur-slow) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+}
+
+.accordion__item:hover:not(.accordion__item--open) {
+  background: var(--bg-elevated);
+}
+
+.accordion__item--open {
+  flex-grow: 3.2;
+  background: var(--bg-elevated);
+  box-shadow:
+    inset 0 0 0 1px var(--line-strong),
+    inset 0 1px 0 color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+/* Barra de acento que crece en la franja abierta. */
+.accordion__item::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  bottom: 0;
+  width: 48px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.accordion__item--open::after {
+  transform: scaleX(1);
+  transition-delay: 0.15s;
+}
+
+.accordion__heading {
+  font-size: inherit;
+  letter-spacing: normal;
+}
+
+.accordion__trigger {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  padding: 28px 24px 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-md);
+}
+
+.accordion__trigger:focus-visible {
+  outline-offset: -4px;
+}
+
+.accordion__num {
+  font-size: 1rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.accordion__item--open .accordion__num {
+  color: var(--accent-text);
+}
+
+.accordion__title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.accordion__item:hover .accordion__title {
+  color: var(--text);
+}
+
+.accordion__item--open .accordion__title {
+  max-width: 18ch;
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.accordion__panel {
+  margin-top: auto;
+  padding: 0 28px 34px 24px;
+  animation: panel-in 0.7s var(--ease-out) 0.12s both;
+}
+
+.accordion__panel p {
+  max-width: 34ch;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+}
