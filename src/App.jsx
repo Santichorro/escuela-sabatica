@@ -97,6 +97,15 @@ const lecciones = [
     titulo: 'Profetas del Nuevo Testamento',
     pasaje: '1 Corintios 12:4-6',
     archivo: '/lecciones/2026/T4/26_04_04 Profetas del Nuevo Testamento.html',
+  },
+
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 5,
+    titulo: 'Revelacion e inspiracion',
+    pasaje: 'Apocalipsis 1:1-2',
+    archivo: '/lecciones/2026/T4/26_04_05 Revelacion e inspiracion.html',
   }
 ]
 
