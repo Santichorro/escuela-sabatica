@@ -114,6 +114,14 @@ const lecciones = [
     pasaje: 'Apocalipsis 1:1-2',
     archivo: '/lecciones/2026/T4/26_04_05 Revelacion e inspiracion.html',
   },
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 6,
+    titulo: 'Los escritos proféticos',
+    pasaje: 'Romanos 15:4',
+    archivo: '/lecciones/2026/T4/26_04_06 Los escritos profeticos.html',
+  },
 ]
 
 const leccionesOrdenadas = [...lecciones].sort(

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Los escritos proféticos — Lección 6</title>
+<meta name="theme-color" content="#181517">
+<link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../leccion.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <a class="back-link" href="/#biblioteca" aria-label="Volver a la biblioteca"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span class="back-link__text" aria-hidden="true">Biblioteca</span></a>
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 6</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg></button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite></div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 6 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        '<div class="cover"><span class="kicker">4TO TRIMESTRE 2026 · LECCIÓN 6</span><h1>Los escritos proféticos</h1><p class="subtitle">Cómo Dios se aseguró de que su voz llegara intacta hasta nosotros: profetas que escribieron, secretarios que copiaron, fuentes que se investigaron y un tesoro divino guardado en vasos de barro.</p><div class="memory-verse">«Porque las cosas que se escribieron antes, para nuestra enseñanza se escribieron, a fin de que por la paciencia y la consolación de las Escrituras, tengamos esperanza.»<cite>Romanos 15:4 — Texto para memorizar</cite></div><p class="readings"><b>Lee para el estudio de esta semana:</b> Éxodo 17:14; Isaías 13:1; Jeremías 36:17-18; Romanos 16:22; Lucas 1:1-4; Judas 1:14-15; 2 Corintios 4:7.</p><button class="start-btn" id="startBtn">Comenzar la clase →</button></div>'
+    },
+
+    /* 1 ---------------- PUNTO DE PARTIDA */
+    {
+      tag: "Punto de partida",
+      title: "Los que tenían los rollos y los que siguieron la estrella",
+      html:
+        '<p class="lead">¿Te gustaría aprender una canción compuesta por Dios mismo? En Deuteronomio 31, el Señor le pidió a Moisés que pusiera por escrito un cántico para que Israel lo cantara de generación en generación.</p>' +
+        v('DEUTERONOMIO 31:19', '«Ahora pues, escribíos este cántico, y enséñalo a los hijos de Israel; ponlo en boca de ellos, para que este cántico me sea por testigo contra los hijos de Israel.»') +
+        '<p>La Biblia describe tres formas en que los profetas comunicaban el mensaje de Dios: <strong>de palabra</strong>, <strong>por escrito</strong> y mediante <strong>acciones simbólicas</strong>. Hoy nos detenemos en la segunda: los escritos. Narraciones, poesía, cartas, oráculos, lamentos y visiones, todos escritos por hombres y mujeres comunes guiados por el Espíritu Santo.</p>' +
+        '<p>Para entender por qué importa que la profecía quedara escrita, miremos una escena de Navidad. Unos sabios de Oriente, extranjeros y sin Templo, cruzaron el desierto porque <strong>estudiaron escritos proféticos</strong>. En Jerusalén, los sacerdotes sabían exactamente dónde nacería el Mesías: «En Belén de Judea; porque así está escrito por el profeta» (Mat. 2:5). Tenían los rollos, pero no caminaron ni diez kilómetros para ir a verlo.</p>' +
+        e(['Los magos del Oriente eran filósofos… Mientras estos magos estudiaban los cielos tachonados de estrellas… contemplaban la gloria del Creador. Buscando un conocimiento más claro, se dirigieron a las Escrituras hebreas.', 'Mientras tenían la estrella por delante como señal externa, tenían también la evidencia interna del Espíritu Santo que estaba impresionando sus corazones, y les inspiraba esperanza.'], 'El Deseado de todas las gentes, pp. 41-45') +
+        '<p>La misma Escritura produjo dos resultados opuestos. Para unos fue una brújula; para otros, un dato de archivo. La pregunta de esta lección no es solo <em>cómo</em> se escribió la Biblia, sino qué hacemos nosotros con lo que quedó escrito.</p>' +
+        q('Los sacerdotes conocían la profecía de memoria y los magos apenas la estaban descubriendo, pero solo los magos llegaron a Belén. ¿Qué nos dice esto sobre la diferencia entre <em>conocer</em> la Biblia y <em>dejarse guiar</em> por ella? ¿En cuál de los dos grupos nos parecemos más hoy?',
+          '<p>Conocer el texto no garantiza obedecerlo. Los sacerdotes tenían información; los magos tenían disposición. Jesús lo dijo así: «Escudriñad las Escrituras… y ellas son las que dan testimonio de mí; y no queréis venir a mí para que tengáis vida» (Juan 5:39-40).</p><p>Invita a la clase a reconocer el riesgo de quienes llevamos años en la iglesia: podemos saber dónde está cada versículo y aun así no movernos. Una pregunta útil para cerrar: ¿qué texto conozco bien, pero todavía no me ha llevado a «caminar hacia Belén», es decir, a un cambio concreto?</p>')
+    },
+
+    /* 2 ---------------- EL LLAMADO A ESCRIBIR */
+    {
+      tag: "El llamado a escribir",
+      title: "«Escribe esto para memoria»",
+      html:
+        '<p class="lead">Durante siglos, Dios habló de viva voz, en sueños y por medio de ángeles. La primera orden de poner su mensaje por escrito aparece después de una batalla.</p>' +
+        v('ÉXODO 17:14', '«Y Jehová dijo a Moisés: Escribe esto para memoria en un libro, y di a Josué que raeré del todo la memoria de Amalec de debajo del cielo.»') +
+        '<p>Fíjate en la palabra <strong>memoria</strong>. La memoria humana es frágil: olvida, exagera, acomoda los recuerdos a su conveniencia. Dios quiso un registro que no dependiera del estado de ánimo de una generación.</p>' +
+        '<p>Más tarde le dio a Jeremías la misma orden y le explicó el propósito:</p>' +
+        v('JEREMÍAS 36:2-3', '«Toma un rollo de libro, y escribe en él todas las palabras que te he hablado contra Israel y contra Judá, y contra todas las naciones, desde el día que comencé a hablarte, desde los días de Josías hasta hoy. Quizá oiga la casa de Judá todo el mal que yo pienso hacerles, y se arrepienta cada uno de su mal camino, y yo perdonaré su maldad y su pecado.»') +
+        '<p>La profecía escrita no fue dada para satisfacer la curiosidad sobre el futuro, sino para <strong>salvar</strong>. Detrás de cada advertencia hay un «quizá» lleno de esperanza: quizá escuchen, quizá vuelvan, quizá pueda perdonarlos.</p>' +
+        '<h2 class="section-h">Escrita en medio de la crisis</h2>' +
+        '<p>Los mensajeros de Dios escribieron en circunstancias muy distintas: Moisés en el desierto; David huyendo de Saúl (Sal. 52; 54; 57; 59); Daniel en las cortes de Babilonia y Persia; Pablo encadenado, escribiendo a los efesios, filipenses, colosenses y a Filemón; Juan desterrado en Patmos.</p>' +
+        '<p>Eso explica por qué la Biblia habla tan bien a quien está pasando por una crisis: buena parte de ella fue escrita desde una. Y hay algo más: un escrito profético alimentó a otro profeta. Daniel, exiliado, «miró atentamente en los libros» y entendió por Jeremías que el cautiverio duraría setenta años (Dan. 9:2). Un rollo escrito en Jerusalén sostuvo la fe de un hombre en Babilonia.</p>' +
+        q('Alguien dice: «No podemos confiar en la Biblia porque no tenemos los manuscritos originales». ¿Cómo responderías? ¿Por qué ese argumento es más débil de lo que parece?',
+          '<p>Es cierto que no tenemos los «autógrafos», pero eso ocurre con prácticamente todos los textos antiguos. La pregunta correcta es cuántas copias tenemos y qué tan cerca están del original. En ese campo, la Biblia no tiene comparación.</p><p>Del Nuevo Testamento se conservan más de 5800 manuscritos griegos, algunos a pocas décadas de los originales; obras clásicas que nadie pone en duda dependen de unas pocas copias, separadas por siglos. Cuando aparecieron los Rollos del mar Muerto, el rollo de Isaías resultó ser unos mil años más antiguo que las copias que se usaban, y el texto era sustancialmente el mismo.</p><p>Añade la dimensión de fe: el Dios que mandó escribir también cuidó lo escrito. «Sécase la hierba, marchítase la flor; mas la palabra del Dios nuestro permanece para siempre» (Isa. 40:8).</p>')
+    },
+
+    /* 3 ---------------- UN ROLLO EN EL FUEGO */
+    {
+      tag: "Un rollo en el fuego",
+      title: "Lo que no se pudo quemar",
+      html:
+        '<p class="lead">Jeremías 36 es una de las escenas más dramáticas sobre la Palabra escrita. Jeremías estaba preso, así que dictó el mensaje a Baruc y le pidió que lo leyera en el Templo.</p>' +
+        e(['Era invierno, y el rey y sus asociados en el gobierno, los príncipes de Judá, estaban reunidos en derredor de un fuego abierto. Apenas se hubo leído una pequeña porción cuando el rey, en vez de temblar por el peligro que le amenazaba a él y a su pueblo, se apoderó del rollo, y con ira frenética «rasgólo con un cuchillo de escribanía, y echólo en el fuego que había en el brasero, hasta que todo el rollo se consumió».', 'Dios se compadece de los hombres que luchan en la ceguera de la perversidad; procura iluminar su entendimiento entenebrecido dándoles reprensiones y amenazas destinadas a inducir a los más encumbrados a sentir su ignorancia y deplorar sus errores.'], 'Profetas y reyes, pp. 319, 320') +
+        '<p>Joacim no quemó el rollo de una vez. Lo fue cortando a medida que lo leían, tres o cuatro columnas cada vez (Jer. 36:23). Es la imagen de alguien que escucha la Palabra y va eliminando lo que no le gusta, pedazo a pedazo, mientras se calienta junto al fuego.</p>' +
+        '<p>El final es la mejor parte. Dios no dejó que el fuego tuviera la última palabra:</p>' +
+        v('JEREMÍAS 36:32', '«Y tomó Jeremías otro rollo y lo dio a Baruc hijo de Nerías escriba; y escribió en él de boca de Jeremías todas las palabras del libro que quemó en el fuego Joacim rey de Judá; y aun fueron añadidas sobre ellas muchas otras palabras semejantes.»') +
+        '<p>El rey destruyó un objeto, pero no pudo destruir el mensaje. La historia se ha repetido: la Biblia ha sido prohibida, quemada y ridiculizada, y sigue siendo el libro más traducido del mundo.</p>' +
+        q('Hoy casi nadie quema Biblias, pero muchos hacen lo que hizo Joacim: cortar las partes incómodas. ¿Cuáles son los «cortaplumas» modernos con los que recortamos la Palabra? ¿Hay alguna sección que tú mismo tiendes a saltarte?',
+          '<p>Algunos «cortaplumas» comunes: leer solo los versículos que consuelan y nunca los que corrigen; decir «eso era cultural» sin estudiar el contexto; quedarse con frases sueltas compartidas en redes; escoger un predicador o canal que nunca confronta; o simplemente no leer.</p><p>Lleva la conversación a lo personal sin forzar confesiones. La pregunta de fondo es si permitimos que la Biblia nos lea a nosotros o si nosotros la editamos a ella. Joacim se calentó junto al fuego un rato; Judá pagó el precio por décadas.</p>')
+    },
+
+    /* 4 ---------------- GÉNEROS Y ESTILOS */
+    {
+      tag: "Géneros y estilos",
+      title: "Muchas voces, un solo Autor",
+      html:
+        '<p class="lead">«Dios, habiendo hablado muchas veces y de muchas maneras en otro tiempo a los padres por los profetas, en estos postreros días nos ha hablado por el Hijo» (Heb. 1:1-2).</p>' +
+        '<p>«De muchas maneras» incluye estilos literarios muy distintos. La Biblia tiene registros de viaje que parecen un diario (Núm. 33), poesía, proverbios, cartas, parábolas y literatura apocalíptica llena de símbolos, como la de Daniel, Zacarías y Apocalipsis.</p>' +
+        v('ISAÍAS 13:1', '«Profecía sobre Babilonia, revelada a Isaías hijo de Amoz.»') +
+        '<p>La palabra hebrea que inicia este versículo, <em>massá</em>, se traduce como «oráculo» o «carga». Es un mensaje que pesa: el profeta no lo inventa, lo recibe y lo lleva.</p>' +
+        '<h2 class="section-h">Herramientas para leer mejor</h2>' +
+        '<ul class="marks"><li><strong>Paralelismo:</strong> la poesía hebrea repite o contrasta ideas en líneas seguidas. «En aquel día mirará el hombre a su Hacedor, y sus ojos contemplarán al Santo de Israel» (Isa. 17:7). «Hacedor» y «Santo de Israel» se explican mutuamente.</li><li><strong>Metáforas e hipérboles:</strong> imágenes y exageraciones intencionales que comunican más que una definición.</li><li><strong>Juicio del pacto:</strong> Dios aparece como fiscal en un tribunal que expone las faltas de su pueblo: «contenderé aún con vosotros, dijo Jehová» (Jer. 2:9; ver también Miq. 6:1-2).</li><li><strong>Cartas:</strong> escritas a personas y comunidades concretas, con problemas concretos.</li></ul>' +
+        '<p>Conocer el género no le quita autoridad al texto; evita que lo malinterpretemos. Leer un salmo como si fuera un código legal, o una visión apocalíptica como si fuera el noticiero de anoche, produce errores serios. Pablo sabía que sus cartas tenían la misma autoridad que los profetas antiguos (1 Cor. 7:40; 14:37).</p>' +
+        e(['En esas escuelas, los principales temas de estudio eran la ley de Dios, con las instrucciones dadas a Moisés, la historia y la música sagradas, y la poesía… El intelecto santificado sacaba del tesoro de Dios cosas nuevas y viejas, y el Espíritu de Dios se manifestaba en la profecía y el canto sagrado.'], 'La educación, pp. 46, 47') +
+        q('Proverbios 22:6 dice: «Instruye al niño en su camino, y aun cuando fuere viejo no se apartará de él». ¿Es una promesa garantizada o un principio general? ¿Qué cambia en la vida de unos padres según cómo lo lean?',
+          '<p>Proverbios es literatura sapiencial: enseña cómo suele funcionar la vida bajo la bendición de Dios, no fórmulas automáticas. El mismo libro lo muestra al poner juntos dos consejos opuestos: «Nunca respondas al necio de acuerdo con su necedad» y «Responde al necio como merece su necedad» (Prov. 26:4-5). La sabiduría está en saber cuál aplica en cada caso.</p><p>Leído como garantía, este versículo ha llenado de culpa a padres fieles cuyos hijos se alejaron. Leído como principio, anima a sembrar con constancia y a confiar en Dios, sin anular la libertad del hijo. Entender el género aquí no es tecnicismo: es pastoral.</p>') +
+        q('Algunos estudiosos enfatizan tanto el elemento humano de la Biblia que dejan de lado el divino. ¿Por qué ese camino conduce a la ruina espiritual? ¿Y cuál es el peligro del extremo contrario?',
+          '<p>Si la Biblia es solo un producto humano, se convierte en opinión: valiosa quizá, pero negociable. Entonces el lector se sienta como juez sobre la Palabra y decide qué aceptar según su criterio o su cultura. Pedro cierra ese camino: «nunca la profecía fue traída por voluntad humana, sino que los santos hombres de Dios hablaron siendo inspirados por el Espíritu Santo» (2 Ped. 1:21).</p><p>El extremo opuesto es pensar que Dios dictó cada palabra y que los autores fueron simples máquinas. Eso nos lleva a forzar el texto, a escandalizarnos por cualquier diferencia de estilo y a ignorar el contexto. La postura bíblica une ambos lados: mensaje divino, expresado en lenguaje humano.</p>')
+    },
+
+    /* 5 ---------------- ASISTENTES LITERARIOS */
+    {
+      tag: "Asistentes literarios",
+      title: "Baruc, Tercio y la firma de Pablo",
+      html:
+        '<p class="lead">Muchos imaginan a los profetas escribiendo solos, a la luz de una lámpara. La Biblia muestra otra cosa: a menudo trabajaban con secretarios.</p>' +
+        v('JEREMÍAS 36:17-18', '«Preguntaron luego a Baruc, diciendo: Cuéntanos ahora cómo escribiste de boca de Jeremías todas estas palabras. Y Baruc les dijo: Él me dictaba de su boca todas estas palabras, y yo escribía con tinta en el libro.»') +
+        v('ROMANOS 16:22', '«Yo Tercio, que escribí la epístola, os saludo en el Señor.»') +
+        '<p>Tercio era el amanuense de Pablo. Por eso el apóstol terminaba algunas cartas con un saludo de su puño y letra, como sello de autenticidad: «La salutación es de mi propia mano, de Pablo, que es el signo en toda carta mía» (2 Tes. 3:17; ver Col. 4:18; Gál. 6:11). Pedro también escribió «por conducto de Silvano» (1 Ped. 5:12).</p>' +
+        '<p>Esto ayuda a explicar las diferencias de estilo entre cartas de un mismo autor. El Comentario bíblico adventista sugiere que Pedro, cuya lengua materna era el arameo, probablemente recurrió a secretarios para escribir en griego, y que estos pudieron influir en la redacción (t. 7, p. 612).</p>' +
+        e(['No son las palabras de la Biblia las inspiradas, sino los hombres son los que fueron inspirados. La inspiración no obra en las palabras del hombre ni en sus expresiones, sino en el hombre mismo, que está imbuido con pensamientos bajo la influencia del Espíritu Santo.'], 'Mensajes selectos, t. 1, p. 24') +
+        '<p>Los pensamientos del mensajero son el objeto de la inspiración; el vocabulario y la construcción de las frases pueden reflejar la mano de quien ayudaba. El mensaje no se pierde por eso.</p>' +
+        '<h2 class="section-h">El costo de ser Baruc</h2>' +
+        '<p>Ser secretario de un profeta no era un trabajo cómodo. Baruc tuvo que esconderse para salvar su vida (Jer. 36:19, 26), y en un momento de desánimo Dios le habló directamente: «¿Y tú buscas para ti grandezas? No las busques… pero a ti te daré tu vida por botín» (Jer. 45:5). La obra de Dios siempre ha necesitado colaboradores fieles que trabajan sin aparecer en la portada.</p>' +
+        q('¿Te inquieta saber que un secretario pudo influir en las palabras de una carta inspirada? ¿Por qué esto no debilita la confianza en la Biblia, sino que la hace más comprensible?',
+          '<p>Ayuda a la clase a recordar algo que ya vivimos: casi todos leemos la Biblia traducida. Las palabras exactas en español no son las que escribió Pablo, y aun así el mensaje nos llega con claridad y poder. Si Dios puede guiar una traducción, también pudo guiar a un secretario que escribía bajo la supervisión directa del apóstol.</p><p>Además, Pablo autenticaba sus cartas con su firma, lo que muestra responsabilidad y cuidado. La inspiración no depende de que el profeta sostenga la pluma, sino de que el mensaje sea el que Dios le dio.</p>') +
+        q('En tu iglesia, ¿quiénes son los «Baruc»: personas que sostienen la obra sin ser vistas? ¿Cómo podemos valorarlas, y cómo podrías tú cumplir ese papel?',
+          '<p>Deja que nombren ejemplos reales: quien prepara el sonido, limpia el templo, cuida a los niños, lleva las finanzas o transcribe los materiales. Jeremías 45 muestra que Dios ve a esas personas y les habla personalmente.</p><p>Una aplicación concreta: escribir esta semana una nota de gratitud a uno de ellos. Y preguntarse si estamos dispuestos a servir aunque nadie mencione nuestro nombre.</p>')
+    },
+
+    /* 6 ---------------- FUENTES LITERARIAS */
+    {
+      tag: "Fuentes literarias",
+      title: "Investigar también es parte de la inspiración",
+      html:
+        '<p class="lead">A veces la inspiración llegaba en visiones y sueños. Otras veces el Espíritu guiaba a los escritores mientras investigaban.</p>' +
+        v('ECLESIASTÉS 12:9-10', '«Y cuanto más sabio fue el Predicador, tanto más enseñó sabiduría al pueblo; e hizo escuchar, e hizo escudriñar, y compuso muchos proverbios. Procuró el Predicador hallar palabras agradables, y escribir rectamente palabras de verdad.»') +
+        '<p>Salomón escuchó, examinó y recopiló. Proverbios incluye dichos de otros sabios, y el famoso capítulo 31 se atribuye a la madre de un rey llamado Lemuel (Prov. 31:1). Los libros históricos citan archivos que no forman parte de la Biblia: «el libro de los hechos de Salomón» (1 Rey. 11:41). Esdras copia cartas y decretos persas (Esd. 4-7), y Nehemías incorpora un registro genealógico que encontró (Neh. 7:5).</p>' +
+        v('LUCAS 1:3-4', '«Me ha parecido también a mí, después de haber investigado con diligencia todas las cosas desde su origen, escribírtelas por orden, oh excelentísimo Teófilo, para que conozcas bien la verdad de las cosas en las cuales has sido instruido.»') +
+        '<p>Lucas no recibió su evangelio en una visión: entrevistó testigos y revisó documentos. El Comentario bíblico adventista lo resume así: la inspiración «funciona en armonía con la operación natural de las facultades mentales sin prescindir de ellas» (t. 5, p. 654).</p>' +
+        '<p>Judas cita una profecía de Enoc que también aparece en un libro judío no canónico (Judas 14-15; comparar con 1 Enoc 1:9). Pablo citó a poetas griegos en Atenas: «Porque en él vivimos, y nos movemos, y somos; como algunos de vuestros propios poetas también han dicho» (Hech. 17:28; ver Tito 1:12). Citar una frase verdadera no convierte en inspirado todo el libro del que proviene.</p>' +
+        e(['Con toda su inteligencia y conocimiento general, no conocían al Dios que había creado el universo. Sin embargo, algunos de ellos deseaban tener mayor luz. Los tales buscaban el Infinito… Pablo dirigió la mente de sus idólatras oyentes más allá de los límites de su falsa religión a un verdadero concepto de la Deidad.'], 'Los hechos de los apóstoles, pp. 192, 193') +
+        q('Si el Espíritu Santo guio a los escritores bíblicos para seleccionar material de otras fuentes, ¿por qué es importante tener esto presente? ¿Cambia en algo la forma en que vemos el estudio, la investigación o la cultura?',
+          '<p>Nos protege de una idea falsa: que lo espiritual y lo intelectual están peleados. Lucas investigó con diligencia y su evangelio es plenamente inspirado. El estudio serio no es falta de fe; puede ser el medio que Dios usa.</p><p>También nos da un modelo para hoy. Pablo usó la poesía griega como puente hacia el evangelio. Nosotros podemos usar la ciencia, la historia o la cultura para conectar con las personas, siempre que la Escritura sea el filtro: «Examinadlo todo; retened lo bueno» (1 Tes. 5:21). Y nos prepara para entender cómo trabajó Elena de White, que también usó fuentes, como veremos más adelante.</p>')
+    },
+
+    /* 7 ---------------- VASOS DE BARRO */
+    {
+      tag: "Vasos de barro",
+      title: "El tesoro y la vasija",
+      html:
+        '<p class="lead">Si Dios inspiró la Biblia, ¿por qué hay pasajes difíciles de armonizar? Pablo responde con una imagen sencilla.</p>' +
+        v('2 CORINTIOS 4:7', '«Pero tenemos este tesoro en vasos de barro, para que la excelencia del poder sea de Dios, y no de nosotros.»') +
+        '<p>Los mensajeros de Dios no fueron librados de sus fallas: Moisés perdió la paciencia, Elías se deprimió, David pecó gravemente, Jonás huyó, Pedro negó al Maestro. Sus escritos tampoco quedaron libres de las limitaciones propias del lenguaje humano.</p>' +
+        e(['La unión de lo divino y lo humano que se manifestó en Cristo existe también en la Biblia. Las verdades reveladas son todas inspiradas divinamente; pero están expresadas en las palabras de los hombres y se adaptan a las necesidades humanas.'], 'Testimonios para la iglesia, t. 5, p. 698') +
+        '<p>Así como «aquel Verbo fue hecho carne» (Juan 1:14) sin dejar de ser Dios, la Palabra escrita tomó forma humana sin dejar de ser divina.</p>' +
+        '<h2 class="section-h">Cuando encuentras una dificultad</h2>' +
+        '<p>Existen pasajes que cuesta armonizar. Por ejemplo, 2 Samuel 10:18 menciona «setecientos carros», mientras que el relato paralelo de 1 Crónicas 19:18 dice «siete mil hombres de los carros». Algunas diferencias se deben a errores de copistas en números, que en hebreo se escribían de formas fáciles de confundir; otras, a fuentes distintas o a que no entendemos bien el texto.</p>' +
+        '<p>Ninguna de estas dificultades afecta una sola doctrina ni la esencia del mensaje. Son tan pocas que solo una mente muy estrecha tropezaría por ellas.</p>' +
+        v('DEUTERONOMIO 29:29', '«Las cosas secretas pertenecen a Jehová nuestro Dios; mas las reveladas son para nosotros y para nuestros hijos para siempre, para que cumplamos todas las palabras de esta ley.»') +
+        e(['Los escritores de la Biblia tuvieron que expresar sus ideas en un lenguaje humano… Debido a las imperfecciones de la comprensión humana del lenguaje, o a la perversidad de la mente humana, ingeniosa para eludir la verdad, muchos leen y entienden la Biblia para agradarse a sí mismos. No es que la dificultad esté en la Biblia.'], 'The Faith I Live By, pp. 12, 13; La fe por la cual vivo, 5 y 6 de enero, pp. 13, 14') +
+        q('¿Por qué Dios eligió a seres humanos falibles, y no a ángeles sin pecado, como sus mensajeros?',
+          '<p>Porque el método de Dios es la encarnación: alcanzar a las personas donde están. Un mensaje traído por ángeles nos abrumaría (cuando Daniel vio a un ser celestial, se quedó sin fuerzas, Dan. 10:8-9) y nos dejaría pensando que la santidad es para otra clase de seres.</p><p>Al usar vasos de barro, Dios muestra que el poder es suyo y no del mensajero (2 Cor. 4:7). Además, los escritores humanos sabían lo que es luchar, caer y ser restaurados, y eso hace su testimonio creíble: si Dios transformó a David y a Pedro, también puede transformarnos a nosotros.</p>') +
+        q('Imagina que esta semana encuentras un pasaje que parece contradecir a otro y no logras resolverlo. ¿Qué pasos concretos darías antes de sacar conclusiones?',
+          '<p>Un camino práctico: (1) leer el contexto completo; (2) identificar el género literario; (3) comparar con pasajes paralelos y con toda la Biblia; (4) consultar una buena traducción o un comentario confiable; (5) orar pidiendo entendimiento; y (6) estar dispuesto a esperar.</p><p>Recalca el último punto. La fe madura no exige resolver todo hoy. Muchas «contradicciones» famosas se aclararon con descubrimientos arqueológicos o un mejor conocimiento de los idiomas originales. Deuteronomio 29:29 nos invita a obedecer lo revelado mientras confiamos a Dios lo que aún no entendemos.</p>')
+    },
+
+    /* 8 ---------------- ELENA G. DE WHITE */
+    {
+      tag: "Elena G. de White",
+      title: "La misma lógica, en nuestro tiempo",
+      html:
+        '<p class="lead">La experiencia de Elena de White se parece mucho a la de los mensajeros bíblicos que hemos estudiado. Ella también recibió la orden de escribir.</p>' +
+        e(['Debido al accidente que casi me costó la vida, mi salud era débil y no podía escribir… Pero el ángel del Señor se me presentó una noche y me dijo: «Debes escribir lo que te comunico». Le respondí: «No puedo escribir». Él repitió la orden: «Escribe lo que te digo». Decidí intentarlo, tomé con qué escribir, comencé a hacerlo y descubrí que podía registrar las palabras con facilidad.'], '«Let Us Publish Salvation», The General Conference Bulletin, 31 de mayo de 1909, p. 225') +
+        '<h2 class="section-h">Secretarios y fuentes</h2>' +
+        '<p>Como Jeremías con Baruc, Elena de White trabajó con asistentes. Sus secretarios hacían el trabajo de un editor: ayudaban a expresar las ideas con claridad sin insertar ideas propias. No escribían en su lugar ni eran coautores; trabajaban sobre el material que ella producía, a mano o de palabra.</p>' +
+        '<p>Como Lucas y los cronistas, también citó y adaptó material de otros autores. Ella misma lo explicó:</p>' +
+        e(['En algunos casos, cuando he encontrado que un historiador había reunido los hechos y presentado en pocas líneas un claro conjunto del asunto, o agrupado los detalles en forma conveniente, he reproducido sus palabras, no tanto para citar a esos escritores como autoridades, sino porque sus palabras resumían adecuadamente el asunto.'], 'Recibiréis poder, 7 de agosto, p. 230') +
+        '<p>Incluso recomendó a sus lectores algunos de los libros que usó, lo cual muestra que no pretendía ocultar nada ni atribuirse la autoría de ese material.</p>' +
+        '<h2 class="section-h">Lo que ella nunca afirmó</h2>' +
+        e(['Acerca de la infalibilidad, nunca pretendí tenerla. Solo Dios es infalible.'], 'Mensajes selectos, t. 1, p. 44') +
+        e(['Hay oportunidades cuando deben declararse cosas comunes, pensamientos comunes deben ocupar la mente, deben escribirse cartas comunes y se debe dar información que ha pasado de un obrero a otro. Tales palabras, tal información, no son dadas bajo la inspiración especial del Espíritu de Dios.'], 'Mensajes selectos, t. 3, pp. 66, 67') +
+        '<p>La Biblia nos da las pruebas para evaluar a cualquier profeta: «¡A la ley y al testimonio! Si no dijeren conforme a esto, es porque no les ha amanecido» (Isa. 8:20). Que su mensaje esté en armonía con la Escritura, que exalte a Cristo (1 Juan 4:1-3), que sus predicciones se cumplan (Deut. 18:22) y que dé buenos frutos (Mat. 7:20).</p>' +
+        q('Un compañero de trabajo te dice: «Elena de White copió de otros autores, así que no puede ser profeta». ¿Cómo le responderías con honestidad y sin ponerte a la defensiva?',
+          '<p>Primero, reconoce lo que es cierto: sí usó fuentes. No hay que negarlo. Luego muestra que eso no es una prueba contra la inspiración, porque los escritores bíblicos hicieron lo mismo: Lucas investigó documentos, los libros de Reyes y Crónicas citan archivos reales, Judas cita a Enoc y Pablo cita a poetas griegos.</p><p>La pregunta correcta no es si usó fuentes, sino si su mensaje pasa las pruebas bíblicas: ¿está en armonía con la Escritura?, ¿exalta a Cristo?, ¿produce buenos frutos? Invita a tu compañero a leer un libro como <em>El camino a Cristo</em> y juzgar por sí mismo. La honestidad y la serenidad convencen más que una defensa acalorada.</p>') +
+        '<p class="muted">Para profundizar: Elena de White, Mensajes selectos, t. 3, pp. 102-145; William C. White, cartas en el Apéndice C de Mensajes selectos, t. 3, pp. 528-544.</p>'
+    },
+
+    /* 9 ---------------- APLICACIÓN */
+    {
+      tag: "Aplicación",
+      title: "Una Palabra escrita para ti",
+      html:
+        '<p class="lead">Pablo dice que las Escrituras se escribieron «para nuestra enseñanza» (Rom. 15:4). No son un archivo del pasado: son correspondencia dirigida a nosotros.</p>' +
+        v('1 CORINTIOS 10:11', '«Y estas cosas les acontecieron como ejemplo, y están escritas para amonestarnos a nosotros, a quienes han alcanzado los fines de los siglos.»') +
+        '<p>Vivimos rodeados de textos que desaparecen: historias que duran 24 horas, mensajes que se borran solos, noticias que caducan en una tarde. En medio de todo eso, Dios nos dejó una Palabra que permanece. Pero un texto permanente solo cambia una vida si alguien lo lee con constancia.</p>' +
+        '<h2 class="section-h">Tres maneras de responder esta semana</h2>' +
+        '<ul class="marks"><li><strong>Leer como los magos:</strong> con la disposición de ponerte en marcha, no solo de acumular datos. Antes de leer, pregúntale a Dios: «¿Qué quieres que haga con esto?».</li><li><strong>Escribir lo que Dios te muestra:</strong> como Moisés, escribe «para memoria». Un cuaderno de estudio te ayuda a recordar respuestas de Dios cuando lleguen días difíciles.</li><li><strong>Compartir con sencillez:</strong> un versículo enviado a tiempo, una nota escrita a mano o una publicación pensada con cuidado pueden ser parte de la obra de Dios.</li></ul>' +
+        e(['Cuando nos demos un banquete de la Palabra de Dios, por causa de la preciosa luz que recogemos de ella, presentémosla a otros para que también puedan gozarse con nosotros. Que esa comunicación sea espontánea y sincera.', 'La palabra y la pluma han de estar bajo el control del Espíritu Santo… Dios requiere plumas consagradas.'], 'El otro poder, pp. 87, 88; 19, 20') +
+        v('2 CORINTIOS 3:2-3', '«Nuestras cartas sois vosotros, escritas en nuestros corazones, conocidas y leídas por todos los hombres; siendo manifiesto que sois carta de Cristo expedida por nosotros, escrita no con tinta, sino con el Espíritu del Dios vivo; no en tablas de piedra, sino en tablas de carne del corazón.»') +
+        q('Pablo dice que somos «carta de Cristo… leída por todos». Si tus compañeros de trabajo, tu familia o tus seguidores en redes solo pudieran conocer a Jesús leyendo tu vida de esta semana, ¿qué mensaje recibirían? ¿Qué «palabra» necesita ser corregida?',
+          '<p>Esta pregunta es para reflexionar en silencio antes de hablar. Puedes dar un minuto para que cada uno piense y luego invitar a quien quiera compartir.</p><p>Recuerda a la clase que la carta la escribe el Espíritu, no nuestro esfuerzo aislado (2 Cor. 3:3). La meta no es aparentar perfección, sino que el Autor se note. Así como Dios no desechó a los mensajeros imperfectos, tampoco nos desecha a nosotros: nos sigue escribiendo.</p>')
+    },
+
+    /* 10 ---------------- CIERRE */
+    {
+      tag: "Cierre",
+      title: "El rollo que nadie pudo quemar",
+      html:
+        '<p class="lead">Desde el cántico de Moisés hasta la carta que hoy llevas en tu celular, Dios se ha encargado de que su voz quede por escrito.</p>' +
+        '<ul class="marks"><li>Dios mandó escribir para que su mensaje no dependiera de la memoria ni del ánimo de una generación.</li><li>Los profetas escribieron en contextos muy distintos y en muchos géneros; conocerlos nos ayuda a leer mejor.</li><li>Secretarios, investigación y fuentes fueron parte del proceso, guiado por el Espíritu Santo.</li><li>El tesoro es divino y la vasija es humana; las dificultades no tocan la esencia del mensaje.</li><li>Elena de White trabajó de la misma manera, y su obra se evalúa con la Biblia.</li></ul>' +
+        e(['El Señor Jesús dijo de las Escrituras del Antiguo Testamento, y cuánto más cierto es esto acerca del Nuevo: «Ellas son las que dan testimonio de mí»… Sí, la Biblia entera nos habla de Cristo… Si queréis familiarizaros con Cristo estudiad las Sagradas Escrituras.'], 'The Faith I Live By, pp. 12, 13; La fe por la cual vivo, 5 y 6 de enero, pp. 13, 14') +
+        v('APOCALIPSIS 1:3', '«Bienaventurado el que lee, y los que oyen las palabras de esta profecía, y guardan las cosas en ella escritas; porque el tiempo está cerca.»') +
+        q('Si tuvieras que resumir en una frase por qué vale la pena confiar en una Biblia escrita por manos humanas, ¿qué dirías? ¿Qué paso concreto darás esta semana para leerla como los magos y no como los sacerdotes?',
+          '<p>Cierra con una ronda breve. Una respuesta sólida suele incluir que el mensaje es de Dios aunque la vasija sea humana, que ha sido preservado con cuidado y que nos lleva a Cristo.</p><p>Para el paso concreto, sugiere algo medible: un horario fijo de lectura, memorizar Romanos 15:4, empezar un cuaderno de estudio o enviar un versículo a alguien cada día. Termina con una oración pidiendo al Espíritu que inspiró la Palabra que también nos ayude a entenderla y vivirla.</p>') +
+        '<div class="closing-prompt"><p>«Porque las cosas que se escribieron antes, para nuestra enseñanza se escribieron, a fin de que por la paciencia y la consolación de las Escrituras, tengamos esperanza.» — Romanos 15:4</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
+})();
+</script>
+</body>
+</html>
