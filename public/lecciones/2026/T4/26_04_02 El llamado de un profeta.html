@@ -7,171 +7,47 @@
 <meta name="theme-color" content="#181517">
 <link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
-<!-- Carga: mientras llegan la hoja de estilos y las fuentes se muestra un
-     esqueleto con la forma de la pantalla (header, contenido y botones). -->
-<link rel="preload" href="../../leccion.css" as="style">
-<style id="skeleton-css">
-  html, body { margin: 0; height: 100%; background: #181517; }
-  html.is-loading body { overflow: hidden; }
-  html.is-loading .app { visibility: hidden; }
-  html:not(.is-loading) .app { animation: app-in .45s cubic-bezier(.16, 1, .3, 1); }
-  @keyframes app-in { from { opacity: 0; } }
-
-  #skeleton {
-    --sk: color-mix(in srgb, #FBFBFF 7%, #181517);
-    --sk-hi: color-mix(in srgb, #FBFBFF 13%, #181517);
-    --line: color-mix(in srgb, #FBFBFF 11%, transparent);
-    position: fixed; inset: 0; z-index: 100;
-    display: flex; flex-direction: column;
-    background: #181517;
-    transition: opacity .4s cubic-bezier(.16, 1, .3, 1), visibility 0s linear .4s;
-  }
-  html:not(.is-loading) #skeleton { opacity: 0; visibility: hidden; pointer-events: none; }
-
-  .sk {
-    display: block;
-    background: linear-gradient(100deg, var(--sk) 40%, var(--sk-hi) 50%, var(--sk) 60%) 0 0 / 300% 100%;
-    border-radius: 8px;
-    animation: sk-shimmer 1.4s linear infinite;
-  }
-  @keyframes sk-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
-
-  /* Header */
-  .sk-header { flex: 0 0 auto; padding: calc(10px + env(safe-area-inset-top)) 14px 12px; border-bottom: 1px solid var(--line); }
-  .sk-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) 52px; align-items: center; gap: 12px; max-width: 800px; margin: 0 auto; }
-  .sk-circle { width: 44px; height: 44px; border-radius: 999px; }
-  .sk-col { display: grid; gap: 7px; }
-  .sk-eyebrow { width: 46%; height: 11px; }
-  .sk-title { width: 68%; height: 17px; }
-  .sk-pill { width: 52px; height: 26px; border-radius: 999px; }
-
-  /* Contenido */
-  .sk-main { flex: 1 1 auto; overflow: hidden; }
-  .sk-inner { max-width: 680px; margin: 0 auto; padding: 32px 20px; }
-  .sk-l { height: 15px; margin-bottom: 13px; }
-  .sk-l--lg { height: 21px; margin-bottom: 14px; }
-  .w100 { width: 100%; } .w95 { width: 95%; } .w90 { width: 90%; } .w85 { width: 85%; }
-  .w80 { width: 80%; } .w70 { width: 70%; } .w60 { width: 60%; } .w45 { width: 45%; } .w35 { width: 35%; }
-  .sk-gap { height: 18px; }
-
-  .sk-kicker { width: 55%; height: 12px; margin: 24px 0 26px; }
-  .sk-h1 { height: 44px; margin-bottom: 12px; border-radius: 10px; }
-  .sk-box {
-    margin: 28px 0 26px; padding: 26px 22px 22px;
-    border: 1px solid var(--line); border-radius: 22px;
-    background: color-mix(in srgb, #FBFBFF 3%, #181517);
-  }
-  .sk-box .sk-l:last-child { margin-bottom: 0; }
-  .sk-cta { width: 210px; height: 54px; margin-top: 28px; border-radius: 999px; }
-
-  /* Pie con botones */
-  .sk-footer {
-    flex: 0 0 auto; display: flex; gap: 8px;
-    padding: 10px max(14px, calc((100% - 680px) / 2)) calc(10px + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--line);
-  }
-  .sk-btn { flex: 1 1 0; height: 52px; border-radius: 999px; }
-  .sk-round { flex: 0 0 52px; height: 52px; border-radius: 999px; }
-
-  /* Portada o página interior, según la página con que se abre la lección */
-  .sk-page { display: none; }
-  html.sk-at-page .sk-cover { display: none; }
-  html.sk-at-page .sk-page { display: block; }
-
-  .sk-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-  @media (min-width: 760px) {
-    .sk-inner { max-width: 720px; padding: 56px 24px; }
-    .sk-h1 { height: 56px; }
-    .sk-title { height: 19px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .sk, .app { animation: none; }
-    #skeleton { transition: none; }
-  }
-</style>
+<link rel="stylesheet" href="../../leccion.css">
 <script>
+  // Esqueleto de carga: la lección se dibuja con su geometría real y cada
+  // texto se muestra como una barra gris en su posición exacta. Cuando las
+  // fuentes están listas (y tras un mínimo breve) aparece el contenido.
   (function () {
     var root = document.documentElement;
-    root.classList.add('is-loading');
-    var m = /^#p(\d+)$/.exec(location.hash || '');
-    if (m && +m[1] > 1) root.classList.add('sk-at-page');
-
-    // La hoja de estilos se carga sin bloquear el primer dibujo, para que el
-    // esqueleto aparezca de inmediato.
-    var css = document.createElement('link');
-    css.rel = 'stylesheet';
-    css.href = '../../leccion.css';
-    var cssReady = new Promise(function (ok) { css.onload = ok; css.onerror = ok; });
-    document.head.appendChild(css);
-
-    var domReady = new Promise(function (ok) {
+    root.classList.add('sk', 'sk-wait', 'is-loading');
+    var MIN = 450, MAX_FONTS = 2000;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wait = function (ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); };
+    var dom = new Promise(function (ok) {
       if (document.readyState !== 'loading') ok();
       else document.addEventListener('DOMContentLoaded', ok);
     });
-
-    var fontsReady = cssReady.then(function () {
-      return document.fonts && document.fonts.ready ? document.fonts.ready : null;
+    // Se piden explícitamente las fuentes que usa la lección; si no, el
+    // navegador puede darlas por "listas" antes de empezar a descargarlas.
+    var fonts = dom.then(function () {
+      if (!document.fonts || !document.fonts.load) return null;
+      var faces = ['400 16px "Outfit Variable"', '600 16px "Outfit Variable"',
+                   '400 16px "Newsreader Variable"', 'italic 400 16px "Newsreader Variable"'];
+      var loads = Promise.all(faces.map(function (f) { return document.fonts.load(f); }))
+        .then(function () { return document.fonts.ready; });
+      return Promise.race([loads, wait(MAX_FONTS)]);
     });
-    // Nunca esperar más de 2,5 s por las fuentes.
-    var limit = new Promise(function (ok) { setTimeout(ok, 2500); });
-
-    Promise.all([cssReady, domReady]).then(function () {
-      return Promise.race([fontsReady, limit]);
-    }).then(function () {
+    // Mientras llegan las fuentes no se muestra nada: así el esqueleto ya
+    // tiene el tamaño definitivo y no se mueve.
+    fonts.then(function () { root.classList.remove('sk-wait'); });
+    Promise.all([fonts, wait(MIN)]).then(function () {
       requestAnimationFrame(function () {
+        // La animación de entrada de la página desplazaría el contenido.
+        var fi = document.querySelectorAll('.fade-in');
+        for (var i = 0; i < fi.length; i++) fi[i].classList.remove('fade-in');
         root.classList.remove('is-loading');
-        var st = document.getElementById('skStatus');
-        if (st) st.textContent = '';
+        setTimeout(function () { root.classList.remove('sk'); }, reduce ? 0 : 450);
       });
     });
   })();
 </script>
-<noscript><link rel="stylesheet" href="../../leccion.css"></noscript>
 </head>
 <body>
-<div id="skeleton" aria-hidden="true">
-  <div class="sk-header">
-    <div class="sk-row">
-      <span class="sk sk-circle"></span>
-      <span class="sk-col"><span class="sk sk-eyebrow"></span><span class="sk sk-title"></span></span>
-      <span class="sk sk-pill"></span>
-    </div>
-  </div>
-  <div class="sk-main">
-    <div class="sk-inner">
-      <div class="sk-cover">
-        <span class="sk sk-kicker"></span>
-        <span class="sk sk-h1 w85"></span>
-        <span class="sk sk-h1 w60"></span>
-        <div class="sk-gap"></div>
-        <span class="sk sk-l w100"></span><span class="sk sk-l w95"></span><span class="sk sk-l w90"></span><span class="sk sk-l w45"></span>
-        <div class="sk-box">
-          <span class="sk sk-l w100"></span><span class="sk sk-l w90"></span><span class="sk sk-l w95"></span><span class="sk sk-l w60"></span>
-          <div class="sk-gap"></div>
-          <span class="sk sk-l w45"></span>
-        </div>
-        <span class="sk sk-l w95"></span><span class="sk sk-l w70"></span>
-        <span class="sk sk-cta"></span>
-      </div>
-      <div class="sk-page">
-        <span class="sk sk-l--lg w100"></span><span class="sk sk-l--lg w95"></span><span class="sk sk-l--lg w60"></span>
-        <div class="sk-gap"></div>
-        <span class="sk sk-l w100"></span><span class="sk sk-l w95"></span><span class="sk sk-l w100"></span><span class="sk sk-l w80"></span>
-        <div class="sk-box">
-          <span class="sk sk-l w35"></span>
-          <div class="sk-gap"></div>
-          <span class="sk sk-l w100"></span><span class="sk sk-l w90"></span><span class="sk sk-l w70"></span>
-        </div>
-        <span class="sk sk-l w100"></span><span class="sk sk-l w95"></span><span class="sk sk-l w85"></span><span class="sk sk-l w60"></span>
-      </div>
-    </div>
-  </div>
-  <div class="sk-footer">
-    <span class="sk sk-btn"></span><span class="sk sk-round"></span><span class="sk sk-btn"></span>
-  </div>
-</div>
-<p class="sk-status" role="status" id="skStatus">Cargando la lección…</p>
 <div class="app">
 
   <header class="app-header">

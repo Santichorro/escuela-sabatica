@@ -1327,3 +1327,106 @@ ul.marks li::before {
     transition: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------
+   Esqueleto de carga
+   El script del <head> añade html.sk + .is-loading. La lección se dibuja
+   con su tamaño real y el texto se reemplaza por barras grises en su
+   posición exacta (una línea tachada gruesa, que sigue el ancho de cada
+   renglón). Al quitar .is-loading, el texto aparece sin mover nada.
+   --------------------------------------------------------------------- */
+@property --sk {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2b282a;
+}
+
+html.sk {
+  --sk: color-mix(in srgb, var(--text) 9%, var(--bg));
+}
+
+html.sk.is-loading {
+  animation: sk-pulse 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes sk-pulse {
+  from { --sk: color-mix(in srgb, var(--text) 7%, var(--bg)); }
+  to { --sk: color-mix(in srgb, var(--text) 14%, var(--bg)); }
+}
+
+/* Antes de que lleguen las fuentes no se dibuja nada (solo el fondo). */
+html.sk-wait .app {
+  opacity: 0;
+}
+
+/* Transición de salida: solo colores, nunca tamaños ni posiciones. */
+html.sk .app *,
+html.sk .app *::before,
+html.sk .app *::after {
+  transition-property: color, background-color, border-color, text-decoration-color, opacity, box-shadow;
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation: none;
+}
+
+/* Texto → barras grises en la posición exacta de cada renglón */
+html.sk .app :is(p, h1, h2, h3, li, blockquote, cite, span, b, strong, em, .memory-verse) {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 0.78em;
+  text-decoration-skip-ink: none;
+  text-decoration-color: transparent;
+}
+
+html.sk.is-loading .app :is(p, h1, h2, h3, li, blockquote, cite, span, b, strong, em, .memory-verse) {
+  color: transparent;
+  text-decoration-color: var(--sk);
+}
+
+/* Botones y pastillas → bloques del mismo tamaño */
+html.sk.is-loading .app :is(.nav-btn, .start-btn, .answer-toggle, .page-counter, .back-link, .toc-btn) {
+  color: transparent;
+  text-decoration: none;
+  background: var(--sk);
+  border-color: transparent;
+  box-shadow: none;
+  opacity: 1;
+}
+
+html.sk.is-loading .app :is(.nav-btn, .start-btn, .answer-toggle, .page-counter, .back-link, .toc-btn) * {
+  text-decoration-color: transparent;
+}
+
+html.sk.is-loading .app svg {
+  opacity: 0;
+}
+
+html.sk.is-loading .app .answer-toggle::after {
+  border-color: transparent;
+}
+
+/* Detalles de color en gris mientras carga */
+html.sk.is-loading .app :is(.verse-block, .egw-block, .memory-verse, .closing-prompt)::before,
+html.sk.is-loading .app .cover .kicker::before,
+html.sk.is-loading .app .marks li::before {
+  background: var(--sk);
+}
+
+html.sk.is-loading .app .progress-fill {
+  opacity: 0;
+}
+
+html.sk.is-loading .app .question-card {
+  background: var(--bg-elevated);
+  border-color: var(--line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.sk.is-loading {
+    animation: none;
+  }
+  html.sk .app *,
+  html.sk .app *::before,
+  html.sk .app *::after {
+    transition: none;
+  }
+}
