@@ -122,6 +122,14 @@ const lecciones = [
     pasaje: 'Romanos 15:4',
     archivo: '/lecciones/2026/T4/26_04_06 Los escritos profeticos.html',
   },
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 7,
+    titulo: '¡Escuchen esto!',
+    pasaje: '1 Corintios 10:11',
+    archivo: '/lecciones/2026/T4/26_04_07 Escuchen esto.html',
+  },
 ]
 
 const leccionesOrdenadas = [...lecciones].sort(
