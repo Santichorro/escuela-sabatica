@@ -130,6 +130,14 @@ const lecciones = [
     pasaje: '1 Corintios 10:11',
     archivo: '/lecciones/2026/T4/26_04_07 Escuchen esto.html',
   },
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 8,
+    titulo: 'Interpretación de los escritos proféticos',
+    pasaje: 'Lucas 24:27',
+    archivo: '/lecciones/2026/T4/26_04_08 Interpretacion de los escritos profeticos.html',
+  },
 ]
 
 const leccionesOrdenadas = [...lecciones].sort(

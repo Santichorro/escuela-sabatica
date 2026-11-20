@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interpretación de los escritos proféticos — Lección 8</title>
+<meta name="theme-color" content="#181517">
+<link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../leccion.css">
+<script>
+  // Esqueleto de carga: la lección se dibuja con su geometría real y cada
+  // texto se muestra como una barra gris en su posición exacta. Cuando las
+  // fuentes están listas (y tras un mínimo breve) aparece el contenido.
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('sk', 'sk-wait', 'is-loading');
+    var MIN = 450, MAX_FONTS = 2000;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wait = function (ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); };
+    var dom = new Promise(function (ok) {
+      if (document.readyState !== 'loading') ok();
+      else document.addEventListener('DOMContentLoaded', ok);
+    });
+    // Se piden explícitamente las fuentes que usa la lección; si no, el
+    // navegador puede darlas por "listas" antes de empezar a descargarlas.
+    var fonts = dom.then(function () {
+      if (!document.fonts || !document.fonts.load) return null;
+      var faces = ['400 16px "Outfit Variable"', '600 16px "Outfit Variable"',
+                   '400 16px "Newsreader Variable"', 'italic 400 16px "Newsreader Variable"'];
+      var loads = Promise.all(faces.map(function (f) { return document.fonts.load(f); }))
+        .then(function () { return document.fonts.ready; });
+      return Promise.race([loads, wait(MAX_FONTS)]);
+    });
+    // Mientras llegan las fuentes no se muestra nada: así el esqueleto ya
+    // tiene el tamaño definitivo y no se mueve.
+    fonts.then(function () { root.classList.remove('sk-wait'); });
+    Promise.all([fonts, wait(MIN)]).then(function () {
+      requestAnimationFrame(function () {
+        // La animación de entrada de la página desplazaría el contenido.
+        var fi = document.querySelectorAll('.fade-in');
+        for (var i = 0; i < fi.length; i++) fi[i].classList.remove('fade-in');
+        root.classList.remove('is-loading');
+        setTimeout(function () { root.classList.remove('sk'); }, reduce ? 0 : 450);
+      });
+    });
+  })();
+</script>
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <a class="back-link" href="/#biblioteca" aria-label="Volver a la biblioteca"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span class="back-link__text" aria-hidden="true">Biblioteca</span></a>
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 8</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg></button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite></div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 8 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        '<div class="cover"><span class="kicker">4TO TRIMESTRE 2026 · LECCIÓN 8</span><h1>Interpretación de los escritos proféticos</h1><p class="subtitle">No basta con tener el mensaje de Dios: hay que entenderlo bien. Principios para leer la Biblia, y los escritos de Elena de White, como sus autores quisieron ser leídos.</p><div class="memory-verse">«Y comenzando desde Moisés, y siguiendo por todos los profetas, les declaraba en todas las Escrituras lo que de él decían.»<cite>Lucas 24:27 — Texto para memorizar</cite></div><p class="readings"><b>Lee para el estudio de esta semana:</b> Mateo 5:17-48; 1 Corintios 16:20; Mateo 4:1-11; Lucas 10:25-28; 24:25-27, 44-49.</p><button class="start-btn" id="startBtn">Comenzar la clase →</button></div>'
+    },
+
+    /* 1 ---------------- PUNTO DE PARTIDA */
+    {
+      tag: "Punto de partida",
+      title: "Dos discípulos que conocían los textos",
+      html:
+        '<p class="lead">Dos discípulos caminaban hacia Emaús con el corazón destrozado. «Nosotros esperábamos que él era el que había de redimir a Israel» (Luc. 24:21). Conocían las profecías, pero las habían leído a medias.</p>' +
+        '<p>Habían subrayado los pasajes de un Mesías victorioso que expulsaría a Roma, y habían pasado por alto los que hablaban de un Siervo que sufriría y moriría (Isa. 53). Su problema no era la falta de Biblia, sino <strong>una interpretación parcial</strong>. Por eso la cruz, que era el cumplimiento de la profecía, les pareció su fracaso.</p>' +
+        '<p>Jesús no resolvió su confusión diciendo «créanme». Los llevó de vuelta a las Escrituras:</p>' +
+        v('LUCAS 24:27', '«Y comenzando desde Moisés, y siguiendo por todos los profetas, les declaraba en todas las Escrituras lo que de él decían.»') +
+        '<p>Les mostró que pasajes distintos formaban una sola historia, y que esa historia apuntaba a Él. El resultado: «¿No ardía nuestro corazón en nosotros, mientras nos hablaba en el camino, y cuando nos abría las Escrituras?» (Luc. 24:32).</p>' +
+        '<h2 class="section-h">Una experiencia que se repitió</h2>' +
+        '<p>Algo parecido vivieron los pioneros adventistas en 1844. Habían calculado bien la profecía de los 2300 días (Dan. 8:14), pero creyeron que el «santuario» era la Tierra y esperaron a Jesús en las nubes. Tras el chasco, volvieron a estudiar.</p>' +
+        e(['En sus investigaciones vieron que en las Santas Escrituras no hay prueba alguna en apoyo de la creencia general de que la tierra es el Santuario, pero encontraron en la Biblia una explicación completa de la cuestión del Santuario…', 'El error no estaba en el cómputo de los períodos proféticos, sino en el acontecimiento que debía verificarse al fin de los 2.300 días.'], 'El conflicto de los siglos, pp. 419, 420') +
+        '<p>Una interpretación correcta abre los ojos y hace arder el corazón. Una interpretación equivocada puede llevarnos a defender, con absoluta convicción, algo que Dios nunca quiso enseñar.</p>' +
+        q('Los discípulos conocían los textos y aun así se equivocaron, porque leían solo lo que confirmaba lo que esperaban. ¿Qué «Mesías a nuestra medida» podemos estar esperando hoy cuando leemos la Biblia de forma selectiva?',
+          '<p>Algunos ejemplos: un Dios que garantiza éxito económico (leyendo solo las promesas de prosperidad), un Dios que nunca corrige (leyendo solo los textos de consuelo), o un Dios que siempre está de nuestro lado en las discusiones (leyendo solo los textos que nos dan la razón).</p><p>La salida es la misma que usó Jesús: leer «todas las Escrituras». Cuando la Biblia completa forma nuestra imagen de Dios, Él puede sorprendernos, y a veces corregirnos, como hizo con los de Emaús. Ellos no perdieron la fe por entender mejor: la recuperaron.</p>')
+    },
+
+    /* 2 ---------------- LA BIBLIA COMO SU PROPIO INTÉRPRETE */
+    {
+      tag: "La Biblia como su propio intérprete",
+      title: "«Oísteis que fue dicho… pero yo os digo»",
+      html:
+        '<p class="lead">Todos llegamos a la Biblia con ideas previas: experiencias, educación, tradiciones. El problema aparece cuando esas ideas se convierten en un filtro que decide de antemano qué le permitimos decir.</p>' +
+        '<p>Si creemos que «toda la Escritura es inspirada por Dios» (2 Tim. 3:16), entonces esperamos una unidad de fondo entre sus libros, aunque los escribieron autores distintos en épocas distintas. Y si tiene un solo Autor, <strong>la Biblia puede explicarse a sí misma</strong>.</p>' +
+        v('MATEO 5:17', '«No penséis que he venido para abrogar la ley o los profetas; no he venido para abrogar, sino para cumplir.»') +
+        '<p>En el Sermón del Monte, Jesús repite seis veces: «Oísteis que fue dicho… pero yo os digo». Una lectura rápida haría pensar que reemplazaba el Antiguo Testamento. Pero acababa de aclarar que no venía a anularlo. Lo que hizo fue mostrar su profundidad: «No matarás» alcanza también el enojo que cultivamos (Mat. 5:21-22); «No cometerás adulterio» llega hasta el deseo del corazón (Mat. 5:27-28). Es la ley escrita en el corazón que anunció Jeremías (Jer. 31:33).</p>' +
+        '<h2 class="section-h">Dónde encuentra la Biblia su interpretación</h2>' +
+        '<ul class="marks"><li><strong>En el mismo pasaje:</strong> Daniel describe el sueño de Nabucodonosor y luego explica que cada metal representa un reino (Dan. 2:31-45). Jesús cuenta la parábola del sembrador y luego la interpreta (Mat. 13:1-9, 18-23).</li><li><strong>En otro libro:</strong> 2 Crónicas 36:22-23 confirma el cumplimiento de los 70 años anunciados por Jeremías (Jer. 25:11-12; 29:10).</li><li><strong>En el Nuevo Testamento:</strong> muchos símbolos del Antiguo encuentran su cumplimiento en Cristo.</li></ul>' +
+        e(['El Antiguo Testamento es el evangelio expresado en figuras y símbolos. El Nuevo Testamento es la realidad. El uno es tan esencial como el otro.'], 'Mensajes selectos, t. 2, p. 130') +
+        '<p>Un ejemplo de lo que pasa cuando no dejamos que la Biblia se explique: muchos creen que la visión del lienzo con animales impuros (Hech. 10) trata de comida. Pero el mismo Pedro la interpreta pocos versículos después: «a mí me ha mostrado Dios que a ningún hombre llame común o inmundo» (Hech. 10:28). La visión era sobre aceptar a los gentiles, no sobre cambiar la dieta.</p>' +
+        e(['La Biblia es su propio exégeta. Un pasaje es la llave para abrir otros pasajes, y de esta manera la luz se derramará sobre el significado oculto de la Palabra.'], 'Fundamentals of Christian Education, pp. 187, 188; parcialmente en La educación cristiana, p. 48') +
+        q('¿Por qué es crucial ser conscientes de nuestras presuposiciones al estudiar la Biblia? ¿Por qué la más importante de ellas debe ser la convicción de que la Biblia es la Palabra de Dios, la regla con la que nos medimos, y no al revés?',
+          '<p>Nadie lee desde cero. Si no reconocemos nuestras ideas previas, terminamos encontrando en la Biblia exactamente lo que ya pensábamos. Reconocerlas nos permite someterlas a prueba.</p><p>La presuposición de que la Biblia es Palabra de Dios define quién juzga a quién. Si es solo un libro humano, nosotros decidimos qué aceptar. Si es Palabra de Dios, ella nos evalúa a nosotros (Heb. 4:12). Una pregunta útil para cerrar: cuando estudio, ¿dejo que la Biblia corrija mis ideas, o solo busco textos que confirmen lo que ya creía?</p>')
+    },
+
+    /* 3 ---------------- EL CONTEXTO HISTÓRICO-CULTURAL */
+    {
+      tag: "El contexto histórico-cultural",
+      title: "El ósculo santo y las bicicletas",
+      html:
+        '<p class="lead">Algunos textos parecen extraños o contradictorios hasta que los leemos en el mundo en que fueron escritos.</p>' +
+        v('ISAÍAS 65:17, 20', '«Porque he aquí que yo crearé nuevos cielos y nueva tierra… No habrá más allí niño que muera de pocos días, ni viejo que sus días no cumpla; porque el niño morirá de cien años, y el pecador de cien años será maldito.»') +
+        '<p>¿Habrá muerte y pecadores en la tierra nueva? El mismo Isaías dice que no: Dios «destruirá a la muerte para siempre» (Isa. 25:8) y no se oirá más «voz de lloro» (Isa. 65:19). La clave está en el contexto histórico: Isaías describía, en lenguaje poético, lo que Israel podría vivir si era fiel al pacto (comparar con Deut. 28): longevidad y el fin de la mortalidad infantil, como un anticipo de la restauración final. Israel no fue fiel, y la promesa alcanzó su plenitud en los nuevos cielos y nueva tierra del Nuevo Testamento (Apoc. 21:4).</p>' +
+        '<h2 class="section-h">Principio y forma</h2>' +
+        v('1 CORINTIOS 16:20', '«Os saludan todos los hermanos. Saludaos los unos a los otros con ósculo santo.»') +
+        '<p>¿Deberíamos saludarnos todos con un beso desde este sábado? En la cultura de Pablo, el beso en la mejilla era el saludo entre familiares y amigos cercanos. Pablo usa esa práctica para expresar un principio: <strong>los creyentes son familia y deben recibirse con afecto</strong>. En Argentina ese principio puede vivirse con un beso; en Japón, con una reverencia; en otras culturas, con un abrazo o un apretón de manos.</p>' +
+        '<p>Hay que distinguir entre una costumbre cultural y una ordenanza. Lavar los pies de los visitantes era hospitalidad en tiempos bíblicos (Luc. 7:44); el lavamiento de los pies que Jesús instituyó antes de la Cena (Juan 13:14-15) es un mandato que seguimos practicando. El matrimonio con la viuda del hermano (Deut. 25:5) protegía a las familias en una sociedad concreta. La pregunta siempre es: ¿qué verdad permanente comunica esta práctica?</p>' +
+        '<h2 class="section-h">El caso de las bicicletas</h2>' +
+        '<p>En 1894, Elena de White escribió a la iglesia de Battle Creek reprendiendo la compra de bicicletas (Testimonios para la iglesia, t. 8, pp. 58-60). Hoy alguien podría citarla para condenar a una familia que sale a pasear en bicicleta. Pero en la década de 1890 la bicicleta era un artículo costoso y de estatus; algunos jóvenes comprometían ingresos futuros para comprarla, no para transportarse sino para exhibirse y competir. El principio que ella defendía era la buena administración de los recursos de Dios. Cuando la bicicleta se volvió un medio económico y saludable, cambió la aplicación; el principio sigue igual.</p>' +
+        q('¿Cómo aplicamos hoy el «ósculo santo» de 1 Corintios 16:20 en nuestra iglesia y en nuestra cultura? ¿Se siente realmente bienvenido quien entra por primera vez?',
+          '<p>El principio es que nadie debe sentirse extraño en la familia de Dios. La forma depende de la cultura y de la persona: un saludo cálido, un abrazo si es apropiado, aprenderse el nombre del visitante, sentarse junto a él, invitarlo a almorzar.</p><p>Lleva la conversación a lo concreto: ¿quién recibe a las visitas en nuestra iglesia? Un saludo hecho solo por cumplir tampoco cumple el principio; lo que Pablo pide es afecto sincero.</p>') +
+        q('Distinguir entre principio y forma cultural es necesario, pero ¿cómo evitamos usar el argumento de «eso era cultural» para descartar lo que simplemente nos incomoda?',
+          '<p>Algunas pautas: preguntar si la propia Biblia trata el asunto como algo universal (por ejemplo, cuando lo funda en la creación o en el carácter de Dios, como el sábado en Gén. 2:2-3 y Éxo. 20:11); revisar si otros textos lo repiten en contextos distintos; y examinar nuestra motivación.</p><p>La prueba honesta es esta: si la conclusión «es cultural» siempre coincide con lo que yo prefería hacer, quizá no estoy interpretando, sino justificándome. El objetivo del contexto no es obedecer menos, sino obedecer mejor.</p>')
+    },
+
+    /* 4 ---------------- EL CONTEXTO LITERARIO */
+    {
+      tag: "El contexto literario",
+      title: "Un texto fuera de contexto es un pretexto",
+      html:
+        '<p class="lead">Una anécdota cuenta de un hombre que buscaba dirección. Abrió la Biblia al azar y leyó: «Judas… fue y se ahorcó» (Mat. 27:5). Lo intentó otra vez y leyó: «Ve, y haz tú lo mismo» (Luc. 10:37).</p>' +
+        '<p>Ambas frases están en la Biblia, pero unidas así dicen algo que la Biblia nunca enseñó. Parece exagerado, pero es uno de los errores más comunes: arrancar una frase de su contexto y obligarla a decir algo distinto de lo que el autor quiso comunicar.</p>' +
+        '<h2 class="section-h">El método de la serpiente</h2>' +
+        '<p>En el Edén, Satanás no negó de entrada que Dios hubiera hablado. Tomó sus palabras y las torció: «¿Conque Dios os ha dicho: No comáis de todo árbol del huerto?» (Gén. 3:1). Dios había dicho lo contrario: podían comer de todos menos de uno. Primero generalizó, después ofreció su propia interpretación.</p>' +
+        '<p>En el desierto hizo algo parecido con Jesús. Llevó a Jesús al pináculo del templo y citó el Salmo 91: «A sus ángeles mandará acerca de ti» (Mat. 4:6). Pero omitió una frase clave del salmo: «que te guarden <strong>en todos tus caminos</strong>» (Sal. 91:11). La promesa era para quien anda en los caminos de Dios, no para quien se arroja al peligro para obligarlo a intervenir.</p>' +
+        v('MATEO 4:7', '«Jesús le dijo: Escrito está también: No tentarás al Señor tu Dios.»') +
+        '<p>Jesús respondió con un «escrito está también»: puso el texto dentro de la enseñanza más amplia de la Escritura. Satanás se presentó «como un ángel de luz» para engañar a Cristo (Elena de White, Review and Herald, 18 de diciembre de 1888, p. 3). <strong>Citar la Biblia no garantiza enseñar lo que la Biblia enseña.</strong></p>' +
+        e(['Con el fin de sostener doctrinas erróneas o prácticas anticristianas, hay quienes toman pasajes de la Sagrada Escritura aislados del contexto, no citan tal vez más que la mitad de un versículo para probar su idea, y dejan la segunda mitad que quizá hubiese probado todo lo contrario…', 'Siempre que uno se da al estudio de las Escrituras sin estar animado de un espíritu de oración y humildad, susceptible de recibir enseñanza, los pasajes más claros y sencillos, como los más difíciles, será desviados de su verdadero sentido.'], 'Maranata: el Señor viene, 4 de mayo, p. 137') +
+        '<h2 class="section-h">Versículos famosos, contextos olvidados</h2>' +
+        '<ul class="marks"><li><strong>«Porque yo sé los pensamientos que tengo acerca de vosotros…» (Jer. 29:11)</strong> fue escrito a exiliados que pasarían setenta años en Babilonia (Jer. 29:10). Es una promesa de esperanza a largo plazo, no de que todo saldrá bien esta semana.</li><li><strong>«Todo lo puedo en Cristo que me fortalece» (Fil. 4:13)</strong> aparece justo después de que Pablo dice que aprendió a estar contento tanto en abundancia como en necesidad (Fil. 4:11-12). Habla de contentamiento, no de lograr cualquier meta.</li><li><strong>«Donde están dos o tres congregados en mi nombre…» (Mat. 18:20)</strong> está en un pasaje sobre cómo resolver el pecado y la disciplina en la iglesia (Mat. 18:15-19).</li></ul>' +
+        q('¿Por qué debemos evitar la tentación de sacar textos de su contexto para probar nuestros argumentos, incluso cuando lo que defendemos es correcto?',
+          '<p>Porque el fin no justifica el método. Si uso mal un texto para defender una verdad, enseño a otros a usar ese mismo método, y ese método también sirve para defender errores. Además, cuando alguien descubre el contexto, pierde la confianza en el argumento y, a veces, en la verdad que defendíamos.</p><p>Una verdad bíblica no necesita textos forzados: siempre tendrá apoyo en pasajes leídos en su contexto. Usar la Biblia con honestidad es una forma de respetar a Dios y a quien nos escucha.</p>') +
+        q('Toma Jeremías 29:11 o Filipenses 4:13 y lee el capítulo donde aparece. ¿Qué cambia en tu comprensión? ¿Pierde fuerza la promesa, o gana profundidad?',
+          '<p>Esta pregunta puede trabajarse en parejas durante unos minutos. Lo habitual es descubrir que el texto no pierde valor, sino que gana raíces: Jeremías 29:11 consuela a quien espera durante años; Filipenses 4:13 da fuerza para ser fiel en la escasez y en la abundancia.</p><p>Recalca que leer el contexto no «le quita» promesas a la Biblia; las protege de convertirse en frases motivacionales que se rompen ante la primera dificultad.</p>')
+    },
+
+    /* 5 ---------------- EL SIGNIFICADO DEL TEXTO */
+    {
+      tag: "El significado del texto",
+      title: "«¿Qué está escrito? ¿Cómo lees?»",
+      html:
+        '<p class="lead">Un intérprete de la ley preguntó a Jesús qué hacer para heredar la vida eterna. Jesús no le dio una respuesta nueva; le hizo dos preguntas.</p>' +
+        v('LUCAS 10:26', '«Él le dijo: ¿Qué está escrito en la ley? ¿Cómo lees?»') +
+        '<p>La primera pregunta va al texto; la segunda, a la interpretación. Tener el texto delante y entenderlo no es lo mismo. La Biblia es tan clara que cualquiera puede encontrar en ella el camino de la salvación, y tan profunda que podemos estudiarla toda la vida sin agotarla.</p>' +
+        '<h2 class="section-h">Pasos para descubrir el significado</h2>' +
+        '<ul class="marks"><li><strong>Las palabras:</strong> qué significaban en su idioma y en su época. Comparar traducciones y usar un diccionario bíblico ayuda a no imponerles un sentido moderno.</li><li><strong>El contexto inmediato:</strong> el párrafo, el capítulo, el argumento. ¿Quién habla? ¿A quién? ¿Qué problema está tratando?</li><li><strong>El contexto bíblico amplio:</strong> otros pasajes sobre el mismo tema, especialmente los paralelos.</li><li><strong>El contexto histórico-cultural:</strong> costumbres, geografía, situación política. Las Biblias de estudio, comentarios y diccionarios bíblicos son buenas herramientas.</li><li><strong>La armonía con toda la Escritura:</strong> si mi conclusión contradice la enseñanza clara del resto de la Biblia, debo revisarla.</li></ul>' +
+        '<h2 class="section-h">Un ejemplo: «sed perfectos»</h2>' +
+        '<p>«Sed, pues, vosotros perfectos, como vuestro Padre que está en los cielos es perfecto» (Mat. 5:48). Aislado, el texto parece exigir una impecabilidad imposible. Pero el contexto es el amor a los enemigos: Dios «hace salir su sol sobre malos y buenos» (Mat. 5:45). Y el paralelo de Lucas lo dice así: «Sed, pues, misericordiosos, como también vuestro Padre es misericordioso» (Luc. 6:36). Ser «perfectos» aquí es madurez y plenitud en el amor, un amor que no hace excepciones.</p>' +
+        e(['No debemos satisfacernos con un conocimiento superficial… Algunas porciones de las Escrituras son, en realidad, demasiado sencillas para ser entendidas mal; pero hay otras cuyo significado no está en la superficie, para ser visto de una ojeada. La Escritura debe compararse con la Escritura; debe haber una cuidadosa búsqueda y una paciente reflexión… Así como el minero descubre las vetas de precioso metal ocultas debajo de la superficie de la tierra, también el que busca perseverantemente en la Palabra de Dios un tesoro, encuentra verdades del mayor valor.'], 'Nuestra elevada vocación, 18 de julio, p. 207') +
+        '<h2 class="section-h">Rigor y humildad</h2>' +
+        '<p>El buen intérprete une el cuidado del que estudia con la humildad del que sabe que «ahora vemos por espejo, oscuramente» (1 Cor. 13:12). Conviene construir las convicciones desde lo que la Biblia enseña con mayor claridad, y dejar que esa luz ilumine lo que todavía no entendemos. Habrá preguntas sin respuesta antes de la eternidad, y eso no debe asustarnos: primero vivimos lo que entendemos, y lo demás se irá aclarando con la luz que Dios nos dé.</p>' +
+        q('Compara Mateo 5:43-48 con Lucas 6:27-36. ¿Cómo cambia el contexto y el texto paralelo de Lucas 6:36 tu manera de entender «sed perfectos»? ¿Cómo se ve esa «perfección» en una relación difícil que tengas hoy?',
+          '<p>Ambos pasajes muestran que la perfección de la que habla Jesús es la del amor: amar a quien no nos ama, bendecir a quien nos maldice, hacer el bien sin esperar nada (Luc. 6:35). No es una lista de reglas sin fallas, sino un corazón que se parece al del Padre.</p><p>Esto libera del perfeccionismo angustiado y, a la vez, eleva la exigencia: ya no basta con no hacer daño, hay que amar activamente. Invita a pensar en una persona concreta con quien practicar esta semana ese amor «perfecto».</p>') +
+        q('Piensa en algo de la Biblia que no entendías y que te inquietaba, hasta que alguien te lo explicó o lo descubriste estudiando. ¿Cómo debería ayudarte esa experiencia a confiar en Dios respecto de lo que todavía no entiendes de su Palabra?',
+          '<p>Deja que algunos compartan su experiencia; suele ser uno de los momentos más ricos de la clase. Muchos tendrán ejemplos de textos que parecían contradictorios y que se aclararon con el contexto.</p><p>Esas experiencias son evidencia acumulada: si antes Dios aclaró lo que parecía oscuro, podemos confiar en que lo hará otra vez. La fe madura no finge saberlo todo; sabe qué hacer mientras no entiende: seguir estudiando, orar y obedecer lo que sí está claro (Deut. 29:29).</p>')
+    },
+
+    /* 6 ---------------- JESÚS, EL INTÉRPRETE */
+    {
+      tag: "Jesús, el intérprete",
+      title: "«Les abrió el entendimiento»",
+      html:
+        '<p class="lead">Después de la resurrección, Jesús se apareció a los discípulos reunidos en Jerusalén e hizo con todos lo mismo que había hecho camino a Emaús.</p>' +
+        v('LUCAS 24:44-45', '«Y les dijo: Estas son las palabras que os hablé, estando aún con vosotros: que era necesario que se cumpliese todo lo que está escrito de mí en la ley de Moisés, en los profetas y en los salmos. Entonces les abrió el entendimiento, para que comprendiesen las Escrituras.»') +
+        '<p>Jesús es «el camino, y la verdad, y la vida» (Juan 14:6), y aun así su predicación estaba firmemente anclada en la Escritura:</p>' +
+        '<ul class="marks"><li>Comenzó su ministerio diciendo «El tiempo se ha cumplido» (Mar. 1:15), conectando su obra con la profecía de las setenta semanas (Dan. 9:24-27).</li><li>En el Sermón del Monte citó y profundizó los mandamientos (Mat. 5:21, 27).</li><li>En Nazaret leyó Isaías 61 y dijo: «Hoy se ha cumplido esta Escritura delante de vosotros» (Luc. 4:21). Detalle notable: se detuvo en «el año agradable del Señor» (Luc. 4:19) y no leyó la frase siguiente de Isaías, «y el día de venganza del Dios nuestro» (Isa. 61:2). Su primera venida era de gracia; el juicio vendría después. Jesús sabía exactamente dónde terminaba la parte que se cumplía ese día.</li></ul>' +
+        '<h2 class="section-h">El etíope y Felipe</h2>' +
+        '<p>Un funcionario etíope volvía de adorar en Jerusalén leyendo el rollo de Isaías. Tenía el texto, el interés y la sinceridad, pero no entendía el pasaje del Siervo sufriente. Felipe le preguntó: «¿Entiendes lo que lees?». Él respondió: «¿Y cómo podré, si alguno no me enseñare?» (Hech. 8:30-31). Felipe le anunció a Jesús desde ese texto, y el etíope pidió ser bautizado (Hech. 8:35-38).</p>' +
+        '<p>La lectura personal es indispensable, pero Dios también usa a otros para ayudarnos a entender. Eso sí, como los de Berea, hay que verificar lo que se enseña: «escudriñando cada día las Escrituras para ver si estas cosas eran así» (Hech. 17:11). Y quien enseña tiene una gran responsabilidad: presentar un mensaje bíblico sólido, no sus opiniones personales.</p>' +
+        e(['A medida que el estudiante de la Biblia contempla al Redentor, se despierta en el alma el misterioso poder de la fe, la adoración y el amor. La mirada se fija en la visión de Cristo y el que observa se asemeja cada vez más a lo que adora.'], 'La educación, p. 192') +
+        q('Aunque a veces necesitemos ayuda para entender algunos textos, ¿por qué debemos estar personalmente convencidos de lo que creemos, y no depender solo de lo que dice un pastor, un maestro o un video?',
+          '<p>Porque la fe que no es nuestra no resiste la prueba. Si creo algo solo porque otro lo dijo, el día que esa persona falle o que alguien me presente un argumento distinto, no tendré dónde apoyarme. Los bereanos fueron elogiados precisamente por verificar lo que oían (Hech. 17:11).</p><p>Aprender de otros no se opone a estar convencidos: el etíope necesitó a Felipe, pero la decisión de bautizarse fue suya. Recibir ayuda y luego comprobarla en la Biblia es el camino sano.</p>') +
+        q('Cuando compartes la Biblia con alguien, ¿lo estás llevando hacia tus propias ideas o hacia Cristo? ¿Cómo se nota la diferencia?',
+          '<p>Algunas señales de que conduzco a mis ideas: me importa más ganar la discusión que la persona; uso textos sueltos como armas; no escucho sus preguntas. Señales de que conduzco a Cristo: la conversación termina hablando de Él, la persona entiende mejor el texto y queda con deseo de seguir estudiando.</p><p>El objetivo de Felipe no fue demostrar cuánto sabía, sino que el etíope conociera a Jesús. Explicar bien un texto puede cambiar una vida.</p>')
+    },
+
+    /* 7 ---------------- ELENA G. DE WHITE */
+    {
+      tag: "Elena G. de White",
+      title: "Leerla como ella pidió ser leída",
+      html:
+        '<p class="lead">Los mismos principios que usamos con la Biblia se aplican a los escritos de Elena de White. Leerlos mal ha causado tanto daño como no leerlos.</p>' +
+        '<ul class="marks"><li><strong>Empieza con oración y una mente abierta.</strong> Ella escribió sobre la Biblia algo que vale también para sus escritos: <em>«Si investigas las Escrituras para vindicar tus propias opiniones, nunca alcanzarás la verdad. Estudia para aprender qué dice el Señor»</em> (Palabras de vida del gran Maestro, pp. 83, 84).</li><li><strong>Ten en cuenta el contexto.</strong> Ella misma dijo que <em>«deben tomarse en cuenta el tiempo y el lugar»</em> (Mensajes selectos, t. 1, p. 67). El caso de las bicicletas es un ejemplo claro.</li><li><strong>Busca el principio.</strong> ¿Cuál es el punto principal que el pasaje enfatiza? Con las bicicletas, era la administración de los recursos de Dios.</li><li><strong>Estudia todo lo que escribió sobre el tema.</strong> Las declaraciones menos claras se entienden a la luz de su enseñanza general.</li><li><strong>Verifica que realmente lo dijo.</strong> Circulan muchas frases atribuidas a ella que no son suyas. Busca el libro y la página.</li></ul>' +
+        e(['Mucho que se da a entender como un mensaje de la Hna. White tiene el propósito de representar mal a la Hna. White, haciendo que testifique a favor de cosas que no están de acuerdo con su mente o juicio.'], 'Mensajes selectos, t. 1, p. 52') +
+        '<p>Hoy esto ocurre a gran velocidad: una frase sin referencia en una imagen, un audio reenviado mil veces, una cita cortada a la mitad para condenar a otros. Leer a Elena de White como ella pidió es una forma de honrar el don que Dios dio a su iglesia.</p>' +
+        q('Alguien comparte en el grupo de WhatsApp de la iglesia una cita de Elena de White para criticar a una familia (como en el caso de las bicicletas), o una frase atribuida a ella sin referencia. ¿Qué harías? ¿Cómo responder con firmeza y con amor a la vez?',
+          '<p>Primero, verificar: ¿hay libro y página? Las obras de Elena de White pueden consultarse en egwwritings.org. Luego, leer el contexto completo y preguntar cuál era el principio. Muchas veces eso basta para aclarar el malentendido.</p><p>La respuesta debería ser privada si es posible, amable y centrada en el texto, no en la persona. El objetivo no es humillar a quien compartió la cita, sino proteger a la familia afectada y ayudar a todos a leer mejor. Recuerda que el propósito de los escritos proféticos es acercarnos a Cristo, no darnos munición contra otros.</p>') +
+        '<p class="muted">Para profundizar: Elena de White, «Consejo relativo a la edad para ingresar en la escuela», Mensajes selectos, t. 3, pp. 251-265; George R. Knight, Cómo leer a Elena de White (APIA, 2004).</p>'
+    },
+
+    /* 8 ---------------- APLICACIÓN */
+    {
+      tag: "Aplicación",
+      title: "Un método para tu estudio personal",
+      html:
+        '<p class="lead">Satanás intentó durante siglos quitarle la Biblia a la gente: la prohibió, la quemó, la encadenó, y no lo logró. Hoy usa dos estrategias más sutiles: que tengamos una Biblia y no la leamos, o que la leamos y la interpretemos mal.</p>' +
+        '<p>Contra las dos, el antídoto es el mismo: estudiar con constancia y con buen método. Aquí tienes uno sencillo para usar esta semana:</p>' +
+        '<ul class="marks"><li><strong>Ora antes de leer.</strong> Pide al Espíritu que te abra el entendimiento, como Jesús lo hizo con los discípulos (Luc. 24:45).</li><li><strong>Lee el pasaje completo,</strong> no solo el versículo. Lee lo que va antes y lo que va después.</li><li><strong>Observa:</strong> ¿quién habla?, ¿a quién?, ¿qué problema enfrentan?, ¿qué tipo de texto es?</li><li><strong>Compara:</strong> busca otros textos sobre el mismo tema y, si existen, los relatos paralelos.</li><li><strong>Investiga el trasfondo:</strong> usa una Biblia de estudio o el Comentario bíblico adventista para entender costumbres y contexto.</li><li><strong>Extrae el principio:</strong> ¿qué verdad permanente comunica el texto?</li><li><strong>Aplícalo:</strong> ¿qué cambia en mi vida esta semana? Solo después de entender el texto podemos aplicarlo correctamente.</li></ul>' +
+        e(['Cuando se despierte un amor verdadero por la Biblia, y el estudiante empiece a ver cuán vasto es el campo y cuán precioso su tesoro, deseará echar mano de toda oportunidad que se le presente para familiarizarse con la Palabra de Dios.'], 'La educación, p. 191') +
+        q('Ejercicio en grupos: elijan uno de estos textos y apliquen el método completo: Mateo 18:20, Jeremías 29:11, Isaías 65:20 o Filipenses 4:13. ¿Qué descubrieron que no habían notado antes? ¿Cuál fue el paso más útil?',
+          '<p>Divide la clase en grupos pequeños y asigna un texto a cada uno. Pide que al final cada grupo comparta en una frase el principio del texto y una aplicación correcta.</p><p>Lo habitual es que el paso más revelador sea leer el contexto. Cierra recordando que este método no es solo para maestros o pastores: cualquier creyente puede usarlo, y el Espíritu Santo promete acompañarlo (Juan 16:13).</p>')
+    },
+
+    /* 9 ---------------- CIERRE */
+    {
+      tag: "Cierre",
+      title: "Corazones que arden",
+      html:
+        '<p class="lead">Interpretar bien la Palabra de Dios exige mucho más que encontrar una frase que parezca responder nuestra pregunta.</p>' +
+        '<ul class="marks"><li>La Biblia es su propio intérprete: un pasaje abre otros, porque tiene un solo Autor.</li><li>El contexto histórico y cultural nos ayuda a distinguir el principio permanente de su forma cultural.</li><li>El contexto literario nos protege de usar la Biblia como lo hizo la serpiente.</li><li>Entender un texto requiere rigor para estudiar y humildad para reconocer lo que aún no sabemos.</li><li>Jesús es el centro y la clave de toda la Escritura.</li><li>Los escritos de Elena de White se leen con los mismos principios.</li></ul>' +
+        '<p>El propósito final no es convertirnos en mejores intérpretes, sino que nos pase lo que les pasó a los de Emaús: que la verdad nos abra los ojos, haga arder el corazón y nos lleve a Cristo. Vayamos a la Palabra sin prejuicios, como un niño que quiere aprender.</p>' +
+        v('2 TIMOTEO 2:15', '«Procura con diligencia presentarte a Dios aprobado, como obrero que no tiene de qué avergonzarse, que usa bien la palabra de verdad.»') +
+        q('Cuando estudias la Biblia o un escrito profético, ¿buscas comprender lo que Dios quiso comunicar, o solo encontrar apoyo para lo que ya decidiste creer? ¿Qué cambiará en tu forma de estudiar a partir de esta semana?',
+          '<p>Cierra con una ronda breve de compromisos concretos: leer capítulos completos, usar una Biblia de estudio, verificar las citas antes de compartirlas, empezar cada estudio con oración.</p><p>Termina orando para que el Espíritu Santo que inspiró la Palabra nos dé deseo de estudiarla y luz para entenderla correctamente, en el nombre de Jesús.</p>') +
+        '<div class="closing-prompt"><p>«Y comenzando desde Moisés, y siguiendo por todos los profetas, les declaraba en todas las Escrituras lo que de él decían.» — Lucas 24:27</p></div>'
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
+})();
+</script>
+</body>
+</html>
