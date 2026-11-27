@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Poniendo a prueba a los profetas — Lección 9</title>
+<meta name="theme-color" content="#181517">
+<link rel="preload" href="../../fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../leccion.css">
+<script>
+  // Esqueleto de carga: la lección se dibuja con su geometría real y cada
+  // texto se muestra como una barra gris en su posición exacta. Cuando las
+  // fuentes están listas (y tras un mínimo breve) aparece el contenido.
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('sk', 'sk-wait', 'is-loading');
+    var MIN = 450, MAX_FONTS = 2000;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var wait = function (ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); };
+    var dom = new Promise(function (ok) {
+      if (document.readyState !== 'loading') ok();
+      else document.addEventListener('DOMContentLoaded', ok);
+    });
+    // Se piden explícitamente las fuentes que usa la lección; si no, el
+    // navegador puede darlas por "listas" antes de empezar a descargarlas.
+    var fonts = dom.then(function () {
+      if (!document.fonts || !document.fonts.load) return null;
+      var faces = ['400 16px "Outfit Variable"', '600 16px "Outfit Variable"',
+                   '400 16px "Newsreader Variable"', 'italic 400 16px "Newsreader Variable"'];
+      var loads = Promise.all(faces.map(function (f) { return document.fonts.load(f); }))
+        .then(function () { return document.fonts.ready; });
+      return Promise.race([loads, wait(MAX_FONTS)]);
+    });
+    // Mientras llegan las fuentes no se muestra nada: así el esqueleto ya
+    // tiene el tamaño definitivo y no se mueve.
+    fonts.then(function () { root.classList.remove('sk-wait'); });
+    Promise.all([fonts, wait(MIN)]).then(function () {
+      requestAnimationFrame(function () {
+        // La animación de entrada de la página desplazaría el contenido.
+        var fi = document.querySelectorAll('.fade-in');
+        for (var i = 0; i < fi.length; i++) fi[i].classList.remove('fade-in');
+        root.classList.remove('is-loading');
+        setTimeout(function () { root.classList.remove('sk'); }, reduce ? 0 : 450);
+      });
+    });
+  })();
+</script>
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <div class="header-row">
+      <a class="back-link" href="/#biblioteca" aria-label="Volver a la biblioteca"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></svg><span class="back-link__text" aria-hidden="true">Biblioteca</span></a>
+      <div>
+        <span class="eyebrow" id="sectionLabel">Lección 9</span>
+        <h1 class="page-title" id="pageTitle">Portada</h1>
+      </div>
+      <span class="page-counter" id="pageCounterTop"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </header>
+
+  <div class="content-scroll" id="contentScroll">
+    <div class="content-inner" id="contentInner"></div>
+  </div>
+
+  <footer class="app-footer">
+    <button class="nav-btn" id="prevBtn">‹ Anterior</button>
+    <button class="toc-btn" id="tocBtn" aria-label="Índice"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg></button>
+    <button class="nav-btn nav-btn--primary" id="nextBtn">Siguiente ›</button>
+  </footer>
+
+  <div class="toc-overlay" id="tocOverlay">
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span>Índice de la lección</span>
+        <button id="tocClose" aria-label="Cerrar"><svg class="icon" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"/></svg></button>
+      </div>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  var qn = 0;
+
+  function v(label, text){
+    return '<div class="verse-block"><span class="block-label">' + label + '</span><blockquote>' + text + '</blockquote></div>';
+  }
+  function e(paras, cite, note){
+    if(typeof paras === 'string'){ paras = [paras]; }
+    var inner = paras.map(function(t){ return '<blockquote>' + t + '</blockquote>'; }).join('');
+    return '<div class="egw-block"><span class="block-label">ESPÍRITU DE PROFECÍA</span>' + inner + '<cite>' + cite + '</cite>' +
+      (note ? '<p class="block-note"><b>Nota para el maestro:</b> ' + note + '</p>' : '') + '</div>';
+  }
+  function q(question, answer){
+    qn++;
+    var id = 'a' + qn;
+    return '<div class="question-card">' +
+      '<span class="question-label">PREGUNTA ' + qn + ' PARA DISCUSIÓN</span>' +
+      '<p class="question-text">' + question + '</p>' +
+      '<button class="answer-toggle" aria-expanded="false" data-answer="' + id + '">Ver respuesta orientativa</button>' +
+      '<div class="answer-panel" id="' + id + '"><span class="who">GUÍA PARA EL MAESTRO</span>' + answer + '</div>' +
+    '</div>';
+  }
+
+
+  // Bloques añadidos desde la lección 9: estudio de palabra, ilustración,
+  // aplicación práctica e idea central (estilos en leccion.css).
+  function w(lang, term, orig, code, body){
+    return '<div class="word-block"><span class="block-label">ESTUDIO DE PALABRA · ' + lang.toUpperCase() + '</span>' +
+      '<p class="word-term"><span class="word-translit">' + term + '</span> <span class="word-orig" lang="' + code + '">' + orig + '</span></p>' +
+      '<p>' + body + '</p></div>';
+  }
+  function il(title, text, limit){
+    return '<div class="illus-block"><span class="block-label">ILUSTRACIÓN</span><h3>' + title + '</h3><p>' + text + '</p>' +
+      (limit ? '<div class="illus-limit"><span class="block-label">LÍMITE DE LA ILUSTRACIÓN</span><p>' + limit + '</p></div>' : '') + '</div>';
+  }
+  function ap(title, items){
+    return '<div class="apply-block"><span class="block-label">APLICACIÓN PRÁCTICA</span><h3>' + title + '</h3><ol class="steps">' +
+      items.map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ol></div>';
+  }
+  function key(text){
+    return '<div class="key-idea"><span class="block-label">IDEA CENTRAL</span><p>' + text + '</p></div>';
+  }
+
+
+  var pages = [
+
+    /* 0 ---------------- PORTADA */
+    {
+      tag: "Lección 9 · 4to trimestre 2026",
+      title: "Portada",
+      html:
+        "<div class=\"cover\"><span class=\"kicker\">4TO TRIMESTRE 2026 · LECCIÓN 9</span><h1>Poniendo a prueba a los profetas</h1><p class=\"subtitle\">El don profético vale más que cualquier diamante, y por eso tiene imitaciones. La Biblia no nos pide credulidad ni sospecha: nos pide probar. Una lista bíblica para reconocer a un verdadero mensajero de Dios.</p><div class=\"memory-verse\">«Amados, no creáis a todo espíritu, sino probad los espíritus si son de Dios; porque muchos falsos profetas han salido por el mundo.»<cite>1 Juan 4:1 — Texto para memorizar</cite></div><p class=\"readings\"><b>Lee para el estudio de esta semana:</b> Daniel 10:7-19; Deuteronomio 13:1-5; Isaías 8:20; Juan 11:25; Hechos 15:36-39; Jeremías 28:9, 15-17.</p><button class=\"start-btn\" id=\"startBtn\">Comenzar la clase →</button></div>"
+    },
+
+    /* 1 ---------------- ¿DIAMANTE O IMITACIÓN? */
+    {
+      tag: "Punto de partida",
+      title: "¿Diamante o imitación?",
+      html:
+        "<p class=\"lead\">Un diamante auténtico y una buena imitación pueden verse casi iguales. Un joyero no decide por la apariencia: los somete a varias pruebas. Ninguna, por sí sola, es concluyente; pero si la piedra supera todas, se puede estar seguro.</p>" +
+        "<p>El don profético vale más que cualquier diamante, y precisamente por eso también tiene imitaciones. La Biblia no nos pide ni credulidad ni sospecha automática. Nos pide algo más exigente: probar.</p>" +
+        v("1 JUAN 4:1", "«Amados, no creáis a todo espíritu, sino probad los espíritus si son de Dios; porque muchos falsos profetas han salido por el mundo.»") +
+        w("Griego", "dokimázō", "δοκιμάζω", "el", "Es el verbo que Juan usa para «probad». Se empleaba para ensayar metales: someter el oro o la plata al fuego para comprobar si eran genuinos, y después aprobarlos. No describe una actitud de desconfianza permanente, sino un examen con un propósito: llegar a reconocer lo verdadero. Pablo usa la misma palabra en 1 Tesalonicenses 5:21: «Examinadlo todo».") +
+        v("1 TESALONICENSES 5:20, 21", "«No menospreciéis las profecías. Examinadlo todo; retened lo bueno.»") +
+        "<p>Fíjate en el equilibrio de Pablo. Hay dos errores opuestos: despreciar todo lo profético («eso ya no existe», «son cosas de fanáticos») o aceptar todo lo que suene espiritual. El camino bíblico está en medio: examinar con la Palabra y retener lo que pasa la prueba.</p>" +
+        "<p>Esta semana armamos, a partir de la Escritura, una lista de comprobación de un verdadero profeta. Y una regla de entrada: no basta con cumplir la mayoría de los requisitos. Un mensajero de Dios los cumple todos.</p>" +
+        q("¿Por qué crees que Dios no se limitó a decirnos «crean a los profetas», sino que nos ordenó probarlos? ¿Qué dice eso sobre la clase de fe que él espera de nosotros?", "<p>Busca que el grupo vea que Dios respeta nuestra razón y nuestra libertad: no quiere una fe ciega, sino una fe informada (Hech. 17:11). Probar también nos protege: si Dios advirtió que habría falsos profetas (Mat. 24:11), dejarnos sin criterios sería dejarnos indefensos. Corrige el malentendido de que «probar» es falta de fe: en la Biblia, probar es un acto de obediencia. Y la otra cara: quien prueba con honestidad debe estar dispuesto a aceptar lo que resulta verdadero.</p>")
+    },
+
+    /* 2 ---------------- LO SOBRENATURAL NO BASTA */
+    {
+      tag: "Tema 1",
+      title: "Lo sobrenatural no basta",
+      html:
+        "<p class=\"lead\">Imagina al hombre más fuerte del gimnasio sosteniendo una mancuerna de casi 8 kilos con el brazo izquierdo extendido durante media hora, sin bajarlo un instante. Nadie lo logra.</p>" +
+        "<p>Diversos testimonios históricos afirman que algo así ocurrió en Portland, Maine, a comienzos de 1845: Elena Harmon, de 17 años, sostuvo en visión una gran Biblia familiar de unos 8 kilos (18 libras y media) con el brazo extendido durante un largo rato, sin mostrar fatiga. Otros relatos la describen pasando páginas y señalando versículos mientras sus ojos miraban hacia arriba, lejos del libro.</p>" +
+        "<p>Los primeros adventistas vieron en esto una señal de que en las visiones ocurría algo sobrenatural. Pero hay un detalle importante: el propio Patrimonio White (White Estate) advierte que estos fenómenos, aunque están documentados, no deben usarse por sí solos como prueba de inspiración divina. ¿Por qué?</p>" +
+        v("NÚMEROS 12:6", "«Y él les dijo: Oíd ahora mis palabras. Cuando haya entre vosotros profeta de Jehová, le apareceré en visión, en sueños hablaré con él.»") +
+        "<p>La profecía bíblica es sobrenatural por naturaleza: no es una corazonada ni una opinión piadosa. A veces viene acompañada de fenómenos físicos notables. Daniel lo describe con detalle:</p>" +
+        v("DANIEL 10:8, 9", "«Quedé, pues, yo solo, y vi esta gran visión, y no quedó fuerza en mí, antes mi fuerza se cambió en desfallecimiento, y no tuve vigor alguno. Pero oí el sonido de sus palabras; y al oír el sonido de sus palabras, caí sobre mi rostro en un profundo sueño, con mi rostro en tierra.»") +
+        "<p>Daniel pierde las fuerzas, queda mudo, necesita ser tocado y fortalecido (vv. 10, 16, 18). Los hombres que lo acompañaban no ven la visión, pero huyen aterrados (v. 7). Fíjate en algo: los fenómenos no exaltan a Daniel. Lo dejan débil y dependiente. El foco está en el mensaje, no en el mensajero.</p>" +
+        "<h2 class=\"section-h\">La advertencia de Deuteronomio 13</h2>" +
+        v("DEUTERONOMIO 13:1-3", "«Cuando se levantare en medio de ti profeta, o soñador de sueños, y te anunciare señal o prodigios, y si se cumpliere la señal o prodigio que él te anunció, diciendo: Vamos en pos de dioses ajenos, que no conociste, y sirvámosles; no darás oído a las palabras de tal profeta, ni al tal soñador de sueños; porque Jehová vuestro Dios os está probando, para saber si amáis a Jehová vuestro Dios con todo vuestro corazón, y con toda vuestra alma.»") +
+        "<p>El caso es inquietante: la señal se cumple. Y aun así, Israel debe rechazar al profeta, porque su mensaje aparta de Dios. Un milagro no convierte en verdadero un mensaje falso. Y hay un giro que no debemos pasar por alto: «Jehová vuestro Dios os está probando». En el fondo, el falso profeta también pone a prueba a quien lo escucha: revela si amamos a Dios o si amamos lo espectacular.</p>" +
+        v("MATEO 24:24", "«Porque se levantarán falsos Cristos, y falsos profetas, y harán grandes señales y prodigios, de tal manera que engañarán, si fuere posible, aun a los escogidos.»") +
+        "<p>Jesús y Pablo (2 Tes. 2:9) coinciden, y Apocalipsis 13:13, 14 lo lleva al clímax: en el tiempo del fin, el engaño vendrá con señales visibles, incluso «fuego del cielo». Si el criterio final fuera «¿pasó algo inexplicable?», los más impresionables serían los más vulnerables.</p>" +
+        e(["«El último engaño de Satanás consistirá en convertir el testimonio del Espíritu de Dios en algo ineficaz… Introducirá visiones engañosas para descarriar, mezclará lo falso con lo verdadero, y con esto fastidiará de tal modo a la gente que esta tildará de fanático todo aquello que tenga que ver con las visiones; pero las almas sinceras, al establecer un contraste entre lo falso y lo verdadero, estarán capacitadas para distinguir entre estos términos.»"], "Maranata: el Señor viene, p. 163") +
+        "<p>Observa la doble estrategia: Satanás no solo falsifica; también busca que, cansados de lo falso, despreciemos lo verdadero. El antídoto no es el escepticismo total, sino el discernimiento.</p>" +
+        "<h2 class=\"section-h\">Hoy, en tu pantalla</h2>" +
+        "<p>Hoy lo sobrenatural circula en formato de video corto: «soñé esto y se cumplió», «Dios me reveló la fecha», sanidades transmitidas en vivo. Y en lo personal pasa algo parecido: «sentí paz, así que debe ser de Dios». Las experiencias pueden ser reales; pero ninguna experiencia está por encima de la Palabra. La pregunta no es solo «¿qué pasó?», sino «¿hacia dónde me lleva?».</p>" +
+        il("El billete falso", "Un billete falso bien hecho tiene color, textura y marca de agua aparente. Los cajeros no se entrenan estudiando todas las falsificaciones posibles, sino conociendo a fondo el billete auténtico. Lo mismo ocurre aquí: quien conoce bien la Biblia reconoce lo que no encaja.", "La comparación tiene un límite: discernir lo espiritual no es una técnica que se domina con práctica. Depende también de la dirección del Espíritu Santo y de un corazón dispuesto a obedecer (Juan 7:17).") +
+        q("Deuteronomio 13:3 dice que, al permitir un falso profeta, «Jehová vuestro Dios os está probando». ¿Qué revela de nuestro corazón la forma en que reaccionamos ante lo espectacular?", "<p>Lleva al grupo a notar que nuestra atracción por lo extraordinario dice algo de nosotros: a veces queremos señales porque nos ahorran la tarea de estudiar, o porque nos dan seguridad emocional. El texto conecta el discernimiento con el amor a Dios «con todo vuestro corazón». Quien ama a Dios busca su voz en su Palabra; quien ama lo sensacional, sigue la señal más fuerte. Evita que la conversación derive en burla hacia otras denominaciones: el punto es examinarnos a nosotros mismos.</p>") +
+        q("Si los fenómenos físicos de las visiones de Elena G. de White no bastan como prueba, ¿para qué sirvieron entonces? ¿Qué papel cumplen los fenómenos en Daniel 10?", "<p>Busca que vean que los fenómenos tienen una función, pero secundaria: llaman la atención, muestran que algo fuera de lo común está ocurriendo y, como en Daniel, subrayan la dependencia del profeta. Son una pieza de evidencia, no el veredicto. El error a corregir es pensar que si no son prueba suficiente, entonces no importan; o, al revés, que son lo más convincente. La credencial decisiva es el mensaje y su armonía con la Escritura.</p>")
+    },
+
+    /* 3 ---------------- ¡A LA LEY Y AL TESTIMONIO! */
+    {
+      tag: "Tema 2",
+      title: "¡A la ley y al testimonio!",
+      html:
+        "<p class=\"lead\">¿Conoces a alguien que hoy dice una cosa y mañana otra? El que empieza la dieta el lunes y el martes pide postre; el que anuncia que va a ahorrar y esa misma semana le llegan tres paquetes. Los humanos somos incoherentes. Dios no.</p>" +
+        v("NÚMEROS 23:19", "«Dios no es hombre, para que mienta, ni hijo de hombre para que se arrepienta. Él dijo, ¿y no hará? Habló, ¿y no lo ejecutará?»") +
+        "<p>Si Dios no cambia (Mal. 3:6; Stg. 1:17), no levantará un profeta hoy para contradecir lo que reveló ayer. Por eso la primera gran prueba es la armonía con la Escritura.</p>" +
+        v("ISAÍAS 8:20", "«¡A la ley y al testimonio! Si no dijeren conforme a esto, es porque no les ha amanecido.»") +
+        w("Hebreo", "Torá · teʿudá · sháḥar", "תּוֹרָה · תְּעוּדָה · שַׁחַר", "he", "Torá (ley) es más que un código legal: significa «instrucción», la enseñanza que Dios dio. Teʿudá (testimonio) aparece también en 8:16 («ata el testimonio, sella la ley entre mis discípulos»): es la revelación ya confirmada y confiada al pueblo. Y sháḥar es «aurora». La frase final dice, literalmente, que para quien no habla conforme a la ley y al testimonio «no hay amanecer»: puede hablar mucho de luz, pero sigue en la noche. El contexto (8:19) es revelador: el pueblo consultaba a médiums y adivinos en lugar de consultar a Dios.") +
+        "<p>La Biblia es la norma final. Un verdadero profeta no la contradice, no le resta autoridad y no desvía la atención de ella para ponerse a sí mismo en su lugar. Ni siquiera un ángel tendría ese derecho:</p>" +
+        v("GÁLATAS 1:8", "«Mas si aun nosotros, o un ángel del cielo, os anunciare otro evangelio diferente del que os hemos anunciado, sea anatema.»") +
+        e(["«El Espíritu no fue dado —ni puede jamás ser otorgado— para invalidar la Biblia; pues las Escrituras declaran explícitamente que la Palabra de Dios es la regla por la cual toda enseñanza y toda manifestación religiosa debe ser probada.»"], "El conflicto de los siglos, p. 11") +
+        "<p>Nota que Elena G. de White se aplica esta regla a sí misma. En otro lugar afirmó, en esencia, que si sus testimonios no hablaban conforme a la Palabra de Dios, debían ser rechazados.</p>" +
+        e(["«Si los testimonios no hablan conforme a la Palabra de Dios, recházenlos.»"], "Testimonies for the Church, t. 5, p. 691 (en inglés)", "Paráfrasis de la idea, no traducción oficial. Verifica la redacción exacta en la edición en español de Testimonios para la iglesia antes de citarla textualmente.") +
+        "<h2 class=\"section-h\">Verdad progresiva: crece, pero no se contradice</h2>" +
+        "<p>Esto no significa que cada profeta solo repita a los anteriores. Dios fue revelando su plan paso a paso, a medida que su pueblo podía comprenderlo. Sigue el hilo del sacrificio:</p>" +
+        v("GÉNESIS 3:15", "«Y pondré enemistad entre ti y la mujer, y entre tu simiente y la simiente suya; ésta te herirá en la cabeza, y tú le herirás en el calcañar.»") +
+        "<p>En Génesis 3:15 aparece la primera promesa. Abel trae lo mejor de los primogénitos de su rebaño y Dios lo acepta, aunque todavía no se explica todo (Gén. 4:4). Con Moisés, un sistema completo de sacrificios enseña el costo del pecado. Isaías 53 describe al Siervo que carga nuestros pecados. Juan el Bautista señala a Jesús: «He aquí el Cordero de Dios» (Juan 1:29). Y al final, Apocalipsis muestra a los redimidos con ropas emblanquecidas «en la sangre del Cordero» (Apoc. 7:14). Unos 1.500 años separan a Moisés de Juan, y el mensaje no se quiebra: se amplía.</p>" +
+        il("El GPS que se actualiza", "Una actualización del mapa agrega calles nuevas, corrige detalles y muestra rutas que antes no aparecían. Pero si de repente pone la ciudad en otro continente, no es una actualización: es un error. La nueva luz agrega detalle al mapa; nunca mueve las ciudades.", "La ilustración se queda corta en algo: un mapa se corrige porque tenía errores. La revelación anterior de Dios no estaba equivocada; era incompleta. Dios no corrige su Palabra, la despliega.") +
+        "<p>Este principio nos protege de una frase peligrosa: «Dios me mostró algo nuevo, así que ya no importa lo que dice la Biblia». Si lo «nuevo» contradice lo revelado, el problema no está en la Escritura. Y una consecuencia práctica: cuanto menos conocemos la Biblia, más vulnerables somos a mensajes que parecen profundos, novedosos o «nueva luz».</p>" +
+        v("HECHOS 17:11", "«Y estos eran más nobles que los que estaban en Tesalónica, pues recibieron la palabra con toda solicitud, escudriñando cada día las Escrituras para ver si estas cosas eran así.»") +
+        q("¿Cuál es la diferencia entre una revelación que «amplía» una verdad anterior y una que la «contradice»? Piensen en un ejemplo bíblico de cada una.", "<p>Ampliar: el sistema de sacrificios se cumple en Cristo; los sacrificios de animales dejan de ofrecerse, no porque Dios cambiara de opinión, sino porque la sombra encontró su realidad (Heb. 10:1-10). La verdad de fondo (sin derramamiento de sangre no hay remisión) sigue en pie. Contradecir: el «otro evangelio» de Gálatas 1, que añadía la circuncisión como requisito de salvación, cambiaba la base misma del evangelio. Ayuda al grupo a ver que la pregunta clave es: ¿el mensaje nuevo cumple y aclara el principio anterior, o lo anula?</p>") +
+        q("Los bereanos examinaban incluso lo que predicaba el apóstol Pablo. ¿Qué haría falta para que en nuestra iglesia local hubiera una cultura de «bereanos»: ni crédulos ni criticones?", "<p>Busca respuestas concretas: estudio bíblico personal constante, permiso para hacer preguntas sin ser visto como rebelde, líderes que citan la Biblia y no solo su autoridad, humildad para corregir. Señala el equilibrio: los bereanos examinaban «con toda solicitud», es decir, con disposición favorable, y muchos creyeron (Hech. 17:12). Examinar no es buscar fallas para rechazar, sino buscar la verdad para aceptarla.</p>")
+    },
+
+    /* 4 ---------------- UN PROFETA QUE EXALTA A CRISTO */
+    {
+      tag: "Tema 3",
+      title: "Un profeta que exalta a Cristo",
+      html:
+        "<p class=\"lead\">Juan escribió en una época llena de maestros que hablaban de Jesús. El problema no era que no lo mencionaran, sino que presentaban un Jesús diferente.</p>" +
+        v("1 JUAN 4:2, 3", "«En esto conoced el Espíritu de Dios: Todo espíritu que confiesa que Jesucristo ha venido en carne, es de Dios; y todo espíritu que no confiesa que Jesucristo ha venido en carne, no es de Dios; y este es el espíritu del anticristo, el cual vosotros habéis oído que viene, y que ahora ya está en el mundo.»") +
+        "<p>Algunos falsos maestros de su tiempo enseñaban que el Hijo de Dios solo parecía humano: un Cristo espiritual que no se ensució con la carne. Más tarde, a esta idea se la llamó docetismo. Juan responde que negar la encarnación es negar el evangelio.</p>" +
+        w("Griego", "homologéō", "ὁμολογέω", "el", "«Confesar» es, literalmente, «decir lo mismo» (homo, mismo; légō, decir). Confesar a Cristo es decir de él lo mismo que Dios ha dicho. No basta con pronunciar su nombre: hay que estar de acuerdo con todo lo que la revelación afirma de él.") +
+        "<p>Por eso la prueba va más allá de aceptar que Jesús existió. Un verdadero profeta presenta al Cristo completo de la Escritura:</p>" +
+        "<ul class=\"marks\"><li>Plenamente Dios, desde la eternidad (Juan 1:1-3)</li><li>Verdaderamente humano, encarnado (Juan 1:14)</li><li>Vida sin pecado (Heb. 4:15)</li><li>Muerte expiatoria en nuestro lugar (2 Cor. 5:21)</li><li>Resurrección (Juan 11:25)</li><li>Ministerio sumosacerdotal en el santuario celestial (Heb. 4:14)</li><li>Segunda venida literal (Juan 14:1-3)</li></ul>" +
+        v("2 CORINTIOS 5:21", "«Al que no conoció pecado, por nosotros lo hizo pecado, para que nosotros fuésemos hechos justicia de Dios en él.»") +
+        e(["«Nuestro Salvador tomó la humanidad con todo su pasivo. Se vistió de la naturaleza humana, con la posibilidad de ceder a la tentación. No tenemos que soportar nada que él no haya soportado.»"], "La fe por la cual vivo, p. 50") +
+        "<h2 class=\"section-h\">La flechita del profeta</h2>" +
+        il("Hacia dónde apunta la flecha", "Imagina que cada profeta lleva una flecha. Los profetas del Antiguo Testamento apuntaban hacia adelante, al Mesías que vendría; por eso Jesús, en el camino a Emaús, «comenzando desde Moisés, y siguiendo por todos los profetas, les declaraba en todas las Escrituras lo que de él decían» (Luc. 24:27). Los del Nuevo Testamento apuntan hacia atrás (la cruz y la tumba vacía), hacia arriba (su ministerio intercesor) y hacia adelante (su regreso). Siempre hacia Cristo. Si alguien que dice ser profeta apunta su flecha hacia sí mismo, hacia una organización o hacia una fecha, táchalo de la lista.", "Toda ilustración simplifica. Los profetas también hablaron de ética, de juicio, de salud, de historia. Pero aun esos temas, en la Biblia, están al servicio de una relación con Dios, que se nos revela plenamente en Cristo.") +
+        v("APOCALIPSIS 19:10", "«Yo me postré a sus pies para adorarle. Y él me dijo: Mira, no lo hagas; yo soy consiervo tuyo, y de tus hermanos que retienen el testimonio de Jesús. Adora a Dios; porque el testimonio de Jesús es el espíritu de la profecía.»") +
+        "<p>Este versículo es clave para la identidad adventista. El ángel rechaza la adoración y redirige a Juan hacia Dios. El verdadero mensajero de Dios, sea ángel o profeta, nunca se queda con la gloria. Como dijo Juan el Bautista: «Es necesario que él crezca, pero que yo mengüe» (Juan 3:30).</p>" +
+        e(["«El sacrificio de Cristo como expiación del pecado es la gran verdad alrededor de la cual se agrupan todas las demás.»"], "Gospel Workers, p. 315 (en inglés); en español, Obreros evangélicos", "Traducción propia de la idea central. Confirma la página y la redacción en tu edición en español antes de citarla textualmente.") +
+        "<h2 class=\"section-h\">Hoy, en la iglesia y en las redes</h2>" +
+        "<p>Este criterio sirve para mucho más que evaluar profetas. Sirve para evaluar cualquier ministerio, predicador, canal o libro. Algunas preguntas: ¿salgo de este contenido más cerca de Jesús o más fascinado con el predicador? ¿Me lleva a depender de Cristo o de una persona? ¿Se habla más de conspiraciones y fechas que de la cruz? Un ministerio puede citar mucha Biblia y aun así tener a Cristo como un detalle decorativo.</p>" +
+        q("Juan dice que el problema de los falsos maestros no era que negaran a Jesús, sino que presentaban un Jesús distinto. ¿Qué versiones distorsionadas de Jesús circulan hoy, incluso dentro de ambientes cristianos?", "<p>Ayuda a identificar ejemplos sin señalar personas: el Jesús solo maestro moral (sin divinidad ni expiación); el Jesús «coach» de prosperidad que existe para darnos éxito; el Jesús solo juez, que inspira miedo pero no confianza; el Jesús tan tolerante que no llama al arrepentimiento. Señala que cada distorsión toma una verdad parcial y la vuelve el todo. El antídoto es el Cristo completo de la lista: Dios y hombre, Salvador e Intercesor, el que viene otra vez.</p>") +
+        q("¿Por qué es tan importante que quien murió en la cruz fuera plenamente Dios y plenamente humano? ¿Qué se pierde si falta cualquiera de las dos cosas?", "<p>Si no fuera plenamente Dios, su muerte no tendría valor infinito para pagar por todos ni revelaría el carácter de Dios (Juan 14:9). Si no fuera plenamente humano, no podría representarnos, ser tentado como nosotros ni compadecerse de nuestras debilidades (Heb. 4:15). Sin las dos cosas no hay sustituto ni sumo sacerdote. Por eso Juan considera esta prueba decisiva: no es un detalle teológico, es la base de nuestra salvación.</p>")
+    },
+
+    /* 5 ---------------- POR SUS FRUTOS LOS CONOCERÉIS */
+    {
+      tag: "Tema 4",
+      title: "Por sus frutos los conoceréis",
+      html:
+        "<p class=\"lead\">¿Cómo sabes si un árbol da buena fruta? No por las hojas ni por la etiqueta del vivero: tienes que esperar a que la fruta madure. Es cuestión de tiempo.</p>" +
+        v("MATEO 7:15-20", "«Guardaos de los falsos profetas, que vienen a vosotros con vestidos de ovejas, pero por dentro son lobos rapaces. Por sus frutos los conoceréis. ¿Acaso se recogen uvas de los espinos, o higos de los abrojos? Así, todo buen árbol da buenos frutos, pero el árbol malo da frutos malos. No puede el buen árbol dar malos frutos, ni el árbol malo dar frutos buenos. Todo árbol que no da buen fruto, es cortado y echado en el fuego. Así que, por sus frutos los conoceréis.»") +
+        "<p>Jesús dio esta prueba en el Sermón del Monte, el mismo discurso en que establece los principios de su reino. Los «vestidos de ovejas» indican que el falso profeta no se ve peligroso: luce como uno más del rebaño. Por eso la apariencia no basta.</p>" +
+        w("Griego", "karpós", "καρπός", "el", "«Fruto» es el resultado natural de lo que hay dentro. Un árbol no se esfuerza por producir manzanas: las produce porque es manzano. Pablo usa la misma palabra para «el fruto del Espíritu» (Gál. 5:22, 23), en singular: un solo carácter con varias expresiones. El fruto revela la raíz.") +
+        "<p>Los frutos de un profeta son de dos tipos, y ambos deben ser buenos:</p>" +
+        "<ul class=\"marks\"><li>El fruto del mensaje: edifica, exhorta, consuela (1 Cor. 14:3) y lleva al arrepentimiento y a la obediencia.</li><li>El fruto del mensajero: su vida es coherente con lo que predica. No vive en abierta contradicción con los mandamientos de Dios.</li></ul>" +
+        "<h2 class=\"section-h\">Frutos no es lo mismo que perfección</h2>" +
+        "<p>Aquí hay que tener cuidado. La Biblia no oculta los defectos de sus profetas. Jonás huyó en dirección contraria a Nínive (Jon. 1:3). Pedro actuó con hipocresía en Antioquía, y Pablo lo reprendió cara a cara (Gál. 2:11-14). Pablo y Bernabé tuvieron «tal desacuerdo» por Juan Marcos que se separaron (Hech. 15:39).</p>" +
+        v("GÁLATAS 2:11, 12", "«Pero cuando Pedro vino a Antioquía, le resistí cara a cara, porque era de condenar. Pues antes que viniesen algunos de parte de Jacobo, comía con los gentiles; pero después que vinieron, se retraía y se apartaba, porque tenía miedo de los de la circuncisión.»") +
+        "<p>Pero mira cómo termina la historia de Marcos: años después, Pablo escribe desde la prisión: «Toma a Marcos y tráele contigo, porque me es útil para el ministerio» (2 Tim. 4:11). El fruto no es no fallar nunca; es la dirección de la vida. Hay una gran diferencia entre una persona imperfecta que lucha, reconoce sus errores y crece, y alguien cuya vida está deliberadamente construida en contra del mensaje que dice representar.</p>" +
+        e(["«La profesión no es nada a menos que de palabra y de hecho se revele el buen fruto.»"], "Dios nos cuida, p. 307") +
+        "<p>La Biblia muestra frutos que maduraron con el tiempo: Moisés condujo a Israel por el desierto durante cuarenta años (Deut. 34:10-12); Hageo animó a reanudar la reconstrucción del templo, detenida por años (Hag. 1:12); Isaías sirvió durante el reinado de varios reyes y señaló al Mesías (Isa. 53:4-6); Daniel confesó los pecados de su pueblo como propios (Dan. 9:5, 15); Jeremías lloró por quienes lo rechazaban (Jer. 9:1). Perseguidos y maltratados, mostraron algo en común: amor genuino por Dios y por su pueblo.</p>" +
+        e(["«La verdad pura puede seguirse hasta su Fuente divina, al prestar atención a su influencia elevadora, refinadora y santificadora sobre el carácter del que la recibe.»"], "Maranata: el Señor viene, p. 163") +
+        "<h2 class=\"section-h\">Hoy: popularidad no es fruto</h2>" +
+        "<p>En la era de los seguidores y las vistas, es fácil confundir alcance con fruto. Un predicador puede llenar estadios, vender millones de libros o tener miles de seguidores, y nada de eso, por sí solo, es fruto espiritual. Tampoco lo es lo contrario: un ministerio pequeño no es más santo por ser pequeño. La pregunta es qué clase de personas produce: ¿más humildes, más honestas, más fieles, más amorosas? ¿O más dependientes, más temerosas, más divididas?</p>" +
+        il("La fruta madura", "En el mercado nadie juzga un mango por una sola mancha en la cáscara; lo juzga por su sabor y por el árbol que lo produjo temporada tras temporada.", "La comparación tiene un límite: con las personas no somos compradores que eligen. Evaluar frutos no nos autoriza a juzgar el corazón ni el destino eterno de nadie; eso le pertenece a Dios (1 Sam. 16:7). Evaluamos mensajes y ministerios para saber a quién escuchar, no para condenar.") +
+        q("Pedro y Bernabé cayeron en hipocresía; Jonás desobedeció. ¿Dónde está la línea entre un profeta verdadero que falla y un falso profeta? ¿Qué preguntas nos ayudan a distinguirlos?", "<p>Ayuda al grupo a formular criterios: ¿el error es un episodio o un patrón deliberado? ¿Hay arrepentimiento y corrección cuando se señala? (Pedro aceptó la reprensión; Jonás terminó yendo a Nínive.) ¿La falla contradice el núcleo del mensaje o es una debilidad humana? ¿La persona se cree por encima de la corrección? Corrige el malentendido de que un profeta debe ser impecable: solo Cristo lo es. Y también el opuesto: que cualquier conducta es aceptable porque «todos somos pecadores».</p>") +
+        q("Muchos se han alejado de la iglesia porque un líder o un «hombre de Dios» los decepcionó. ¿Qué aprendemos de estos pasajes para cuando eso nos ocurre a nosotros?", "<p>Busca un tono pastoral. Puntos a destacar: nuestra fe descansa en Cristo, no en personas; los mensajeros también necesitan la gracia que predican; la decepción con alguien no invalida la verdad que transmitió si esa verdad viene de la Escritura. Pero no minimices el daño: hay faltas graves que sí descalifican a alguien para el liderazgo y deben tratarse con seriedad. Puedes invitar, sin presionar, a que alguien comparta cómo restauró su confianza en Dios después de una decepción.</p>")
+    },
+
+    /* 6 ---------------- PROFECÍAS QUE SE CUMPLEN */
+    {
+      tag: "Tema 5",
+      title: "Profecías que se cumplen",
+      html:
+        "<p class=\"lead\">Muchos creen que un profeta es básicamente alguien que adivina el futuro. Pero predecir es solo una parte de su trabajo. Los profetas enseñaban, corregían, advertían, consolaban y llamaban al pueblo de vuelta a Dios.</p>" +
+        "<p>Aun así, cuando Dios revela algo del futuro, el cumplimiento se convierte en una credencial. En tiempos de Jeremías hubo un verdadero duelo de profetas: Hananías anunciaba que en dos años terminaría el dominio de Babilonia; Jeremías anunciaba lo contrario.</p>" +
+        v("JEREMÍAS 28:9", "«El profeta que profetiza de paz, cuando se cumpla la palabra del profeta, será conocido como el profeta que Jehová en verdad envió.»") +
+        v("JEREMÍAS 28:15-17", "«Entonces dijo el profeta Jeremías al profeta Hananías: Ahora oye, Hananías: Jehová no te envió, y tú has hecho confiar en mentira a este pueblo. Por tanto, así ha dicho Jehová: He aquí que yo te quito de sobre la faz de la tierra; morirás en este año, porque hablaste rebelión contra Jehová. Y en el mismo año murió Hananías, en el mes séptimo.»") +
+        "<p>Hananías decía exactamente lo que el pueblo quería oír: paz, pronto, sin arrepentimiento. Ese es un rasgo recurrente del falso profeta (Jer. 6:14). Y Moisés ya había dado la regla:</p>" +
+        v("DEUTERONOMIO 18:22", "«si el profeta hablare en nombre de Jehová, y no se cumpliere lo que dijo, ni aconteciere, es palabra que Jehová no ha hablado; con presunción la habló el tal profeta; no tengas temor de él.»") +
+        "<h2 class=\"section-h\">¿Y Jonás?</h2>" +
+        "<p>Jonás predicó: «De aquí a cuarenta días Nínive será destruida» (Jon. 3:4). Pasaron los cuarenta días y la ciudad seguía en pie. ¿Era un falso profeta? No. Dios mismo explica el principio:</p>" +
+        v("JEREMÍAS 18:7, 8", "«En un instante hablaré contra pueblos y contra reinos, para arrancar, y derribar, y destruir. Pero si esos pueblos se convirtieren de su maldad contra la cual hablé, yo me arrepentiré del mal que había pensado hacerles.»") +
+        v("JONÁS 3:10", "«Y vio Dios lo que hicieron, que se convirtieron de su mal camino; y se arrepintió del mal que había dicho que les haría, y no lo hizo.»") +
+        w("Hebreo", "niḥam", "נִחַם", "he", "«Arrepentirse», cuando se dice de Dios, no significa que él reconozca un error. Significa «cambiar de curso», «ceder», «sentir compasión». Dios no cambia en su carácter (Núm. 23:19); precisamente porque es siempre el mismo, justo y misericordioso, responde de forma distinta cuando las personas cambian. Lo que cambió en Nínive no fue Dios, sino Nínive.") +
+        "<p>Esas son las profecías condicionales: su cumplimiento depende de la respuesta humana. La advertencia a Nínive alcanzó su propósito precisamente al no cumplirse, porque su meta no era describir un desastre inevitable, sino provocar arrepentimiento. Y la historia no terminó ahí: generaciones después, Nínive volvió a su crueldad, y Nahúm anunció su caída, que ocurrió hacia el 612 a. C.</p>" +
+        "<p>No todas las profecías son condicionales. Las grandes líneas proféticas de Daniel 2, 7 y 8, y la segunda venida, no dependen de lo que decida una nación: describen lo que Dios hará en la historia. Distinguir unas de otras requiere estudiar el contexto, no elegir según convenga.</p>" +
+        e(["«Todo lo que la profecía anunció que sucedería hasta el presente, ha sido registrado en las páginas de la historia, y podemos estar seguros de que todo lo que vendrá aún se cumplirá en su orden.»"], "La educación, pp. 173-184 (según cita el folleto)") +
+        "<h2 class=\"section-h\">Hoy: nuestras decisiones importan</h2>" +
+        "<p>Este principio tiene una aplicación muy personal. Dios no nos revela el futuro para alimentar la curiosidad ni para que hagamos gráficos de fechas, sino para que nos preparemos. Una advertencia de Dios sobre tu salud, tus finanzas, tu matrimonio o tus hábitos no es una sentencia fatalista: es una invitación a cambiar el rumbo mientras hay tiempo.</p>" +
+        q("Hananías anunciaba paz, y Jeremías, juicio. ¿Por qué el mensaje más agradable suele ser más popular? ¿Dónde vemos hoy esa misma tentación, en la iglesia o fuera de ella?", "<p>Busca que el grupo note que el falso profeta suele ofrecer paz sin arrepentimiento (Jer. 6:14; 2 Tim. 4:3, 4). Hoy aparece en predicaciones que prometen bendición sin obediencia, en contenido que solo confirma lo que ya pensamos o en la tentación de los líderes de evitar temas incómodos. Pero corrige el extremo opuesto: el mensaje más duro no es automáticamente el verdadero. Jeremías también anunció restauración (Jer. 29:11). La pregunta no es si el mensaje es agradable o duro, sino si coincide con lo que Dios ha dicho.</p>") +
+        q("Si algunas profecías son condicionales, ¿cómo evitamos usar esa idea como excusa para justificar cualquier predicción fallida? ¿Qué distingue el caso de Jonás de una fecha equivocada?", "<p>Puntos clave: en el caso de Jonás, la Biblia misma muestra la condición (el arrepentimiento) y la respuesta de Dios (Jon. 3:10); hay una explicación textual, no una excusa posterior. Jeremías 18 establece el principio de antemano. Una predicción de fecha para la segunda venida, en cambio, contradice directamente a Jesús (Mat. 24:36), y así falla también la primera prueba. Puedes mencionar con honestidad el chasco de 1844: la fecha se calculó bien, pero el evento se interpretó mal; Guillermo Miller no se presentó como profeta, y el estudio bíblico posterior corrigió el error sobre qué ocurriría.</p>")
+    },
+
+    /* 7 ---------------- LA LISTA COMPLETA, APLICADA */
+    {
+      tag: "Tema 6",
+      title: "La lista completa, aplicada",
+      html:
+        "<p class=\"lead\">Ya tenemos la lista. Ninguna prueba basta sola: alguien puede hacer algo extraordinario y enseñar error; puede hablar de Jesús, pero de otro Jesús; puede acertar una predicción y aun así alejar a las personas de Dios. Hay que mirar todo en conjunto.</p>" +
+        "<ul class=\"marks\"><li>¿Está en armonía con la Biblia? (Isa. 8:20)</li><li>¿Exalta a Cristo, el Cristo completo de la Escritura? (1 Juan 4:1-3)</li><li>¿Su mensaje y su vida dan buenos frutos? (Mat. 7:15-20)</li><li>¿Sus predicciones se cumplen, considerando las condicionales? (Jer. 28:9; 18:7-10)</li><li>¿Los fenómenos, si los hay, acompañan un mensaje que pasa las demás pruebas? (Deut. 13:1-3)</li></ul>" +
+        "<h2 class=\"section-h\">El caso adventista: Elena G. de White</h2>" +
+        "<p>Tras su primera visión, en diciembre de 1844, muchos cuestionaron a la joven Elena Harmon. Los primeros adventistas no le pidieron a nadie fe ciega; desarrollaron argumentos. Primero, mostraron en la Biblia que el don de profecía continuaría hasta el fin y sería una marca del pueblo remanente:</p>" +
+        v("APOCALIPSIS 12:17", "«Entonces el dragón se llenó de ira contra la mujer; y se fue a hacer guerra contra el resto de la descendencia de ella, los que guardan los mandamientos de Dios y tienen el testimonio de Jesucristo.»") +
+        v("JOEL 2:28", "«Y después de esto derramaré mi Espíritu sobre toda carne, y profetizarán vuestros hijos y vuestras hijas; vuestros ancianos soñarán sueños, y vuestros jóvenes verán visiones.»") +
+        "<p>Segundo, observaron sus frutos: en las conferencias sabáticas de fines de la década de 1840, su ministerio ayudó a unificar a creyentes que discrepaban en doctrinas bíblicas, y siguió dando buenos frutos durante décadas. Tercero, notaron los elementos sobrenaturales de sus visiones, aunque, como vimos, nunca como prueba única.</p>" +
+        "<p>Y ella misma entendió su papel en relación con la Biblia. Una de sus metáforas más conocidas es la de la «luz menor»:</p>" +
+        e(["«Poca atención se presta a la Biblia, y el Señor ha dado una luz menor para guiar a los hombres y mujeres a la luz mayor.»"], "The Review and Herald, 20 de enero de 1903", "Es la traducción más difundida al español; la redacción puede variar levemente según la edición (por ejemplo, El colportor evangélico).") +
+        il("La luna y el sol", "La luna ilumina de verdad en la noche, pero toda su luz es reflejada: viene del sol. El don profético en la iglesia funciona así: su luz es real, pero viene de la misma fuente que la Escritura y nos lleva de vuelta a ella.", "Ojo con el límite: «menor» no quiere decir que sus escritos estén menos inspirados, sino que cumplen otra función. La Biblia es la norma; el don profético nos ayuda a comprenderla y aplicarla. Nunca la reemplaza ni la corrige.") +
+        "<h2 class=\"section-h\">«Gustad y ved»</h2>" +
+        "<p>El folleto cierra con una prueba que no aparece en la lista, pero que es poderosa: la experiencia personal de leer esos escritos con oración.</p>" +
+        v("SALMO 34:8", "«Gustad, y ved que es bueno Jehová; dichoso el hombre que confía en él.»") +
+        "<p>No se trata de reemplazar las pruebas bíblicas por un sentimiento; vimos que la experiencia sola no basta. Se trata de no opinar sobre un plato sin probarlo. Muchos critican o defienden a Elena G. de White sin haberla leído. Un buen punto de partida es El camino a Cristo; después, la serie de cinco tomos «El Gran Conflicto», de Patriarcas y profetas a El conflicto de los siglos. Sus escritos están disponibles gratis en egwwritings.org.</p>" +
+        q("¿Por qué crees que los primeros adventistas no se conformaron con los fenómenos de las visiones y buscaron argumentos bíblicos? ¿Qué nos enseña su ejemplo sobre cómo hablar hoy del don profético?", "<p>Busca que noten que el fundamento bíblico es más sólido y compartible que un relato asombroso: cualquiera puede abrir la Biblia y comprobarlo. Su ejemplo nos enseña a empezar por la Escritura, no por la autoridad del profeta. El folleto recomienda leer «Mal empleo de las visiones» (Testimonios para la iglesia, t. 1, pp. 340, 341), donde ella misma aconseja prudencia en el uso de sus visiones; léelo antes de la clase para resumirlo con tus palabras, en lugar de citarlo de memoria.</p>") +
+        q("Si alguien de tu familia o del trabajo te pregunta: «¿Por qué los adventistas creen que Elena G. de White fue profeta?», ¿cómo responderías usando las pruebas de esta lección en dos o tres minutos?", "<p>Anima a que alguien lo intente en voz alta. Una buena respuesta recorre las pruebas: la Biblia anuncia el don en los últimos días (Joel 2:28; Apoc. 12:17); sus escritos se someten a la Biblia y la exaltan; su mensaje gira en torno a Cristo (El Deseado de todas las gentes); su vida y su obra dieron frutos visibles (unidad doctrinal, educación, salud, misión). Y termina con una invitación, no con una imposición: «Léela y compárala con la Biblia». Corrige respuestas que pongan sus escritos al mismo nivel de la Biblia como norma doctrinal.</p>")
+    },
+
+    /* 8 ---------------- LLEVA LA PRUEBA A TU SEMANA */
+    {
+      tag: "Aplicación",
+      title: "Lleva la prueba a tu semana",
+      html:
+        "<p class=\"lead\">Probar a los profetas no es un ejercicio teórico: lo hacemos cada vez que decidimos qué escuchar, qué creer y qué compartir.</p>" +
+        ap("Para esta semana", ["Elige un contenido religioso que consumas con frecuencia (un canal, un podcast, un predicador, un grupo de WhatsApp) y pásalo por la lista: Biblia, Cristo, frutos, cumplimiento. Anota qué encontraste.", "Antes de compartir un video, una «profecía» o una cadena religiosa, haz una pausa y búscala en la Biblia. Si no puedes comprobarla, no la reenvíes.", "Lee esta semana un capítulo de El camino a Cristo (por ejemplo, «El secreto del crecimiento») con la Biblia abierta al lado. Busca los textos que cita y observa hacia quién te lleva.", "Ora por alguien que se haya alejado por una decepción con un líder espiritual. Si puedes, escríbele un mensaje sin sermones, solo para recordarle que Cristo no falla."])
+    },
+
+    /* 9 ---------------- EXAMINADLO TODO, RETENED LO BUENO */
+    {
+      tag: "Cierre",
+      title: "Examinadlo todo, retened lo bueno",
+      html:
+        "<p class=\"lead\">Dios no nos pide que creamos a cualquiera que diga «Dios me habló», ni que rechacemos todo lo profético por miedo a equivocarnos. Nos da un conjunto de pruebas y una invitación: examinar con la Palabra. Y cuando algo pasa la prueba, recibirlo con humildad.</p>" +
+        "<p>La pregunta final no es solo «¿este profeta es verdadero?», sino «¿estoy dispuesto a escuchar con humildad lo que Dios dice, aunque me incomode?». Probar a los profetas termina, siempre, probando nuestro propio corazón.</p>" +
+        key("No todo lo que brilla es de Dios: lo que viene de Dios armoniza con la Biblia, exalta a Cristo, da buenos frutos y se cumple.") +
+        "<div class=\"closing-prompt\"><p>«No menospreciéis las profecías. Examinadlo todo; retened lo bueno.» — 1 Tesalonicenses 5:20, 21</p></div>"
+    }
+  ];
+
+  var current = 0;
+  var total = pages.length;
+
+  var contentInner = document.getElementById('contentInner');
+  var pageTitle = document.getElementById('pageTitle');
+  var sectionLabel = document.getElementById('sectionLabel');
+  var pageCounterTop = document.getElementById('pageCounterTop');
+  var progressFill = document.getElementById('progressFill');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var tocBtn = document.getElementById('tocBtn');
+  var tocClose = document.getElementById('tocClose');
+  var tocOverlay = document.getElementById('tocOverlay');
+  var tocList = document.getElementById('tocList');
+  var contentScroll = document.getElementById('contentScroll');
+
+  function buildToc(){
+    tocList.innerHTML = '';
+    pages.forEach(function(p, i){
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.innerHTML = '<span class="n">' + (i+1).toString().padStart(2,'0') + '</span><span>' + p.title + '</span>';
+      if(i === current) btn.classList.add('active');
+      btn.addEventListener('click', function(){ goTo(i); closeToc(); });
+      li.appendChild(btn);
+      tocList.appendChild(li);
+    });
+  }
+
+  function render(){
+    var p = pages[current];
+    pageTitle.textContent = p.title;
+    sectionLabel.textContent = p.tag;
+    pageCounterTop.textContent = (current+1) + ' / ' + total;
+    progressFill.style.width = ((current+1)/total*100) + '%';
+    contentInner.innerHTML = p.html;
+    contentInner.classList.remove('fade-in');
+    void contentInner.offsetWidth;
+    contentInner.classList.add('fade-in');
+    contentScroll.scrollTop = 0;
+
+    prevBtn.disabled = (current === 0);
+    if(current === total - 1){ nextBtn.textContent = 'Reiniciar ↺'; }
+    else if(current === 0){ nextBtn.textContent = 'Comenzar →'; }
+    else { nextBtn.textContent = 'Siguiente ›'; }
+
+    var startBtn = document.getElementById('startBtn');
+    if(startBtn){ startBtn.addEventListener('click', function(){ goTo(current+1); }); }
+
+    try{ history.replaceState(null, '', '#p' + (current+1)); }catch(err){}
+    buildToc();
+  }
+
+  function goTo(i){
+    if(i < 0) i = 0;
+    if(i > total - 1) i = total - 1;
+    current = i;
+    render();
+  }
+
+  prevBtn.addEventListener('click', function(){ goTo(current - 1); });
+  nextBtn.addEventListener('click', function(){
+    if(current === total - 1){ goTo(0); } else { goTo(current + 1); }
+  });
+
+  tocBtn.addEventListener('click', function(){ tocOverlay.classList.add('open'); });
+  tocClose.addEventListener('click', closeToc);
+  tocOverlay.addEventListener('click', function(ev){ if(ev.target === tocOverlay) closeToc(); });
+  function closeToc(){ tocOverlay.classList.remove('open'); }
+
+  contentInner.addEventListener('click', function(ev){
+    var btn = ev.target.closest('.answer-toggle');
+    if(!btn) return;
+    var panel = document.getElementById(btn.getAttribute('data-answer'));
+    if(!panel) return;
+    var opening = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+    btn.textContent = opening ? 'Ocultar respuesta' : 'Ver respuesta orientativa';
+  });
+
+  document.addEventListener('keydown', function(ev){
+    if(ev.key === 'Escape'){ closeToc(); return; }
+    if(tocOverlay.classList.contains('open')) return;
+    if(ev.key === 'ArrowRight') goTo(current+1);
+    if(ev.key === 'ArrowLeft') goTo(current-1);
+  });
+
+  var tx = null, ty = null;
+  contentScroll.addEventListener('touchstart', function(ev){
+    tx = ev.changedTouches[0].clientX;
+    ty = ev.changedTouches[0].clientY;
+  }, {passive:true});
+  contentScroll.addEventListener('touchend', function(ev){
+    if(tx === null) return;
+    var dx = ev.changedTouches[0].clientX - tx;
+    var dy = ev.changedTouches[0].clientY - ty;
+    if(Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 2){
+      if(dx < 0) goTo(current+1); else goTo(current-1);
+    }
+    tx = null; ty = null;
+  }, {passive:true});
+
+  var start = 0;
+  var m = /^#p(\d+)$/.exec(location.hash || '');
+  if(m){ start = Math.max(0, Math.min(total-1, parseInt(m[1],10) - 1)); }
+  current = start;
+  render();
+})();
+</script>
+</body>
+</html>

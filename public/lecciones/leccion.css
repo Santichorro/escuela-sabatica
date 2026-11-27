@@ -1430,3 +1430,192 @@ html.sk.is-loading .app .question-card {
     transition: none;
   }
 }
+
+/* ---------------------------------------------------------------------
+   Bloques adicionales (desde la lección 9): estudio de palabra,
+   ilustración, aplicación práctica, idea central y nota del maestro
+   --------------------------------------------------------------------- */
+
+.word-block,
+.illus-block,
+.apply-block {
+  position: relative;
+  margin: 28px 0;
+  padding: 24px 20px 20px;
+  border-radius: var(--radius-md);
+}
+
+/* Estudio de palabra: contorno punteado en acento */
+.word-block {
+  background: transparent;
+  border: 1px dashed var(--accent-line);
+}
+
+.content-inner .word-block .word-term {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin: 0 0 10px;
+}
+
+.word-block .word-translit {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.word-block .word-orig {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  color: var(--text-muted);
+}
+
+.content-inner .word-block p:last-child,
+.content-inner .illus-block p:last-child,
+.content-inner .illus-limit p {
+  margin-bottom: 0;
+}
+
+/* Ilustración: superficie suave sin barra de acento */
+.illus-block {
+  background: var(--bg-elevated-2);
+  border: 1px solid var(--line);
+}
+
+.illus-block h3,
+.apply-block h3 {
+  margin: 0 0 10px;
+  font-size: 1.28rem;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.illus-limit {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.content-inner .illus-limit p {
+  font-size: 1.04rem;
+  line-height: 1.62;
+  color: var(--text-muted);
+}
+
+/* Aplicación práctica: tarjeta clara que contrasta con el fondo oscuro */
+.apply-block {
+  color: var(--bg);
+  background: var(--text);
+  border: 1px solid var(--text);
+}
+
+.apply-block .block-label {
+  color: color-mix(in srgb, var(--accent) 82%, #000);
+}
+
+.apply-block h3 {
+  color: var(--bg);
+}
+
+ol.steps {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+}
+
+ol.steps li {
+  position: relative;
+  padding: 0 0 16px 38px;
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  line-height: 1.6;
+  counter-increment: paso;
+}
+
+ol.steps li:last-child {
+  padding-bottom: 0;
+}
+
+ol.steps li::before {
+  content: counter(paso);
+  position: absolute;
+  top: 0.1em;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* Idea central */
+.key-idea {
+  margin: 36px 0;
+  padding: 26px 8px;
+  text-align: center;
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+
+.content-inner .key-idea p {
+  margin: 0;
+  font-size: 1.38rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+/* Nota del maestro dentro de una cita (paráfrasis, verificación) */
+.content-inner .block-note {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  border-top: 1px dashed var(--line-strong);
+}
+
+.block-note b {
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+@media (min-width: 760px) {
+  .word-block,
+  .illus-block,
+  .apply-block {
+    padding: 28px 28px 24px;
+  }
+}
+
+/* Esqueleto de carga para los bloques nuevos */
+html.sk.is-loading .app ol.steps li::before {
+  color: transparent;
+  background: var(--sk);
+}
+
+html.sk.is-loading .app :is(.word-block, .key-idea) {
+  border-color: var(--line);
+}
+
+html.sk.is-loading .app .apply-block {
+  background: var(--bg-elevated);
+  border-color: var(--line);
+}
+
+.illus-limit .block-label {
+  margin-bottom: 6px;
+  color: var(--text-muted);
+}

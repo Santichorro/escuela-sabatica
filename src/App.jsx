@@ -138,6 +138,14 @@ const lecciones = [
     pasaje: 'Lucas 24:27',
     archivo: '/lecciones/2026/T4/26_04_08 Interpretacion de los escritos profeticos.html',
   },
+  {
+    anio: 2026,
+    trimestre: 4,
+    numero: 9,
+    titulo: 'Poniendo a prueba a los profetas',
+    pasaje: '1 Juan 4:1',
+    archivo: '/lecciones/2026/T4/26_04_09 Poniendo a prueba a los profetas.html',
+  },
 ]
 
 const leccionesOrdenadas = [...lecciones].sort(
